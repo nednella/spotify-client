@@ -25,11 +25,16 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
     return (
         <div
             className={twMerge(
-                'sticky top-0 h-fit bg-gradient-to-b from-emerald-800 p-4',
+                'sticky top-0 mb-4 h-fit bg-gradient-to-b from-emerald-800 p-4',
                 className
             )}
         >
-            <header className="mb-4 flex h-[32px] w-full items-center justify-between">
+            <header
+                className={twMerge(
+                    'flex h-[32px] w-full items-center justify-between',
+                    children && 'mb-4'
+                )}
+            >
                 {/* {Router Buttons} */}
                 <div className="hidden h-full gap-x-2 md:flex">
                     <Button
