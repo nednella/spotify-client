@@ -13,7 +13,7 @@ const Sidebar = () => {
         {
             icon: HiHome,
             label: 'Home',
-            active: location.pathname !== '/search',
+            active: location.pathname === '/',
             href: '/',
         },
         {
