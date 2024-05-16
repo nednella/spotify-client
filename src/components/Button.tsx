@@ -22,6 +22,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
                         text-black
                         transition
                         hover:opacity-75
+                        active:scale-95
                         disabled:cursor-not-allowed
                         disabled:opacity-75
                     `,
