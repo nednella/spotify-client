@@ -6,6 +6,8 @@ import { HiHome, HiSearch } from 'react-icons/hi'
 import { FaUserAlt } from 'react-icons/fa'
 import { FiDownload } from 'react-icons/fi'
 
+import useLoginModal from '../hooks/useLoginModal'
+
 import Button from './Button'
 import React from 'react'
 
@@ -17,10 +19,14 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ children, className }) => {
     const navigate = useNavigate()
 
-    // TODO: authenticate user on button clicks -> if not logged in, prompt authModal
-    const user = true
+    // TODO: authenticate user on button clicks -> if not logged in, redirect to fetch('/login')
+    const user = false
+    console.log('user: ', user)
 
-    // TODO: add solid background colour to header block when page scrolls
+    // TODO: add solid background colour to header block when page scrolls?
+
+    // TODO: remove this! login button should fetch('/login') once implemented
+    const loginModal = useLoginModal()
 
     return (
         <div
@@ -85,15 +91,16 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
                         </>
                     ) : (
                         <>
-                            <Button
-                                onClick={() => {}}
-                                className="bg-transparent px-0 font-medium text-neutral-300"
+                            <a
+                                className="text-nowrap font-medium text-neutral-300 transition hover:opacity-75 active:scale-95"
+                                href="https://spotify.com/signup"
+                                rel="noreferrer"
                             >
                                 Sign Up
-                            </Button>
+                            </a>
 
                             <Button
-                                onClick={() => {}}
+                                onClick={loginModal.onOpen}
                                 className=" border-none px-6 py-2"
                             >
                                 Log In
