@@ -20,10 +20,12 @@ const Download = () => {
                             computer.
                         </h2>
                         <a
+                            className="mt-8 w-[200px]"
                             href="https://spotify.com/download"
                             rel="noreferrer"
+                            tabIndex={-1}
                         >
-                            <Button className="mt-8 w-[200px]">Get the free app</Button>
+                            <Button>Get the free app</Button>
                         </a>
                     </div>
                 </div>
