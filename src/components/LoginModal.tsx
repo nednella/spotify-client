@@ -37,14 +37,26 @@ const LoginModal = () => {
                     >
                         Log in
                     </Button>
-
                     <a
+                        className="
+                            mt-4
+                            w-[200px]
+                            whitespace-nowrap
+                            rounded-full
+                            border
+                            border-neutral-500
+                            px-12
+                            py-3
+                            font-bold
+                            text-white
+                            transition
+                            hover:opacity-75
+                            active:scale-95
+                        "
                         href="https://spotify.com/download"
                         rel="noreferrer"
                     >
-                        <Button className="mt-4 w-[200px] border border-neutral-500 bg-transparent px-12 text-white">
-                            Download app
-                        </Button>
+                        Download app
                     </a>
 
                     <p className="mt-8 text-center">
