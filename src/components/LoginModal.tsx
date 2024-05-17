@@ -17,8 +17,8 @@ const LoginModal = () => {
         <Modal
             isOpen={isOpen}
             onChange={onChange}
-            className="bg-sky-950 lg:max-w-[800px]"
-            style={{ backgroundImage: 'linear-gradient(-180deg,rgba(0,0,0,.4),#282828)' }}
+            className="bg-pink-950 py-16 lg:max-w-[800px] lg:p-16"
+            style={{ backgroundImage: 'linear-gradient(to bottom,rgba(0,0,0,.4),#282828 90%)' }}
         >
             <div className="flex h-full flex-col items-center justify-center lg:flex-row">
                 <div className="min-h-[200px] min-w-[200px] max-w-[50%] sm:min-h-[240px] sm:min-w-[240px] lg:mr-16">
@@ -38,14 +38,14 @@ const LoginModal = () => {
                         Log in
                     </Button>
 
-                    <Button className="mt-4 w-[200px] border border-neutral-500 bg-transparent px-12 text-white">
-                        <a
-                            href="https://spotify.com/download"
-                            rel="noreferrer"
-                        >
+                    <a
+                        href="https://spotify.com/download"
+                        rel="noreferrer"
+                    >
+                        <Button className="mt-4 w-[200px] border border-neutral-500 bg-transparent px-12 text-white">
                             Download app
-                        </a>
-                    </Button>
+                        </Button>
+                    </a>
 
                     <p className="mt-8 text-center">
                         <span className="text-neutral-400">Don't have an account?</span>
