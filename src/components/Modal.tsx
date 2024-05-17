@@ -34,7 +34,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onChange, children, className, st
                                 translate-y-[-50%]
                                 rounded-md
                                 bg-neutral-900
-                                p-12
+                                p-8
                                 drop-shadow-md
                                 focus:outline-none
                                 sm:h-[auto]
