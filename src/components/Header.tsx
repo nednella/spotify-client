@@ -20,7 +20,7 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
     const navigate = useNavigate()
 
     // TODO: authenticate user on button clicks -> if not logged in, redirect to fetch('/login')
-    const user = false
+    const user = true
     console.log('user: ', user)
 
     // TODO: add solid background colour to header block when page scrolls?
@@ -31,7 +31,7 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
     return (
         <div
             className={twMerge(
-                'sticky top-0 mb-4 h-fit bg-gradient-to-b from-emerald-800 p-4',
+                'sticky top-0 h-fit bg-gradient-to-b from-emerald-800 p-4',
                 className
             )}
         >
@@ -77,7 +77,7 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
                         <>
                             <Button
                                 onClick={() => navigate('/download')}
-                                className="hidden h-full items-center gap-x-2 bg-black px-4 py-0 text-white sm:flex"
+                                className="xsm:flex hidden h-full items-center gap-x-2 bg-black px-4 py-0 text-white"
                             >
                                 <FiDownload />
                                 <p>Install App</p>
