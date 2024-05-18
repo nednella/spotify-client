@@ -25,12 +25,12 @@ const Home = () => {
                             "
                         >
                             <HeaderPlaylistItem
-                                image="/src/assets/images/liked.png"
+                                image="/src/assets/images/mac.png"
                                 name="Liked Songs"
                                 href="/playlist/api-call-for-playlist-data"
                             />
                             <HeaderPlaylistItem
-                                image="/src/assets/images/liked.png"
+                                image=""
                                 name="Recent Playlist B"
                                 href="/playlist/api-call-for-playlist-data"
                             />

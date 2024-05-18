@@ -3,7 +3,7 @@ import Button from './Button'
 import Modal from './Modal'
 
 const LoginModal = () => {
-    const { onClose, isOpen } = useLoginModal()
+    const { isOpen, onClose, img } = useLoginModal()
 
     const onChange = (open: boolean) => {
         if (!open) {
@@ -51,7 +51,7 @@ const LoginModal = () => {
                 "
                 >
                     <img
-                        src="src/assets/images/liked.png"
+                        src={img}
                         className=" rounded-lg object-cover"
                     />
                 </div>

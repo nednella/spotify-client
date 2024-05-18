@@ -1,3 +1,4 @@
+import React from 'react'
 import { FaPlay } from 'react-icons/fa'
 
 import useLoginModal from '../hooks/useLoginModal'
@@ -16,7 +17,8 @@ const HeaderPlaylistItem: React.FC<HeaderPlaylistItemProps> = ({ image, name }) 
 
     const onClick = () => {
         if (!user) {
-            return loginModal.onOpen()
+            loginModal.setImg(image)
+            loginModal.onOpen()
         }
 
         // TODO: router push link
