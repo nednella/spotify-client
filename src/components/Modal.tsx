@@ -32,7 +32,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onChange, children, className, st
                                 w-full
                                 translate-x-[-50%]
                                 translate-y-[-50%]
-                                rounded-md
+                                rounded-lg
                                 bg-neutral-900
                                 p-8
                                 drop-shadow-md

@@ -21,14 +21,24 @@ const LoginModal = () => {
             style={{ backgroundImage: 'linear-gradient(to bottom,rgba(0,0,0,.4),#282828 90%)' }}
         >
             <div className="flex h-full flex-col items-center justify-center lg:flex-row">
-                <div className="min-h-[200px] min-w-[200px] max-w-[50%] sm:min-h-[240px] sm:min-w-[240px] lg:mr-16">
+                <div
+                    className="
+                    h-[200px]
+                    w-[200px]
+                    sm:h-[240px]
+                    sm:w-[240px]
+                    lg:mr-16
+                    lg:h-[300px]
+                    lg:w-[300px]
+                "
+                >
                     <img
                         src="src/assets/images/liked.png"
                         className=" rounded-lg object-cover"
                     />
                 </div>
                 <div className="mt-8 flex flex-col items-center lg:mt-0">
-                    <h2 className="max-w-[350px] text-center text-2xl font-bold">
+                    <h2 className="max-w-[350px] text-center text-2xl font-bold lg:text-3xl">
                         Start listening with your Spotify account
                     </h2>
                     <Button
