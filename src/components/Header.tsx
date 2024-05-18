@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { twMerge } from 'tailwind-merge'
 
 import { RxCaretLeft, RxCaretRight } from 'react-icons/rx'
@@ -18,6 +18,7 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({ children, className }) => {
     const navigate = useNavigate()
+    const location = useLocation()
 
     // TODO: authenticate user on button clicks -> if not logged in, redirect to fetch('/login')
     const user = true
@@ -39,13 +40,15 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
                 <div className="hidden h-full gap-x-2 md:flex">
                     <Button
                         onClick={() => navigate(-1)}
-                        className="bg-black p-0 text-white"
+                        disabled={location.key === 'default'}
+                        className="flex items-center justify-center bg-black p-0 text-white disabled:opacity-50"
                     >
                         <RxCaretLeft size={32} />
                     </Button>
                     <Button
                         onClick={() => navigate(1)}
-                        className="bg-black p-0 text-white"
+                        disabled={location.key === 'default'}
+                        className="flex items-center justify-center bg-black p-0 text-white disabled:opacity-50"
                     >
                         <RxCaretRight size={32} />
                     </Button>
