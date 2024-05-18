@@ -29,12 +29,7 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
     const loginModal = useLoginModal()
 
     return (
-        <div
-            className={twMerge(
-                'sticky top-0 h-fit bg-gradient-to-b from-emerald-800 p-4',
-                className
-            )}
-        >
+        <div className={twMerge('sticky top-0 h-fit p-4', className)}>
             <header
                 className={twMerge(
                     'flex h-[32px] w-full items-center justify-between',
