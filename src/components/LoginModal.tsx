@@ -42,8 +42,10 @@ const LoginModal = () => {
             >
                 <div
                     className="
+                    flex
                     h-[200px]
                     w-[200px]
+                    items-center
                     sm:h-[240px]
                     sm:w-[240px]
                     lg:mr-16
@@ -53,7 +55,7 @@ const LoginModal = () => {
                 >
                     <img
                         src={img}
-                        className=" rounded-lg object-cover"
+                        className="rounded-lg object-cover"
                     />
                 </div>
                 <div className="mt-8 flex flex-col items-center lg:mt-0">
