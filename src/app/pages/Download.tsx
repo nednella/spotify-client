@@ -6,8 +6,16 @@ const Download = () => {
         <>
             <Header className="bg-none" />
             <div
-                className="flex flex-grow flex-col items-center justify-center bg-blue-900"
-                style={{ backgroundImage: 'linear-gradient(to bottom,rgba(0,0,0,.3),#171717 40%)' }}
+                className="
+                flex
+                flex-grow
+                flex-col
+                items-center
+                justify-center
+                bg-gradient-to-b
+                from-sky-900
+                to-40%
+            "
             >
                 <div className="w-[640px] max-w-[80%]">
                     <img

@@ -17,10 +17,28 @@ const LoginModal = () => {
         <Modal
             isOpen={isOpen}
             onChange={onChange}
-            className="bg-pink-950 py-16 lg:max-w-[800px] lg:p-16"
-            style={{ backgroundImage: 'linear-gradient(to bottom,rgba(0,0,0,.4),#282828 90%)' }}
+            className="
+                bg-pink-700/80
+                bg-gradient-to-b
+                from-black/40
+                to-neutral-800 
+                to-90%
+                py-16
+                transition
+                lg:max-w-[800px]
+                lg:p-16
+            "
         >
-            <div className="flex h-full flex-col items-center justify-center lg:flex-row">
+            <div
+                className="
+                flex
+                h-full
+                flex-col
+                items-center
+                justify-center
+                lg:flex-row
+            "
+            >
                 <div
                     className="
                     h-[200px]
@@ -68,7 +86,6 @@ const LoginModal = () => {
                     >
                         Download app
                     </a>
-
                     <p className="mt-8 text-center">
                         <span className="text-neutral-400">Don't have an account?</span>
                         <a
