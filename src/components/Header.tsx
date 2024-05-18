@@ -21,7 +21,6 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
 
     // TODO: authenticate user on button clicks -> if not logged in, redirect to fetch('/login')
     const user = true
-    console.log('user: ', user)
 
     // TODO: add solid background colour to header block when page scrolls?
 
