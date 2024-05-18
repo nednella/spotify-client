@@ -18,10 +18,11 @@ const LoginModal = () => {
             isOpen={isOpen}
             onChange={onChange}
             className="
+                animate-login-modal
                 bg-pink-700/80
                 bg-gradient-to-b
-                from-black/40
-                to-neutral-800 
+                from-black/40 
+                to-neutral-800
                 to-90%
                 py-16
                 transition
