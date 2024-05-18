@@ -26,6 +26,19 @@ export default {
                 33: '33%',
                 66: '66%',
             },
+            animation: {
+                'login-modal': 'pop-up 0.3s, fade-in 0.8s',
+            },
+            keyframes: {
+                'pop-up': {
+                    from: { transform: 'translate(-50%, -40%)' },
+                    to: { transform: 'translate(-50%, -50%)' },
+                },
+                'fade-in': {
+                    from: { opacity: 0 },
+                    to: { opacity: 1 },
+                },
+            },
         },
     },
     plugins: [],
