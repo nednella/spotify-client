@@ -36,7 +36,6 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onChange, children, className, st
                                 bg-neutral-900
                                 p-8
                                 drop-shadow-md
-                                focus:outline-none
                                 sm:h-[auto]
                                 sm:max-h-[85vh]
                                 sm:w-[90vw]
