@@ -1,10 +1,12 @@
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { twMerge } from 'tailwind-merge'
 
 import { RxCaretLeft, RxCaretRight } from 'react-icons/rx'
 import { HiHome, HiSearch } from 'react-icons/hi'
 import { FaUserAlt } from 'react-icons/fa'
 import { FiDownload } from 'react-icons/fi'
+
+import useLoginModal from '../hooks/useLoginModal'
 
 import Button from './Button'
 import React from 'react'
@@ -16,31 +18,37 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({ children, className }) => {
     const navigate = useNavigate()
+    const location = useLocation()
 
-    // TODO: authenticate user on button clicks -> if not logged in, prompt authModal
+    // TODO: authenticate user on button clicks -> if not logged in, redirect to fetch('/login')
     const user = true
 
-    // TODO: add solid background colour to header block when page scrolls
+    // TODO: add solid background colour to header block when page scrolls?
+
+    // TODO: remove this! login button should fetch('/login') once implemented
+    const loginModal = useLoginModal()
 
     return (
-        <div
-            className={twMerge(
-                'sticky top-0 h-fit bg-gradient-to-b from-emerald-800 p-4',
-                className
-            )}
-        >
-            <header className="mb-4 flex h-[32px] w-full items-center justify-between">
+        <div className={twMerge('sticky top-0 h-fit p-4', className)}>
+            <header
+                className={twMerge(
+                    'flex h-[32px] w-full items-center justify-between',
+                    children && 'mb-4'
+                )}
+            >
                 {/* {Router Buttons} */}
                 <div className="hidden h-full gap-x-2 md:flex">
                     <Button
                         onClick={() => navigate(-1)}
-                        className="bg-black p-0 text-white"
+                        disabled={location.key === 'default'}
+                        className="flex items-center justify-center bg-black p-0 text-white disabled:opacity-50"
                     >
                         <RxCaretLeft size={32} />
                     </Button>
                     <Button
                         onClick={() => navigate(1)}
-                        className="bg-black p-0 text-white"
+                        disabled={location.key === 'default'}
+                        className="flex items-center justify-center bg-black p-0 text-white disabled:opacity-50"
                     >
                         <RxCaretRight size={32} />
                     </Button>
@@ -66,7 +74,7 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
                         <>
                             <Button
                                 onClick={() => navigate('/download')}
-                                className="hidden h-full items-center gap-x-2 bg-black px-4 py-0 text-white sm:flex"
+                                className="xsm:flex hidden h-full items-center gap-x-2 bg-black px-4 py-0 text-white"
                             >
                                 <FiDownload />
                                 <p>Install App</p>
@@ -80,15 +88,16 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
                         </>
                     ) : (
                         <>
-                            <Button
-                                onClick={() => {}}
-                                className="bg-transparent px-0 font-medium text-neutral-300"
+                            <a
+                                className="text-nowrap font-medium text-neutral-300 transition hover:opacity-75 active:scale-95"
+                                href="https://spotify.com/signup"
+                                rel="noreferrer"
                             >
                                 Sign Up
-                            </Button>
+                            </a>
 
                             <Button
-                                onClick={() => {}}
+                                onClick={loginModal.onOpen}
                                 className=" border-none px-6 py-2"
                             >
                                 Log In
