@@ -8,7 +8,7 @@ interface ContentProps {
 
 const Content: React.FC<ContentProps> = ({ children }) => {
     return (
-        <div className="h-full flex-1 overflow-hidden py-2 pr-2">
+        <div className="h-full flex-1 overflow-hidden md:py-2 md:pr-2">
             <Container className="flex h-full flex-col overflow-y-auto">{children}</Container>
         </div>
     )
