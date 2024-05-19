@@ -3,7 +3,7 @@ import Header from '../../components/Header'
 const NotFound = () => {
     return (
         <>
-            <Header className="bg-none" />
+            <Header />
             <div className="flex flex-grow flex-col items-center justify-center">
                 <img src="/spotify-icon.svg" />
                 <h1 className="mt-8 text-5xl font-bold">Page not found</h1>
