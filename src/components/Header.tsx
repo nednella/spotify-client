@@ -3,6 +3,7 @@ import { twMerge } from 'tailwind-merge'
 
 import { RxCaretLeft, RxCaretRight } from 'react-icons/rx'
 import { HiHome, HiSearch } from 'react-icons/hi'
+import { TbPlaylist } from 'react-icons/tb'
 import { FaUserAlt } from 'react-icons/fa'
 import { FiDownload } from 'react-icons/fi'
 
@@ -56,6 +57,12 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
                 {/* {Mobile Buttons} */}
                 <div className="flex gap-x-4 md:hidden">
                     <Button
+                        onClick={() => navigate('/library')}
+                        className="bg-white p-2"
+                    >
+                        <TbPlaylist size={20} />
+                    </Button>
+                    <Button
                         onClick={() => navigate('/home')}
                         className="bg-white p-2"
                     >
@@ -74,7 +81,7 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
                         <>
                             <Button
                                 onClick={() => navigate('/download')}
-                                className="xsm:flex hidden h-full items-center gap-x-2 bg-black px-4 py-0 text-white"
+                                className="hidden h-full items-center gap-x-2 bg-black px-4 py-0 text-white md:flex"
                             >
                                 <FiDownload />
                                 <p>Install App</p>
