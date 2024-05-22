@@ -7,6 +7,7 @@ import Home from './pages/Home'
 import Search from './pages/Search'
 import Account from './pages/Account'
 import Download from './pages/Download'
+import Callback from './pages/Callback'
 import NotFound from './pages/NotFound'
 
 const App = () => {
@@ -31,6 +32,11 @@ const App = () => {
             label: 'Download',
             path: '/download',
             element: <Download />,
+        },
+        {
+            label: 'Callback',
+            path: '/callback',
+            element: <Callback />,
         },
         {
             label: 'Not Found',

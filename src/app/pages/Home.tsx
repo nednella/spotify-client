@@ -4,12 +4,13 @@ import Header from '../../components/Header'
 import HeaderPlaylistItem from '../../components/HeaderPlaylistItem'
 
 const Home = () => {
-    const user = true
+    // TODO: authenticate user with a session
+    const session = false
 
     return (
         <>
-            <Header className={twMerge('', user && 'bg-gradient-to-b from-pink-800/50')}>
-                {user ? (
+            <Header className={twMerge('', session && 'bg-gradient-to-b from-pink-800/50')}>
+                {session ? (
                     <>
                         <h1 className="text-3xl font-semibold text-white">Welcome back, user</h1>
                         <h3>[Additional Nav Buttons]</h3>
@@ -58,6 +59,7 @@ const Home = () => {
                     </>
                 ) : null}
             </Header>
+
             <div className="flex items-center justify-center">
                 <h1 className="text-3xl font-semibold text-white">Home Page</h1>
             </div>
