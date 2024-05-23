@@ -2,14 +2,15 @@ import { twMerge } from 'tailwind-merge'
 
 import Header from '../../components/Header'
 import HeaderPlaylistItem from '../../components/HeaderPlaylistItem'
+import { useSession } from '../../hooks/useSession'
 
 const Home = () => {
-    const user = true
+    const { session } = useSession()
 
     return (
         <>
-            <Header className={twMerge('', user && 'bg-gradient-to-b from-pink-800/50')}>
-                {user ? (
+            <Header className={twMerge('', session && 'bg-gradient-to-b from-pink-800/50')}>
+                {session ? (
                     <>
                         <h1 className="text-3xl font-semibold text-white">Welcome back, user</h1>
                         <h3>[Additional Nav Buttons]</h3>
@@ -58,6 +59,7 @@ const Home = () => {
                     </>
                 ) : null}
             </Header>
+
             <div className="flex items-center justify-center">
                 <h1 className="text-3xl font-semibold text-white">Home Page</h1>
             </div>

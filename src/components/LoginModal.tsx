@@ -1,6 +1,9 @@
 import useLoginModal from '../hooks/useLoginModal'
-import Button from './Button'
+
+import Login from '../api/auth/Login'
+
 import Modal from './Modal'
+import Button from './Button'
 
 const LoginModal = () => {
     const { isOpen, onClose, img } = useLoginModal()
@@ -10,8 +13,6 @@ const LoginModal = () => {
             onClose()
         }
     }
-
-    // TODO: add fetch('/login') once backend implemented
 
     return (
         <Modal
@@ -63,7 +64,7 @@ const LoginModal = () => {
                         Start listening with your Spotify account
                     </h2>
                     <Button
-                        onClick={() => {}}
+                        onClick={Login}
                         className="mt-8 w-[200px] px-12"
                     >
                         Log in
