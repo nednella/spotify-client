@@ -1,15 +1,17 @@
+import React from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { twMerge } from 'tailwind-merge'
-
 import { RxCaretLeft, RxCaretRight } from 'react-icons/rx'
 import { HiHome, HiSearch } from 'react-icons/hi'
 import { FaUserAlt } from 'react-icons/fa'
 import { FiDownload } from 'react-icons/fi'
 
-import useLoginModal from '../hooks/useLoginModal'
+import Login from '../api/auth/Login'
+import Logout from '../api/auth/Logout'
+import { useSession } from '../hooks/useSession'
 
 import Button from './Button'
-import React from 'react'
+import toast from 'react-hot-toast'
 
 interface HeaderProps {
     children?: React.ReactNode
@@ -19,14 +21,21 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ children, className }) => {
     const navigate = useNavigate()
     const location = useLocation()
-
-    // TODO: authenticate user on button clicks -> if not logged in, redirect to fetch('/login')
-    const user = true
+    const { session, setSession } = useSession()
 
     // TODO: add solid background colour to header block when page scrolls?
 
-    // TODO: remove this! login button should fetch('/login') once implemented
-    const loginModal = useLoginModal()
+    const handleLogout = () => {
+        Logout()
+            .then(() => {
+                navigate('/')
+                setSession(false) // prevents requiring a page reload
+            })
+            .catch((error) => {
+                toast.error(error.message)
+                return navigate('/')
+            })
+    }
 
     return (
         <div className={twMerge('sticky top-0 h-fit p-4', className)}>
@@ -56,7 +65,7 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
                 {/* {Mobile Buttons} */}
                 <div className="flex gap-x-4 md:hidden">
                     <Button
-                        onClick={() => navigate('/home')}
+                        onClick={() => navigate('/')}
                         className="bg-white p-2"
                     >
                         <HiHome size={20} />
@@ -70,15 +79,22 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
                 </div>
                 {/* {Account Buttons} */}
                 <div className="flex h-full items-center gap-x-4">
-                    {user ? (
+                    {session ? (
                         <>
                             <Button
                                 onClick={() => navigate('/download')}
-                                className="xsm:flex hidden h-full items-center gap-x-2 bg-black px-4 py-0 text-white"
+                                className="hidden h-full items-center gap-x-2 bg-black px-4 py-0 text-white xsm:flex"
                             >
                                 <FiDownload />
                                 <p>Install App</p>
                             </Button>
+                            <Button
+                                onClick={handleLogout}
+                                className="h-full bg-white px-4 py-0"
+                            >
+                                <p>Logout</p>
+                            </Button>
+
                             <Button
                                 onClick={() => navigate('/account')}
                                 className="border-none p-3"
@@ -97,7 +113,7 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
                             </a>
 
                             <Button
-                                onClick={loginModal.onOpen}
+                                onClick={Login}
                                 className=" border-none px-6 py-2"
                             >
                                 Log In
