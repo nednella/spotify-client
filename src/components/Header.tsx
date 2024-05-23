@@ -6,8 +6,8 @@ import { HiHome, HiSearch } from 'react-icons/hi'
 import { FaUserAlt } from 'react-icons/fa'
 import { FiDownload } from 'react-icons/fi'
 
-import Login from '../api/Login'
-import Logout from '../api/Logout'
+import Login from '../api/auth/Login'
+import Logout from '../api/auth/Logout'
 import { useSession } from '../hooks/useSession'
 
 import Button from './Button'

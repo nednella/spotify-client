@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 
-import checkSession from '../api/Session'
+import checkSession from '../api/auth/Session'
 
 type SessionContextType = {
     session: boolean

@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import Authorise from '../../api/Authorise'
+import Authorise from '../../api/auth/Authorise'
 import { useSession } from '../../hooks/useSession'
 
 const Callback = () => {
@@ -19,6 +19,8 @@ const Callback = () => {
                 return navigate('/')
             })
     })
+
+    return <></>
 }
 
 export default Callback
