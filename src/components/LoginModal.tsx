@@ -1,6 +1,6 @@
 import useLoginModal from '../hooks/useLoginModal'
 
-import { Authorise } from '../api/Login'
+import Login from '../api/Login'
 
 import Modal from './Modal'
 import Button from './Button'
@@ -64,7 +64,7 @@ const LoginModal = () => {
                         Start listening with your Spotify account
                     </h2>
                     <Button
-                        onClick={Authorise}
+                        onClick={Login}
                         className="mt-8 w-[200px] px-12"
                     >
                         Log in

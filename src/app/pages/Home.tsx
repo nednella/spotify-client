@@ -2,10 +2,10 @@ import { twMerge } from 'tailwind-merge'
 
 import Header from '../../components/Header'
 import HeaderPlaylistItem from '../../components/HeaderPlaylistItem'
+import { useSession } from '../../hooks/useSession'
 
 const Home = () => {
-    // TODO: authenticate user with a session
-    const session = false
+    const { session } = useSession()
 
     return (
         <>

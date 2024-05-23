@@ -1,25 +1,24 @@
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import { Login } from '../../api/Login'
-
-import Header from '../../components/Header'
+import Authorise from '../../api/Authorise'
+import { useSession } from '../../hooks/useSession'
 
 const Callback = () => {
     const navigate = useNavigate()
+    const { setSession } = useSession()
 
     useEffect(() => {
-        Login()
-        navigate('/')
+        Authorise()
+            .then(() => {
+                window.history.pushState({}, '', '/') // clear nav history after successful login
+                navigate('/')
+                setSession(true) // prevents requiring a page reload
+            })
+            .catch(() => {
+                return navigate('/')
+            })
     })
-
-    // TODO: add content? maybe a loading spinner
-
-    return (
-        <>
-            <Header />
-        </>
-    )
 }
 
 export default Callback
