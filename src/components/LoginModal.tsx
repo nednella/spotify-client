@@ -1,6 +1,6 @@
 import useLoginModal from '../hooks/useLoginModal'
 
-import Login from '../api/Login'
+import Login from '../api/auth/Login'
 
 import Modal from './Modal'
 import Button from './Button'
