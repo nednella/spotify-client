@@ -8,6 +8,7 @@ import Search from './pages/Search'
 import Account from './pages/Account'
 import Download from './pages/Download'
 import Playlist from './pages/Playlist'
+import Callback from './pages/Callback'
 import NotFound from './pages/NotFound'
 
 const App = () => {
@@ -37,6 +38,11 @@ const App = () => {
             label: 'Playlist',
             path: '/playlist',
             element: <Playlist />,
+        },
+        {
+            label: 'Callback',
+            path: '/callback',
+            element: <Callback />,
         },
         {
             label: 'Not Found',
