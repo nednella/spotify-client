@@ -59,17 +59,17 @@ const LibraryEmpty: React.FC<LibraryEmptyProps> = ({ fns: [createPlaylist, searc
                 "
             >
                 <div className="flex flex-wrap">
-                    <p className="cursor-pointer py-2 pr-3">Legal</p>
-                    <p className="cursor-pointer py-2 pr-3">Safety & Privacy Center</p>
-                    <p className="cursor-pointer py-2 pr-3">Privacy Policy</p>
-                    <p className="cursor-pointer py-2 pr-3">Cookie Settings</p>
-                    <p className="cursor-pointer py-2 pr-3">About Ads</p>
-                    <p className="cursor-pointer py-2 pr-3">Accessibility</p>
-                    <p className="cursor-pointer py-2 pr-3">Modern Slavery Act</p>
-                    <p className="cursor-pointer py-2 pr-3">UK Tax Policy</p>
-                    <p className="cursor-pointer py-2 pr-3">UK Gender Pay Report</p>
+                    <p className="py-2 pr-3">Legal</p>
+                    <p className="py-2 pr-3">Safety & Privacy Center</p>
+                    <p className="py-2 pr-3">Privacy Policy</p>
+                    <p className="py-2 pr-3">Cookie Settings</p>
+                    <p className="py-2 pr-3">About Ads</p>
+                    <p className="py-2 pr-3">Accessibility</p>
+                    <p className="py-2 pr-3">Modern Slavery Act</p>
+                    <p className="py-2 pr-3">UK Tax Policy</p>
+                    <p className="py-2 pr-3">UK Gender Pay Report</p>
                 </div>
-                <p className="cursor-pointer pt-2 text-sm">Cookies</p>
+                <p className="pt-2 text-sm">Cookies</p>
             </div>
         </div>
     )
