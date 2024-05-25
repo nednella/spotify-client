@@ -29,7 +29,7 @@ const Home = () => {
                 bgOpacity={headerOpacity}
             >
                 {/* TODO: header nav buttons */}
-                <h3>[Additional Nav Buttons]</h3>
+                {session ? <h3>[Additional Nav Buttons]</h3> : null}
             </Header>
             {/* Page content */}
             {session ? (
@@ -37,7 +37,7 @@ const Home = () => {
                     {/* Background colour */}
                     <div
                         className={twMerge(
-                            `absolute top-[104px] h-[400px] w-full bg-gradient-to-b from-${headerColour}`,
+                            `absolute top-[104px] h-[300px] w-full bg-gradient-to-b from-${headerColour}`,
                             !gradient && 'bg-none'
                         )}
                     ></div>
@@ -93,8 +93,6 @@ const Home = () => {
                         </section>
 
                         <ContentSection title={'Content Title'} />
-                        <ContentSection title={'Content Title'} />
-                        <ContentSectionLoading />
                         <ContentSectionLoading />
                     </section>
                 </>
