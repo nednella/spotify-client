@@ -4,13 +4,13 @@ import { RiPlayLargeFill } from 'react-icons/ri'
 import useLoginModal from '../../../../hooks/useLoginModal'
 import { useSession } from '../../../../hooks/useSession'
 
-interface HeaderItemProps {
+interface RecentCardProps {
     image: string
     title: string
     href?: string
 }
 
-const HeaderItem: React.FC<HeaderItemProps> = ({ image, title, href }) => {
+const RecentCard: React.FC<RecentCardProps> = ({ image, title, href }) => {
     const { session } = useSession()
     const loginModal = useLoginModal()
 
@@ -102,4 +102,4 @@ const HeaderItem: React.FC<HeaderItemProps> = ({ image, title, href }) => {
     )
 }
 
-export default HeaderItem
+export default RecentCard
