@@ -21,6 +21,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ icon: Icon, label, active, hr
                     h-auto
                     w-full
                     cursor-pointer
+                    select-none
                     flex-row
                     items-center
                     gap-x-4
