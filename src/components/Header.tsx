@@ -3,7 +3,6 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { twMerge } from 'tailwind-merge'
 import { RxCaretLeft, RxCaretRight } from 'react-icons/rx'
 import { HiHome, HiSearch } from 'react-icons/hi'
-import { TbPlaylist } from 'react-icons/tb'
 import { FaUserAlt } from 'react-icons/fa'
 import { FiDownload } from 'react-icons/fi'
 
@@ -17,14 +16,14 @@ import toast from 'react-hot-toast'
 interface HeaderProps {
     children?: React.ReactNode
     className?: string
+    bgColour?: string
+    bgOpacity?: string
 }
 
-const Header: React.FC<HeaderProps> = ({ children, className }) => {
+const Header: React.FC<HeaderProps> = ({ children, className, bgColour, bgOpacity }) => {
     const navigate = useNavigate()
     const location = useLocation()
     const { session, setSession } = useSession()
-
-    // TODO: add solid background colour to header block when page scrolls?
 
     const handleLogout = () => {
         Logout()
@@ -39,10 +38,15 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
     }
 
     return (
-        <div className={twMerge('sticky top-0 h-fit p-4', className)}>
+        <div
+            className={twMerge(
+                `sticky top-0 h-fit ${bgColour}/${bgOpacity} p-4 transition duration-1000`,
+                className
+            )}
+        >
             <header
                 className={twMerge(
-                    'flex h-[32px] w-full items-center justify-between',
+                    'flex h-[32px] w-full select-none items-center justify-between',
                     children && 'mb-4'
                 )}
             >
