@@ -1,68 +1,104 @@
+import { useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 import { useSession } from '../../../hooks/useSession'
 
 import Header from '../../../components/Header'
-import HeaderItem from './components/HeaderItem'
+import RecentCard from './components/RecentCard'
+import RecentCardLoading from './components/RecentCardLoading'
+import ContentSection from './components/ContentSection'
+import ContentSectionLoading from './components/ContentSectionLoading'
 
 const Home = () => {
     const { session } = useSession()
+    const [headerColour] = useState('emerald-800')
+    const [headerOpacity] = useState('100')
+    const [gradient] = useState(true)
+
+    // TODO: pull headerColour from random list, or from item, idk
+    // TODO: onScroll, setHeaderOpacity('100') & setGradient(false)
+
+    // SUGGESTION: put top-[headerSize]on bg-gradient and remove gradient on scroll
 
     return (
         <>
-            <Header className={twMerge('', session && 'bg-gradient-to-b from-pink-800/50')}>
-                {session ? (
-                    <>
-                        <h1 className="text-3xl font-semibold text-white">Welcome back, user</h1>
-                        <h3>[Additional Nav Buttons]</h3>
-                        <div
+            {/* Page header */}
+            <Header
+                className={twMerge('z-10', session && ``)}
+                bgColour={`bg-${headerColour}`}
+                bgOpacity={headerOpacity}
+            >
+                {/* TODO: header nav buttons */}
+                <h3>[Additional Nav Buttons]</h3>
+            </Header>
+            {/* Page content */}
+            {session ? (
+                <>
+                    {/* Background colour */}
+                    <div
+                        className={twMerge(
+                            `absolute top-[104px] h-[400px] w-full bg-gradient-to-b from-${headerColour}`,
+                            !gradient && 'bg-none'
+                        )}
+                    ></div>
+                    {/* Content */}
+                    <section className="absolute top-[104px] w-full p-4">
+                        <p className="sticky text-3xl font-semibold text-white">
+                            Welcome back, user
+                        </p>
+
+                        {/* Recently played */}
+                        <section
                             className="
-                                mt-4
-                                grid
-                                grid-cols-1
-                                gap-3
-                                sm:grid-cols-2
-                                xl:grid-cols-4
-                            "
+                                    my-4
+                                    grid
+                                    grid-cols-1
+                                    gap-2
+                                    xsm:grid-cols-2
+                                    xl:grid-cols-4
+                                "
                         >
-                            <HeaderItem
+                            <RecentCard
                                 image={'/src/assets/images/mac.png'}
-                                title={'Liked Songs sdfsdfsdfsdfsfsfsfsfhjghjhgj'}
+                                title={'Liked Songs'}
                                 href={''}
                             />
-                            <HeaderItem
+                            <RecentCard
                                 image=""
                                 title={'Recent Playlist B'}
                                 href={''}
                             />
-                            <HeaderItem
+                            <RecentCard
                                 image={'/src/assets/images/liked.png'}
                                 title={'Recent Playlist C'}
                                 href={''}
                             />
-                            <HeaderItem
+                            <RecentCard
                                 image={'/src/assets/images/liked.png'}
                                 title={'Recent Playlist D'}
                                 href={''}
                             />
-                            <HeaderItem
+                            <RecentCard
                                 image={'/src/assets/images/liked.png'}
                                 title={'Recent Playlist E'}
                                 href={''}
                             />
-                            <HeaderItem
+                            <RecentCard
                                 image={'/src/assets/images/liked.png'}
                                 title={'Recent Playlist F'}
                                 href={''}
                             />
-                        </div>
-                    </>
-                ) : null}
-            </Header>
+                            <RecentCardLoading />
+                            <RecentCardLoading />
+                        </section>
 
-            <div className="flex items-center justify-center">
-                <h1 className="text-3xl font-semibold text-white">Home Page</h1>
-            </div>
+                        <ContentSection title={'Content Title'} />
+                        <ContentSection title={'Content Title'} />
+                        <ContentSectionLoading />
+                        <ContentSectionLoading />
+                    </section>
+                </>
+            ) : null}
         </>
     )
 }
