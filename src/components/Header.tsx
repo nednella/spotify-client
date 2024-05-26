@@ -1,17 +1,19 @@
 import React from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { twMerge } from 'tailwind-merge'
+
 import { RxCaretLeft, RxCaretRight } from 'react-icons/rx'
 import { HiHome, HiSearch } from 'react-icons/hi'
 import { FaUserAlt } from 'react-icons/fa'
 import { FiDownload } from 'react-icons/fi'
 
 import Login from '../api/auth/Login'
-import Logout from '../api/auth/Logout'
 import { useSession } from '../hooks/useSession'
 
+import AccountPopup from './modals/AccountPopup'
+import useAccountPopup from '../hooks/useAccountPopup'
+
 import Button from './Button'
-import toast from 'react-hot-toast'
 
 interface HeaderProps {
     children?: React.ReactNode
@@ -23,19 +25,8 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ children, className, bgColour, bgOpacity }) => {
     const navigate = useNavigate()
     const location = useLocation()
-    const { session, setSession } = useSession()
-
-    const handleLogout = () => {
-        Logout()
-            .then(() => {
-                navigate('/')
-                setSession(false) // prevents requiring a page reload
-            })
-            .catch((error) => {
-                toast.error(error.message)
-                return navigate('/')
-            })
-    }
+    const { session } = useSession()
+    const accountPopup = useAccountPopup()
 
     return (
         <div
@@ -94,18 +85,12 @@ const Header: React.FC<HeaderProps> = ({ children, className, bgColour, bgOpacit
                                 <p>Install App</p>
                             </Button>
                             <Button
-                                onClick={handleLogout}
-                                className="h-full bg-white px-4 py-0"
-                            >
-                                <p>Logout</p>
-                            </Button>
-
-                            <Button
-                                onClick={() => navigate('/account')}
-                                className="border-none p-3"
+                                onClick={accountPopup.onOpen}
+                                className="relative border-none p-3"
                             >
                                 <FaUserAlt size={14} />
                             </Button>
+                            <AccountPopup />
                         </>
                     ) : (
                         <>
