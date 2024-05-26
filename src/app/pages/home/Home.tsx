@@ -24,7 +24,7 @@ const Home = () => {
         <>
             {/* Page header */}
             <Header
-                className={twMerge('z-10', session && ``)}
+                className={twMerge('z-10', !session && `bg-transparent`)}
                 bgColour={`bg-${headerColour}`}
                 bgOpacity={headerOpacity}
             >
