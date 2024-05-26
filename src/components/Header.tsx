@@ -4,7 +4,6 @@ import { twMerge } from 'tailwind-merge'
 
 import { RxCaretLeft, RxCaretRight } from 'react-icons/rx'
 import { HiHome, HiSearch } from 'react-icons/hi'
-import { FaUserAlt } from 'react-icons/fa'
 import { FiDownload } from 'react-icons/fi'
 
 import Login from '../api/auth/Login'
@@ -27,6 +26,9 @@ const Header: React.FC<HeaderProps> = ({ children, className, bgColour, bgOpacit
     const location = useLocation()
     const { session } = useSession()
     const accountPopup = useAccountPopup()
+
+    // TODO: const { user } = useUser()
+    // then: img.src = images[0].url
 
     return (
         <div
@@ -74,7 +76,7 @@ const Header: React.FC<HeaderProps> = ({ children, className, bgColour, bgOpacit
                     </Button>
                 </div>
                 {/* {Account Buttons} */}
-                <div className="flex h-full items-center gap-x-4">
+                <div className="flex h-full items-center gap-x-2">
                     {session ? (
                         <>
                             <Button
@@ -86,9 +88,13 @@ const Header: React.FC<HeaderProps> = ({ children, className, bgColour, bgOpacit
                             </Button>
                             <Button
                                 onClick={accountPopup.onOpen}
-                                className="relative border-none p-3"
+                                className="relative border-none bg-black p-1"
                             >
-                                <FaUserAlt size={14} />
+                                <img
+                                    className="size-6 rounded-full object-cover"
+                                    src="https://i.scdn.co/image/ab67757000003b8212715638a3ced31e0f7fcd62"
+                                    alt=""
+                                />
                             </Button>
                             <AccountPopup />
                         </>
