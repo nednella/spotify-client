@@ -17,11 +17,10 @@ import Button from './Button'
 interface HeaderProps {
     children?: React.ReactNode
     className?: string
-    bgColour?: string
-    bgOpacity?: string
+    style?: React.CSSProperties
 }
 
-const Header: React.FC<HeaderProps> = ({ children, className, bgColour, bgOpacity }) => {
+const Header: React.FC<HeaderProps> = ({ children, className, style }) => {
     const navigate = useNavigate()
     const location = useLocation()
     const { session } = useSession()
@@ -32,10 +31,8 @@ const Header: React.FC<HeaderProps> = ({ children, className, bgColour, bgOpacit
 
     return (
         <div
-            className={twMerge(
-                `sticky top-0 h-fit ${bgColour}/${bgOpacity} p-4 transition duration-1000`,
-                className
-            )}
+            className={twMerge('sticky top-0 h-fit p-4', className)}
+            style={style}
         >
             <header
                 className={twMerge(

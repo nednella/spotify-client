@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 import { useSession } from '../../../hooks/useSession'
@@ -11,22 +11,35 @@ import ContentSectionLoading from './components/ContentSectionLoading'
 
 const Home = () => {
     const { session } = useSession()
-    const [headerColour] = useState('emerald-800')
-    const [headerOpacity] = useState('100')
-    const [gradient] = useState(true)
+    const [colour, setColour] = useState('23, 23, 23') // accepts r/g/b format
+    const [gradient, setGradient] = useState(true)
+    const [headerOpacity, setHeaderOpacity] = useState('0') // accepts values ranging from 0 to 1
 
     // TODO: pull headerColour from random list, or from item, idk
-    // TODO: onScroll, setHeaderOpacity('100') & setGradient(false)
 
-    // SUGGESTION: put top-[headerSize]on bg-gradient and remove gradient on scroll
+    // TODO: onScroll, setHeaderOpacity('100') & setGradient(false)
+    const scroll = false
+
+    useEffect(() => {
+        if (session) {
+            setColour('150, 23, 23')
+
+            if (scroll) {
+                setHeaderOpacity('1')
+                setGradient(false)
+            }
+        }
+    }, [session, scroll])
 
     return (
         <>
             {/* Page header */}
             <Header
                 className={twMerge('z-10', !session && `bg-transparent`)}
-                bgColour={`bg-${headerColour}`}
-                bgOpacity={headerOpacity}
+                style={{
+                    backgroundColor: `rgba(${colour}, ${headerOpacity})`,
+                    transition: 'background-color 1000ms ease-out',
+                }}
             >
                 {/* TODO: header nav buttons */}
                 {session ? <h3>[Additional Nav Buttons]</h3> : null}
@@ -35,12 +48,22 @@ const Home = () => {
             {session ? (
                 <>
                     {/* Background colour */}
-                    <div
-                        className={twMerge(
-                            `absolute top-[104px] h-[300px] w-full bg-gradient-to-b from-${headerColour}`,
-                            !gradient && 'bg-none'
-                        )}
-                    ></div>
+                    {gradient ? (
+                        <div
+                            className={twMerge(
+                                'absolute top-0 h-[400px] w-full',
+                                !gradient && 'bg-none'
+                            )}
+                            style={{
+                                backgroundImage: `
+                                    linear-gradient(to bottom,
+                                    rgb(${colour}),
+                                    transparent)
+                                `,
+                            }}
+                        ></div>
+                    ) : null}
+
                     {/* Content */}
                     <section className="absolute top-[104px] w-full p-4">
                         <p className="sticky text-3xl font-semibold text-white">
