@@ -34,20 +34,19 @@ app.use(bodyParser.json())
 app.use(cookieParser())
 
 app.get('/', (req, res) => {
-	res.send('Test route')
-})
-app.get('/session', (req, res) => {
 	const session_cookie = req.cookies[session_cookie_name]
+	const session = sessions[session_cookie]
 
-	if (session_cookie && sessions[session_cookie]) {
-		console.log('Cookie and session found!', session_cookie)
-		res.status(200).send({ session: true })
-	} else if (session_cookie && !sessions[session_cookie]) {
+	if (session_cookie && session) {
+		console.log('Valid session.')
+		res.status(200).json(session.user)
+	} else if (session_cookie && !session) {
 		console.log('Cookie found but no matching session.')
-		res.status(200).send({ session: true })
+		res.clearCookie(session_cookie_name)
+		res.status(401).send('Unauthorised.')
 	} else {
 		console.log('No active session.')
-		res.status(200).send({ session: false })
+		res.status(401).send('Unauthorised.')
 	}
 })
 
@@ -63,9 +62,10 @@ app.post('/authorise', (req, res) => {
 		return res.status(400).end('No authorisation code provided')
 	}
 
-	spotifyAPI
-		.authorizationCodeGrant(authCode)
-		.then((data) => {
+	const getTokens = async (authCode) => {
+		try {
+			const data = await spotifyAPI.authorizationCodeGrant(authCode)
+
 			const access_token = data.body['access_token']
 			const refresh_token = data.body['refresh_token']
 			const expires_in = data.body['expires_in']
@@ -74,57 +74,76 @@ app.post('/authorise', (req, res) => {
 			spotifyAPI.setAccessToken(access_token)
 			spotifyAPI.setRefreshToken(refresh_token)
 
-			const session_id = uuid()
-			sessions[session_id] = {
+			return {
 				access_token: access_token,
 				refresh_token: refresh_token,
 				expires_in: expires_in,
 			}
-
-			// Server response
-			res.cookie(session_cookie_name, session_id, {
-				secure: true,
-				httpOnly: true,
-				sameSite: 'strict',
-			})
-			res.status(data.statusCode).end(
-				'Spotify API token request successful and session cookie recieved.'
-			)
-
-			// DEBUG
-			console.log(`Sucessfully retreived access token. Expires in ${expires_in} s.`)
-			console.log(`Access token: ${access_token.substring(0, 20)}...`)
-			console.log(`Refresh token: ${refresh_token.substring(0, 20)}...`)
-		})
-		.catch((error) => {
+		} catch (error) {
 			console.error(
-				'Error getting Tokens:\n',
+				'\nError getting Tokens:\n\n',
 				'Status code:',
 				error.statusCode + '\n',
 				'Response:',
 				error.body
 			)
 
-			// Server response
 			res.status(error.statusCode).end(error.body.error_description)
-		})
+		}
+	}
+
+	const getUser = async () => {
+		try {
+			const data = await spotifyAPI.getMe()
+			return data.body
+		} catch (error) {
+			console.log(error.body)
+			res.status(error.body.error.status).end(error.body.error.message)
+		}
+	}
+
+	const initSession = async (authCode) => {
+		const tokens = await getTokens(authCode)
+		const user = await getUser()
+
+		if (tokens && user) {
+			const session_id = uuid()
+
+			sessions[session_id] = {
+				creation: new Date().toUTCString(),
+				access_token: tokens.access_token,
+				refresh_token: tokens.refresh_token,
+				expires_in: tokens.expires_in,
+				user: JSON.stringify(user),
+			}
+
+			res.cookie(session_cookie_name, session_id, {
+				secure: true,
+				httpOnly: true,
+				sameSite: 'strict',
+			})
+
+			res.status(200).end('Spotify API token request successful and new session issued.')
+		} else {
+			res.status(500).end('Something went wrong.')
+		}
+	}
+
+	initSession(authCode)
 })
 
 app.get('/logout', (req, res) => {
 	const session_cookie = req.cookies[session_cookie_name]
 
 	if (sessions[session_cookie]) {
-		console.log('Log out requested, deleting session...')
+		console.log('Log out requested, ending session.')
 		delete sessions[session_cookie]
-		console.log('Session deleted')
 
-		// server response
 		res.clearCookie(session_cookie_name)
 		res.status(200).end('Successfully logged out.')
 	} else {
 		console.log('No active session found')
 
-		// server response
 		res.status(400).end('No active session found.')
 	}
 })
