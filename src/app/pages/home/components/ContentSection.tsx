@@ -1,4 +1,6 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
+
 import ContentCard from './ContentCard'
 
 interface ContentSectionProps {
@@ -7,20 +9,20 @@ interface ContentSectionProps {
 }
 
 const ContentSection: React.FC<ContentSectionProps> = ({ title }) => {
-    // TODO: href link
+    // TODO: href links
 
     return (
         <section className="flex flex-col">
             <div className="mt-6 flex items-center justify-between pb-1">
                 <p className="text-2xl font-bold">
-                    <a href={''}>{title}</a>
+                    <Link to={''}>{title}</Link>
                 </p>
-                <a
+                <Link
+                    to={''}
                     className="text-sm font-bold text-neutral-400"
-                    href={''}
                 >
                     Show all
-                </a>
+                </Link>
             </div>
             <div
                 className="
