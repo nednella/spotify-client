@@ -29,6 +29,7 @@ const Account = () => {
                         </Container>
                         <a
                             href="https://spotify.com/account"
+                            rel="noreferrer"
                             className="
                             flex
                             h-32
