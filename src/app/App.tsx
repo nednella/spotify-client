@@ -1,4 +1,6 @@
-import { Route, Routes } from 'react-router-dom'
+import { Route, Routes, Navigate } from 'react-router-dom'
+
+import { useAuth } from '../hooks/useAuth'
 
 import Sidebar from '../components/sidebar/Sidebar'
 import Content from '../components/Content'
@@ -12,7 +14,8 @@ import Callback from './pages/Callback'
 import NotFound from './pages/NotFound'
 
 const App = () => {
-    // TODO: protect routes
+    const { user } = useAuth()
+
     const routes = [
         {
             label: 'Home',
@@ -27,17 +30,17 @@ const App = () => {
         {
             label: 'Account',
             path: '/account',
-            element: <Account />,
+            element: user ? <Account /> : <Navigate to={'/'} />,
         },
         {
             label: 'Download',
             path: '/download',
-            element: <Download />,
+            element: user ? <Download /> : <Navigate to={'/'} />,
         },
         {
             label: 'Playlist',
             path: '/playlist',
-            element: <Playlist />,
+            element: user ? <Playlist /> : <Navigate to={'/'} />,
         },
         {
             label: 'Callback',
