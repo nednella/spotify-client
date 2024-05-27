@@ -8,7 +8,7 @@ import getSession from '../api/auth/Session'
 import Authorise from '../api/auth/Authorise'
 import _Logout from '../api/auth/Logout'
 
-import AppSkeleton from '../app/AppSkeleton'
+import AppSkeleton from '../components/AppSkeleton'
 
 type AuthContextType = {
     user: User | null
@@ -44,13 +44,12 @@ export const AuthContextProvider = ({ ...props }) => {
         setUser(null)
     }
 
-    if (isLoading) {
+    if (isLoading)
         return (
             <>
                 <AppSkeleton />
             </>
         )
-    }
 
     return (
         <AuthContext.Provider
