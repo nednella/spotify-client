@@ -1,12 +1,12 @@
 import axios from 'axios'
 
-export default async function checkSession() {
+export default async function getSession() {
     return await axios
-        .get('http://localhost:5000/session', { withCredentials: true })
+        .get('http://localhost:5000/', { withCredentials: true })
         .then((response) => {
-            return response.data.session
+            return response.data
         })
         .catch(() => {
-            return false // if server error, return session = false
+            return null // if server error, return null
         })
 }
