@@ -1,47 +1,42 @@
 import React from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { twMerge } from 'tailwind-merge'
+
 import { RxCaretLeft, RxCaretRight } from 'react-icons/rx'
 import { HiHome, HiSearch } from 'react-icons/hi'
-import { FaUserAlt } from 'react-icons/fa'
 import { FiDownload } from 'react-icons/fi'
 
 import Login from '../api/auth/Login'
-import Logout from '../api/auth/Logout'
-import { useSession } from '../hooks/useSession'
+import { useAuth } from '../hooks/useAuth'
+
+import AccountPopup from './modals/AccountPopup'
+import useAccountPopup from '../hooks/useAccountPopup'
 
 import Button from './Button'
-import toast from 'react-hot-toast'
 
 interface HeaderProps {
     children?: React.ReactNode
     className?: string
+    style?: React.CSSProperties
 }
 
-const Header: React.FC<HeaderProps> = ({ children, className }) => {
+const Header: React.FC<HeaderProps> = ({ children, className, style }) => {
+    const { user } = useAuth()
     const navigate = useNavigate()
     const location = useLocation()
-    const { session, setSession } = useSession()
+    const accountPopup = useAccountPopup()
 
-    // TODO: add solid background colour to header block when page scrolls?
-
-    const handleLogout = () => {
-        Logout()
-            .then(() => {
-                navigate('/')
-                setSession(false) // prevents requiring a page reload
-            })
-            .catch((error) => {
-                toast.error(error.message)
-                return navigate('/')
-            })
-    }
+    // TODO: const { user } = useUser()
+    // then: img.src = images[0].url
 
     return (
-        <div className={twMerge('sticky top-0 h-fit p-4', className)}>
+        <div
+            className={twMerge('sticky top-0 h-fit p-4', className)}
+            style={style}
+        >
             <header
                 className={twMerge(
-                    'flex h-[32px] w-full items-center justify-between',
+                    'flex h-[32px] w-full select-none items-center justify-between',
                     children && 'mb-4'
                 )}
             >
@@ -78,8 +73,8 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
                     </Button>
                 </div>
                 {/* {Account Buttons} */}
-                <div className="flex h-full items-center gap-x-4">
-                    {session ? (
+                <div className="flex h-full items-center gap-x-2">
+                    {user ? (
                         <>
                             <Button
                                 onClick={() => navigate('/download')}
@@ -89,18 +84,16 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
                                 <p>Install App</p>
                             </Button>
                             <Button
-                                onClick={handleLogout}
-                                className="h-full bg-white px-4 py-0"
+                                onClick={accountPopup.onOpen}
+                                className="relative border-none bg-black p-1"
                             >
-                                <p>Logout</p>
+                                <img
+                                    className="size-6 rounded-full object-cover"
+                                    src="https://i.scdn.co/image/ab67757000003b8212715638a3ced31e0f7fcd62"
+                                    alt=""
+                                />
                             </Button>
-
-                            <Button
-                                onClick={() => navigate('/account')}
-                                className="border-none p-3"
-                            >
-                                <FaUserAlt size={14} />
-                            </Button>
+                            <AccountPopup />
                         </>
                     ) : (
                         <>
@@ -114,7 +107,7 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
 
                             <Button
                                 onClick={Login}
-                                className=" border-none px-6 py-2"
+                                className="ml-2 border-none px-6 py-2"
                             >
                                 Log In
                             </Button>

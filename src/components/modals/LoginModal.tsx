@@ -1,9 +1,9 @@
-import useLoginModal from '../hooks/useLoginModal'
+import useLoginModal from '../../hooks/useLoginModal'
 
-import Login from '../api/auth/Login'
+import Login from '../../api/auth/Login'
 
 import Modal from './Modal'
-import Button from './Button'
+import Button from '../Button'
 
 const LoginModal = () => {
     const { isOpen, onClose, img } = useLoginModal()

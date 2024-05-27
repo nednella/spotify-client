@@ -1,23 +1,12 @@
 import { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
 
-import Authorise from '../../api/auth/Authorise'
-import { useSession } from '../../hooks/useSession'
+import { useAuth } from '../../hooks/useAuth'
 
 const Callback = () => {
-    const navigate = useNavigate()
-    const { setSession } = useSession()
+    const { Login } = useAuth()
 
     useEffect(() => {
-        Authorise()
-            .then(() => {
-                window.history.pushState({}, '', '/') // clear nav history after successful login
-                navigate('/')
-                setSession(true) // prevents requiring a page reload
-            })
-            .catch(() => {
-                return navigate('/')
-            })
+        Login()
     })
 
     return <></>

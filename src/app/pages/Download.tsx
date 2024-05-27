@@ -4,7 +4,7 @@ import Header from '../../components/Header'
 const Download = () => {
     return (
         <>
-            <Header className="bg-none" />
+            <Header />
             <div
                 className="
                 flex

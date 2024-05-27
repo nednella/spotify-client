@@ -25,6 +25,14 @@ export default {
             gradientColorStopPositions: {
                 33: '33%',
                 66: '66%',
+                '100px': '100px',
+                '200px': '200px',
+                '300px': '300px',
+                '400px': '400px',
+                '500px': '500px',
+                '25vh': '50vh',
+                '50vh': '50vh',
+                '75vh': '50vh',
             },
             animation: {
                 'login-modal': 'pop-up 0.3s, fade-in 0.8s',
@@ -38,6 +46,9 @@ export default {
                     from: { opacity: 0 },
                     to: { opacity: 1 },
                 },
+            },
+            gridTemplateColumns: {
+                'playlist-table': '16px minmax(120px, 4fr) minmax(120px, 2fr) minmax(120px, 1fr)',
             },
         },
     },
