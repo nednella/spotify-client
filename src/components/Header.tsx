@@ -26,9 +26,6 @@ const Header: React.FC<HeaderProps> = ({ children, className, style }) => {
     const location = useLocation()
     const accountPopup = useAccountPopup()
 
-    // TODO: const { user } = useUser()
-    // then: img.src = images[0].url
-
     return (
         <div
             className={twMerge('sticky top-0 h-fit p-4', className)}
@@ -89,7 +86,7 @@ const Header: React.FC<HeaderProps> = ({ children, className, style }) => {
                             >
                                 <img
                                     className="size-6 rounded-full object-cover"
-                                    src="https://i.scdn.co/image/ab67757000003b8212715638a3ced31e0f7fcd62"
+                                    src={user?.images[0].url || 'src/assets/images/liked.png'}
                                     alt=""
                                 />
                             </Button>
