@@ -7,7 +7,7 @@ import LibraryItemLoading from './LibraryItemLoading'
 import LibraryEmpty from './LibraryEmpty'
 
 const Library = () => {
-    const user = useAuth()
+    const { user } = useAuth()
     const loginModal = useLoginModal()
 
     const createPlaylist = () => {

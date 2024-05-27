@@ -11,7 +11,7 @@ interface RecentCardProps {
 }
 
 const RecentCard: React.FC<RecentCardProps> = ({ image, title, href }) => {
-    const user = useAuth()
+    const { user } = useAuth()
     const loginModal = useLoginModal()
 
     const onClick = () => {
