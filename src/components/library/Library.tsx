@@ -1,4 +1,4 @@
-import { useSession } from '../../hooks/useSession'
+import { useAuth } from '../../hooks/useAuth'
 import useLoginModal from '../../hooks/useLoginModal'
 
 import LibraryHeader from './LibraryHeader'
@@ -7,11 +7,11 @@ import LibraryItemLoading from './LibraryItemLoading'
 import LibraryEmpty from './LibraryEmpty'
 
 const Library = () => {
-    const { session } = useSession()
+    const user = useAuth()
     const loginModal = useLoginModal()
 
     const createPlaylist = () => {
-        if (!session) {
+        if (!user) {
             return loginModal.onOpen()
         }
 
@@ -20,7 +20,7 @@ const Library = () => {
     }
 
     const searchPodcasts = () => {
-        if (!session) {
+        if (!user) {
             return loginModal.onOpen()
         }
 

@@ -1,8 +1,8 @@
 import React from 'react'
 import { RiPlayLargeFill } from 'react-icons/ri'
 
+import { useAuth } from '../../../../hooks/useAuth'
 import useLoginModal from '../../../../hooks/useLoginModal'
-import { useSession } from '../../../../hooks/useSession'
 
 interface RecentCardProps {
     image: string
@@ -11,11 +11,11 @@ interface RecentCardProps {
 }
 
 const RecentCard: React.FC<RecentCardProps> = ({ image, title, href }) => {
-    const { session } = useSession()
+    const user = useAuth()
     const loginModal = useLoginModal()
 
     const onClick = () => {
-        if (!session) {
+        if (!user) {
             loginModal.setImg(image)
             loginModal.onOpen()
         }

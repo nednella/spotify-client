@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 
-import { useSession } from '../../../hooks/useSession'
+import { useAuth } from '../../../hooks/useAuth'
 
 import Header from '../../../components/Header'
 import RecentCard from './components/RecentCard'
@@ -10,7 +10,7 @@ import ContentSection from './components/ContentSection'
 import ContentSectionLoading from './components/ContentSectionLoading'
 
 const Home = () => {
-    const { session } = useSession()
+    const user = useAuth()
     const [colour, setColour] = useState('23, 23, 23') // accepts r/g/b format
     const [gradient, setGradient] = useState(true)
     const [headerOpacity, setHeaderOpacity] = useState('0') // accepts values ranging from 0 to 1
@@ -21,7 +21,7 @@ const Home = () => {
     const scroll = false
 
     useEffect(() => {
-        if (session) {
+        if (user) {
             setColour('150, 23, 23')
 
             if (scroll) {
@@ -29,23 +29,23 @@ const Home = () => {
                 setGradient(false)
             }
         }
-    }, [session, scroll])
+    }, [user, scroll])
 
     return (
         <>
             {/* Page header */}
             <Header
-                className={twMerge('z-10', !session && `bg-transparent`)}
+                className={twMerge('z-10', !user && `bg-transparent`)}
                 style={{
                     backgroundColor: `rgba(${colour}, ${headerOpacity})`,
                     transition: 'background-color 1000ms ease-out',
                 }}
             >
                 {/* TODO: header nav buttons */}
-                {session ? <h3>[Additional Nav Buttons]</h3> : null}
+                {user ? <h3>[Additional Nav Buttons]</h3> : null}
             </Header>
             {/* Page content */}
-            {session ? (
+            {user ? (
                 <>
                     {/* Background colour */}
                     {gradient ? (
