@@ -1,17 +1,14 @@
 import toast from 'react-hot-toast'
-
-import useAccountPopup from '../../hooks/useAccountPopup'
+import { useNavigate } from 'react-router-dom'
 
 import Logout from '../../api/auth/Logout'
 
 import Popup from './Popup'
-import { useSession } from '../../hooks/useSession'
-import { useNavigate } from 'react-router-dom'
+import useAccountPopup from '../../hooks/useAccountPopup'
 
 const AccountPopup = () => {
     const { isOpen, onClose } = useAccountPopup()
     const navigate = useNavigate()
-    const { setSession } = useSession()
 
     const handleAccount = () => {
         navigate('/account')
@@ -21,8 +18,8 @@ const AccountPopup = () => {
     const handleLogout = () => {
         Logout()
             .then(() => {
+                window.location.reload()
                 navigate('/')
-                setSession(false) // prevents requiring a page reload
             })
             .catch((error) => {
                 toast.error(error.message)

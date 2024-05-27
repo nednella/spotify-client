@@ -7,7 +7,7 @@ import { HiHome, HiSearch } from 'react-icons/hi'
 import { FiDownload } from 'react-icons/fi'
 
 import Login from '../api/auth/Login'
-import { useSession } from '../hooks/useSession'
+import { useAuth } from '../hooks/useAuth'
 
 import AccountPopup from './modals/AccountPopup'
 import useAccountPopup from '../hooks/useAccountPopup'
@@ -21,9 +21,9 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ children, className, style }) => {
+    const user = useAuth()
     const navigate = useNavigate()
     const location = useLocation()
-    const { session } = useSession()
     const accountPopup = useAccountPopup()
 
     // TODO: const { user } = useUser()
@@ -74,7 +74,7 @@ const Header: React.FC<HeaderProps> = ({ children, className, style }) => {
                 </div>
                 {/* {Account Buttons} */}
                 <div className="flex h-full items-center gap-x-2">
-                    {session ? (
+                    {user ? (
                         <>
                             <Button
                                 onClick={() => navigate('/download')}
