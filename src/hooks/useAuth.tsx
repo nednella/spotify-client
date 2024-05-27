@@ -2,6 +2,8 @@ import { createContext, useContext, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
 
+import { User } from '../types/User'
+
 import getSession from '../api/auth/Session'
 import Authorise from '../api/auth/Authorise'
 import _Logout from '../api/auth/Logout'
@@ -9,7 +11,7 @@ import _Logout from '../api/auth/Logout'
 import AppSkeleton from '../app/AppSkeleton'
 
 type AuthContextType = {
-    user: object | null
+    user: User | null
     Login: () => void
     Logout: () => void
 }
