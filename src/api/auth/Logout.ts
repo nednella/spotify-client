@@ -1,7 +1,7 @@
 import axios from 'axios'
 import toast from 'react-hot-toast'
 
-export default async function () {
+export default async function Logout() {
     return await axios
         .get('http://localhost:5000/logout', { withCredentials: true })
         .then((response) => {

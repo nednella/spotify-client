@@ -21,7 +21,7 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ children, className, style }) => {
-    const user = useAuth()
+    const { user } = useAuth()
     const navigate = useNavigate()
     const location = useLocation()
     const accountPopup = useAccountPopup()

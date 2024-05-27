@@ -10,7 +10,7 @@ import ContentSection from './components/ContentSection'
 import ContentSectionLoading from './components/ContentSectionLoading'
 
 const Home = () => {
-    const user = useAuth()
+    const { user } = useAuth()
     const [colour, setColour] = useState('23, 23, 23') // accepts r/g/b format
     const [gradient, setGradient] = useState(true)
     const [headerOpacity, setHeaderOpacity] = useState('0') // accepts values ranging from 0 to 1
