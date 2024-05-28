@@ -42,26 +42,12 @@ app.use(session(sessionConfig))
 app.use(bodyParser.json())
 app.use(cookieParser())
 
-app.get('/', (req, res) => {
-	if (!req.session.user) {
-		console.log('No active session.')
-		return res.status(401).send('Unauthorised.')
-	}
-
-	console.log('Valid session.')
-
-	// DEBUG
-	// console.log(req.session)
-
-	res.status(200).send(req.session.user)
-})
-
-app.get('/login', (req, res) => {
+app.get('/auth/login', (req, res) => {
 	let authURL = spotifyAPI.createAuthorizeURL(scope)
 	res.send(authURL)
 })
 
-app.post('/authorise', (req, res) => {
+app.post('/auth/authorise', (req, res) => {
 	const authCode = req.body.code || null
 
 	if (!authCode) {
@@ -98,49 +84,63 @@ app.post('/authorise', (req, res) => {
 		}
 	}
 
-	const getUser = async () => {
-		try {
-			const data = await spotifyAPI.getMe()
-			return data.body
-		} catch (error) {
-			console.log(error.body)
-			res.status(error.body.error.status).end(error.body.error.message)
-		}
-	}
-
 	const initSession = async (authCode) => {
 		const tokens = await getTokens(authCode)
-		const user = await getUser()
+		if (!tokens) return
 
-		if (!tokens) {
-			return res.status(500).end('Something went wrong.')
-		}
-
-		req.session.creation = new Date().toUTCString()
-		req.session.tokens = {
+		const user = {
+			creation: new Date().toUTCString(),
 			access_token: tokens.access_token,
 			refresh_token: tokens.refresh_token,
 			expires_in: tokens.expires_in,
 		}
-		req.session.user = JSON.stringify(user)
 
-		// DEBUG
-		// console.log(req.session)
-
+		req.session.user = user
 		res.status(200).end('Spotify API token request successful and new session issued.')
 	}
 
 	initSession(authCode)
 })
 
-app.get('/logout', (req, res) => {
-	if (!req.session) {
+app.get('/auth/logout', (req, res) => {
+	if (!req.session.user) {
+		// DEBUG
 		console.log('No active session found')
-		res.status(400).end('No active session found.')
+
+		res.status(401).end('No active session found')
 	}
+	// DEBUG
 	console.log('Log out requested, ending session.')
+
 	req.session.destroy()
 	res.status(200).end('Successfully logged out.')
+})
+
+app.get('/auth/session', (req, res) => {
+	if (!req.session.user) {
+		// DEBUG
+		console.log('No active session found')
+
+		return res.status(401).end('Unauthorised')
+	}
+
+	const getUser = async () => {
+		try {
+			const data = await spotifyAPI.getMe()
+
+			// DEBUG
+			console.log('Active session found')
+
+			res.status(200).json(data.body)
+		} catch (error) {
+			// DEBUG
+			console.log(error.body)
+
+			res.status(error.body.error.status).end(error.body.error.message)
+		}
+	}
+
+	getUser()
 })
 
 export default app
