@@ -2,6 +2,7 @@ import 'dotenv/config'
 import express from 'express'
 import cors from 'cors'
 import { v4 as uuid } from 'uuid'
+import session from 'express-session'
 import bodyParser from 'body-parser'
 import cookieParser from 'cookie-parser'
 import SpotifyWebApi from 'spotify-web-api-node'
@@ -18,35 +19,41 @@ const scope = ['user-read-private', 'user-read-email']
 
 const spotifyAPI = new SpotifyWebApi(credentials)
 
-const sessions = {}
-const session_cookie_name = 'connect.sid'
-
 const corsConfig = {
 	origin: `http://localhost:${CLIENT_PORT}`,
 	methods: ['POST', 'GET'],
 	credentials: true,
 }
 
+const sessionConfig = {
+	secret: 'appSecret',
+	resave: false,
+	saveUninitialized: true,
+	cookie: {
+		secure: false, // Must be TRUE for production envrionments (where https is used)
+		httpOnly: true,
+		sameSite: 'strict',
+	},
+}
+
 const app = express()
 app.use(cors(corsConfig))
+app.use(session(sessionConfig))
 app.use(bodyParser.json())
 app.use(cookieParser())
 
 app.get('/', (req, res) => {
-	const session_cookie = req.cookies[session_cookie_name]
-	const session = sessions[session_cookie]
-
-	if (session_cookie && session) {
-		console.log('Valid session.')
-		res.status(200).json(session.user)
-	} else if (session_cookie && !session) {
-		console.log('Cookie found but no matching session.')
-		res.clearCookie(session_cookie_name)
-		res.status(401).send('Unauthorised.')
-	} else {
+	if (!req.session.user) {
 		console.log('No active session.')
-		res.status(401).send('Unauthorised.')
+		return res.status(401).send('Unauthorised.')
 	}
+
+	console.log('Valid session.')
+
+	// DEBUG
+	// console.log(req.session)
+
+	res.status(200).send(req.session.user)
 })
 
 app.get('/login', (req, res) => {
@@ -105,46 +112,35 @@ app.post('/authorise', (req, res) => {
 		const tokens = await getTokens(authCode)
 		const user = await getUser()
 
-		if (tokens && user) {
-			const session_id = uuid()
-
-			sessions[session_id] = {
-				creation: new Date().toUTCString(),
-				access_token: tokens.access_token,
-				refresh_token: tokens.refresh_token,
-				expires_in: tokens.expires_in,
-				user: JSON.stringify(user),
-			}
-
-			res.cookie(session_cookie_name, session_id, {
-				secure: true,
-				httpOnly: true,
-				sameSite: 'strict',
-			})
-
-			res.status(200).end('Spotify API token request successful and new session issued.')
-		} else {
-			res.status(500).end('Something went wrong.')
+		if (!tokens) {
+			return res.status(500).end('Something went wrong.')
 		}
+
+		req.session.creation = new Date().toUTCString()
+		req.session.tokens = {
+			access_token: tokens.access_token,
+			refresh_token: tokens.refresh_token,
+			expires_in: tokens.expires_in,
+		}
+		req.session.user = JSON.stringify(user)
+
+		// DEBUG
+		// console.log(req.session)
+
+		res.status(200).end('Spotify API token request successful and new session issued.')
 	}
 
 	initSession(authCode)
 })
 
 app.get('/logout', (req, res) => {
-	const session_cookie = req.cookies[session_cookie_name]
-
-	if (sessions[session_cookie]) {
-		console.log('Log out requested, ending session.')
-		delete sessions[session_cookie]
-
-		res.clearCookie(session_cookie_name)
-		res.status(200).end('Successfully logged out.')
-	} else {
+	if (!req.session) {
 		console.log('No active session found')
-
 		res.status(400).end('No active session found.')
 	}
+	console.log('Log out requested, ending session.')
+	req.session.destroy()
+	res.status(200).end('Successfully logged out.')
 })
 
 export default app
