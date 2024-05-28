@@ -23,33 +23,28 @@ export const AuthContextProvider = ({ ...props }) => {
     const navigate = useNavigate()
 
     // Grab session on page load
+    // TODO: useQuery is not returning a data property for use, causing an error
     const { isLoading } = useQuery({
         queryKey: ['auth'],
         queryFn: async () => {
-            const data = await getSession()
-            setUser(JSON.parse(data))
+            setUser(await getSession())
         },
     })
 
     const Login = async () => {
         await Authorise()
+        setUser(await getSession()) // grab user without having to reload page
         window.history.pushState({}, '', '/') // clear nav history after successful login to prevent /authorise API re-fire
         navigate('/')
-        setUser(JSON.parse(await getSession())) // grab new session without having to reload page
     }
 
     const Logout = async () => {
         await _Logout()
-        navigate('/')
         setUser(null)
+        navigate('/')
     }
 
-    if (isLoading)
-        return (
-            <>
-                <AppSkeleton />
-            </>
-        )
+    if (isLoading) return <AppSkeleton />
 
     return (
         <AuthContext.Provider
