@@ -7,7 +7,6 @@ import cookieParser from 'cookie-parser'
 import SpotifyWebApi from 'spotify-web-api-node'
 
 const CLIENT_PORT = process.env.CLIENT_PORT
-const SERVER_PORT = process.env.SERVER_PORT
 
 const credentials = {
 	clientId: process.env.CLIENT_ID,
@@ -148,6 +147,4 @@ app.get('/logout', (req, res) => {
 	}
 })
 
-app.listen(SERVER_PORT, () => {
-	console.log(`HTTP Server now available at http://localhost:${SERVER_PORT}`)
-})
+export default app
