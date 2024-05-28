@@ -4,7 +4,7 @@ import toast from 'react-hot-toast'
 async function RetrieveTokens(authCode: string) {
     // Get spotify auth tokens
     return await axios
-        .post('http://localhost:5000/authorise', { code: authCode }, { withCredentials: true })
+        .post('http://localhost:5000/auth/authorise', { code: authCode }, { withCredentials: true })
         .catch((error) => {
             throw error
         })

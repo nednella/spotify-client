@@ -4,7 +4,7 @@ import toast from 'react-hot-toast'
 export default async function Login() {
     // Redirect to spotify auth URL
     return axios
-        .get('http://localhost:5000/login')
+        .get('http://localhost:5000/auth/login')
         .then((response) => window.location.replace(response.data))
         .catch((error) => toast.error(error.message))
 }
