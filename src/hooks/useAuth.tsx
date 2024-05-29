@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { User } from '../types/User'
 
 import getSession from '../api/auth/Session'
-import Authorise from '../api/auth/Authorise'
+import Callback from '../api/auth/Callback'
 import _Logout from '../api/auth/Logout'
 
 import AppSkeleton from '../components/AppSkeleton'
@@ -32,10 +32,14 @@ export const AuthContextProvider = ({ ...props }) => {
     })
 
     const Login = async () => {
-        await Authorise()
-        setUser(await getSession()) // grab user without having to reload page
-        window.history.pushState({}, '', '/') // clear nav history after successful login to prevent /authorise API re-fire
-        navigate('/')
+        try {
+            await Callback()
+            setUser(await getSession()) // grab user without having to reload page
+            window.history.pushState({}, '', '/') // clear nav history after successful login to prevent /callback API re-fire
+            navigate('/')
+        } catch {
+            navigate('/')
+        }
     }
 
     const Logout = async () => {
