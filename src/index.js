@@ -12,9 +12,9 @@ import api from './routes/api.js'
 const CLIENT_PORT = process.env.CLIENT_PORT
 
 const credentials = {
-	clientId: process.env.CLIENT_ID,
-	clientSecret: process.env.CLIENT_SECRET,
-	redirectUri: process.env.REDIRECT_URI,
+    clientId: process.env.CLIENT_ID,
+    clientSecret: process.env.CLIENT_SECRET,
+    redirectUri: process.env.REDIRECT_URI,
 }
 
 const scope = ['user-read-private', 'user-read-email']
@@ -22,20 +22,20 @@ const scope = ['user-read-private', 'user-read-email']
 export const spotifyAPI = new SpotifyWebApi(credentials)
 
 const corsConfig = {
-	origin: `http://localhost:${CLIENT_PORT}`,
-	methods: ['POST', 'GET'],
-	credentials: true,
+    origin: `http://localhost:${CLIENT_PORT}`,
+    methods: ['POST', 'GET'],
+    credentials: true,
 }
 
 const sessionConfig = {
-	secret: 'appSecret',
-	resave: false,
-	saveUninitialized: true,
-	cookie: {
-		secure: false, // Must be TRUE for production envrionments (where https is used)
-		httpOnly: true,
-		sameSite: 'strict',
-	},
+    secret: 'appSecret',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        secure: false, // Must be TRUE for production envrionments (where https is used)
+        httpOnly: true,
+        sameSite: 'strict',
+    },
 }
 
 const app = express()
