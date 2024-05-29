@@ -1,4 +1,4 @@
-import app from './index.js'
+import app from './src/index.js'
 
 const port = process.env.SERVER_PORT
 

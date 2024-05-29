@@ -1,57 +1,20 @@
-import 'dotenv/config'
 import express from 'express'
-import cors from 'cors'
-import { v4 as uuid } from 'uuid'
-import session from 'express-session'
-import bodyParser from 'body-parser'
-import cookieParser from 'cookie-parser'
-import SpotifyWebApi from 'spotify-web-api-node'
+import { spotifyAPI } from '../index.js'
 
-const CLIENT_PORT = process.env.CLIENT_PORT
-
-const credentials = {
-	clientId: process.env.CLIENT_ID,
-	clientSecret: process.env.CLIENT_SECRET,
-	redirectUri: process.env.REDIRECT_URI,
-}
+const router = express.Router()
 
 const scope = ['user-read-private', 'user-read-email']
 
-const spotifyAPI = new SpotifyWebApi(credentials)
-
-const corsConfig = {
-	origin: `http://localhost:${CLIENT_PORT}`,
-	methods: ['POST', 'GET'],
-	credentials: true,
-}
-
-const sessionConfig = {
-	secret: 'appSecret',
-	resave: false,
-	saveUninitialized: true,
-	cookie: {
-		secure: false, // Must be TRUE for production envrionments (where https is used)
-		httpOnly: true,
-		sameSite: 'strict',
-	},
-}
-
-const app = express()
-app.use(cors(corsConfig))
-app.use(session(sessionConfig))
-app.use(bodyParser.json())
-app.use(cookieParser())
-
-app.get('/auth/login', (req, res) => {
+router.get('/login', (req, res) => {
 	let authURL = spotifyAPI.createAuthorizeURL(scope)
 	res.send(authURL)
 })
 
-app.post('/auth/authorise', (req, res) => {
+router.post('/callback', (req, res) => {
 	const authCode = req.body.code || null
 
 	if (!authCode) {
-		return res.status(400).end('No authorisation code provided')
+		return res.status(401).end('No authorisation code provided')
 	}
 
 	const getTokens = async (authCode) => {
@@ -102,12 +65,12 @@ app.post('/auth/authorise', (req, res) => {
 	initSession(authCode)
 })
 
-app.get('/auth/logout', (req, res) => {
+router.get('/logout', (req, res) => {
 	if (!req.session.user) {
 		// DEBUG
 		console.log('No active session found')
 
-		res.status(401).end('No active session found')
+		return res.status(400).end('No active session found')
 	}
 	// DEBUG
 	console.log('Log out requested, ending session.')
@@ -116,7 +79,7 @@ app.get('/auth/logout', (req, res) => {
 	res.status(200).end('Successfully logged out.')
 })
 
-app.get('/auth/session', (req, res) => {
+router.get('/session', (req, res) => {
 	if (!req.session.user) {
 		// DEBUG
 		console.log('No active session found')
@@ -143,4 +106,4 @@ app.get('/auth/session', (req, res) => {
 	getUser()
 })
 
-export default app
+export default router
