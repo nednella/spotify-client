@@ -3,10 +3,8 @@ import { spotifyAPI } from '../index.js'
 
 const router = express.Router()
 
-const scope = ['user-read-private', 'user-read-email']
-
 router.get('/login', (req, res) => {
-    let authURL = spotifyAPI.createAuthorizeURL(scope)
+    let authURL = spotifyAPI.createAuthoriseURL()
     res.send(authURL)
 })
 
@@ -19,31 +17,25 @@ router.post('/callback', (req, res) => {
 
     const getTokens = async (authCode) => {
         try {
-            const data = await spotifyAPI.authorizationCodeGrant(authCode)
-
-            const access_token = data.body['access_token']
-            const refresh_token = data.body['refresh_token']
-            const expires_in = data.body['expires_in']
-
-            // Store tokens in package
-            spotifyAPI.setAccessToken(access_token)
-            spotifyAPI.setRefreshToken(refresh_token)
+            const response = await spotifyAPI.authorisationCodeGrant(authCode)
 
             return {
-                access_token: access_token,
-                refresh_token: refresh_token,
-                expires_in: expires_in,
+                access_token: response.data['access_token'],
+                refresh_token: response.data['refresh_token'],
+                expires_in: response.data['expires_in'],
             }
         } catch (error) {
-            console.error(
-                '\nError getting Tokens:\n\n',
-                'Status code:',
-                error.statusCode + '\n',
-                'Response:',
-                error.body
-            )
+            if (error.response) {
+                console.error(
+                    '\nError getting Tokens:\n\n',
+                    'Status code:',
+                    error.response.status + '\n',
+                    'Response:',
+                    error.response.data
+                )
 
-            res.status(error.statusCode).end(error.body.error_description)
+                res.status(error.response.status).end(error.response.data.error_description)
+            }
         }
     }
 
@@ -70,7 +62,7 @@ router.get('/logout', (req, res) => {
         // DEBUG
         console.log('No active session found')
 
-        return res.status(400).end('No active session found')
+        return res.status(401).end('Unauthorised')
     }
     // DEBUG
     console.log('Log out requested, ending session.')
@@ -87,18 +79,23 @@ router.get('/session', async (req, res) => {
         return res.status(401).end('Unauthorised')
     }
 
+    // Get current session
+    const token = req.session.user.access_token
+
     try {
-        const data = await spotifyAPI.getMe()
+        const response = await spotifyAPI.getMe(token)
 
         // DEBUG
         console.log('Active session found')
 
-        res.status(200).json(data.body)
+        res.status(200).json(response.data)
     } catch (error) {
-        // DEBUG
-        console.log(error.body)
+        if (error.response) {
+            // DEBUG
+            console.error(error.response)
 
-        res.status(error.body.error.status).end(error.body.error.message)
+            res.status(error.response.status).end(error.response.data.error_description)
+        }
     }
 })
 
