@@ -54,6 +54,7 @@ export default class spotifyAPI {
      */
     authorisationCodeGrant = (authCode) => {
         return new AuthRequest()
+            .setMethod('POST')
             .setPath('/api/token')
             .setHeaders({
                 'content-Type': 'application/x-www-form-urlencoded',
