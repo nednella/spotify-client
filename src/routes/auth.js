@@ -1,97 +1,62 @@
 import express from 'express'
 import { spotifyAPI } from '../index.js'
+import { sessionAuth } from '../middleware/sessionAuth.js'
+import { tokenExpiry } from '../middleware/tokenExpiry.js'
+import { asyncHandler } from '../middleware/asyncHandler.js'
+import { calculateExpiryUTC } from '../utils.js'
 
 const router = express.Router()
 
+/* AUTH ROUTE MIDDLEWARE */
+router.use(['/logout', '/session'], sessionAuth)
+router.use('/session', tokenExpiry)
+
+/* AUTH ROUTES */
 router.get('/login', (req, res) => {
     let authURL = spotifyAPI.createAuthoriseURL()
     res.send(authURL)
 })
 
-router.post('/callback', (req, res) => {
-    const authCode = req.body.code || null
+router.post(
+    '/callback',
+    asyncHandler(async (req, res) => {
+        const authCode = req.body.code
 
-    if (!authCode) {
-        return res.status(401).end('No authorisation code provided')
-    }
-
-    const getTokens = async (authCode) => {
-        try {
-            const response = await spotifyAPI.authorisationCodeGrant(authCode)
-
-            return {
-                access_token: response.data['access_token'],
-                refresh_token: response.data['refresh_token'],
-                expires_in: response.data['expires_in'],
-            }
-        } catch (err) {
-            // DEBUG
-            console.error(err)
-
-            if (err.body.error) {
-                res.status(err.body.error.status).end(err.body.error.message)
-            }
-        }
-    }
-
-    const initSession = async (authCode) => {
-        const tokens = await getTokens(authCode)
-        if (!tokens) return
-
-        const user = {
-            creation: new Date().toUTCString(),
-            access_token: tokens.access_token,
-            refresh_token: tokens.refresh_token,
-            expires_in: tokens.expires_in,
+        if (!authCode) {
+            return res.status(401).end('No authorisation code provided')
         }
 
-        req.session.user = user
+        const response = await spotifyAPI.authorisationCodeGrant(authCode)
+        const { access_token, refresh_token, expires_in } = response.data
+
+        req.session.user = {
+            creation_utc: new Date().toUTCString(),
+            expiry_utc: calculateExpiryUTC(expires_in),
+            access_token,
+            refresh_token,
+        }
+
         res.status(200).end('Spotify API token request successful and new session issued.')
-    }
-
-    initSession(authCode)
-})
+    })
+)
 
 router.get('/logout', (req, res) => {
     if (!req.session.user) {
-        // DEBUG
-        console.log('No active session found')
-
         return res.status(401).end('Unauthorised')
     }
-    // DEBUG
-    console.log('Log out requested, ending session.')
 
     req.session.destroy()
     res.status(200).end('Successfully logged out.')
 })
 
-router.get('/session', async (req, res) => {
-    if (!req.session.user) {
-        // DEBUG
-        console.log('No active session found')
+router.get(
+    '/session',
+    asyncHandler(async (req, res) => {
+        const { access_token } = req.session.user
 
-        return res.status(401).end('Unauthorised')
-    }
-
-    // Get current session
-    const token = req.session.user.access_token
-
-    try {
-        const response = await spotifyAPI.getMe(token)
-
-        // DEBUG
-        console.log('Active session found')
-
+        const response = await spotifyAPI.getMe(access_token)
         res.status(200).json(response.data)
-    } catch (err) {
-        // DEBUG
-        console.error(err)
-
-        if (err.body.error) {
-            res.status(err.body.error.status).end(err.body.error.message)
-        }
-    }
-})
+    })
+)
 
 export default router
