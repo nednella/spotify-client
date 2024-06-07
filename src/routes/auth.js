@@ -24,17 +24,12 @@ router.post('/callback', (req, res) => {
                 refresh_token: response.data['refresh_token'],
                 expires_in: response.data['expires_in'],
             }
-        } catch (error) {
-            if (error.response) {
-                console.error(
-                    '\nError getting Tokens:\n\n',
-                    'Status code:',
-                    error.response.status + '\n',
-                    'Response:',
-                    error.response.data
-                )
+        } catch (err) {
+            // DEBUG
+            console.error(err)
 
-                res.status(error.response.status).end(error.response.data.error_description)
+            if (err.body.error) {
+                res.status(err.body.error.status).end(err.body.error.message)
             }
         }
     }
@@ -89,12 +84,12 @@ router.get('/session', async (req, res) => {
         console.log('Active session found')
 
         res.status(200).json(response.data)
-    } catch (error) {
-        if (error.response) {
-            // DEBUG
-            console.error(error.response)
+    } catch (err) {
+        // DEBUG
+        console.error(err)
 
-            res.status(error.response.status).end(error.response.data.error_description)
+        if (err.body.error) {
+            res.status(err.body.error.status).end(err.body.error.message)
         }
     }
 })
