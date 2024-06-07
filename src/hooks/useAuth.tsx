@@ -2,14 +2,16 @@ import { createContext, useContext, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
 
+import { User } from '../types/User'
+
 import getSession from '../api/auth/Session'
 import Authorise from '../api/auth/Authorise'
 import _Logout from '../api/auth/Logout'
 
-import AppSkeleton from '../app/AppSkeleton'
+import AppSkeleton from '../components/AppSkeleton'
 
 type AuthContextType = {
-    user: object | null
+    user: User | null
     Login: () => void
     Logout: () => void
 }
@@ -42,13 +44,12 @@ export const AuthContextProvider = ({ ...props }) => {
         setUser(null)
     }
 
-    if (isLoading) {
+    if (isLoading)
         return (
             <>
                 <AppSkeleton />
             </>
         )
-    }
 
     return (
         <AuthContext.Provider
