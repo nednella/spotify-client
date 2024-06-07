@@ -5,8 +5,11 @@ import session from 'express-session'
 import bodyParser from 'body-parser'
 
 import SpotifyApi from './spotify-request-wrapper/spotify-request-wrapper.js'
+
 import auth from './routes/auth.js'
 import api from './routes/api.js'
+
+import { errorHandler } from './middleware/errorHandler.js'
 
 const CLIENT_PORT = process.env.CLIENT_PORT
 
@@ -20,13 +23,13 @@ const scope = ['user-read-private', 'user-read-email']
 
 export const spotifyAPI = new SpotifyApi(credentials, scope)
 
-const corsConfig = {
+const cors_config = {
     origin: `http://localhost:${CLIENT_PORT}`,
     methods: ['POST', 'GET'],
     credentials: true,
 }
 
-const sessionConfig = {
+const session_config = {
     secret: 'appSecret',
     resave: false,
     saveUninitialized: true,
@@ -38,11 +41,15 @@ const sessionConfig = {
 }
 
 const app = express()
-app.use(cors(corsConfig))
-app.use(session(sessionConfig))
+app.use(cors(cors_config))
+app.use(session(session_config))
 app.use(bodyParser.json())
 
+// App routes
 app.use('/auth', auth)
 app.use('/api', api)
+
+// Error handling
+app.use(errorHandler)
 
 export default app
