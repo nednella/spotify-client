@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { User } from '../types/User'
 
 import getSession from '../api/auth/Session'
-import Authorise from '../api/auth/Authorise'
+import Callback from '../api/auth/Callback'
 import _Logout from '../api/auth/Logout'
 
 import AppSkeleton from '../components/AppSkeleton'
@@ -23,33 +23,32 @@ export const AuthContextProvider = ({ ...props }) => {
     const navigate = useNavigate()
 
     // Grab session on page load
+    // TODO: useQuery is not returning a data property for use, causing an error
     const { isLoading } = useQuery({
         queryKey: ['auth'],
         queryFn: async () => {
-            const data = await getSession()
-            setUser(JSON.parse(data))
+            setUser(await getSession())
         },
     })
 
     const Login = async () => {
-        await Authorise()
-        window.history.pushState({}, '', '/') // clear nav history after successful login to prevent /authorise API re-fire
-        navigate('/')
-        setUser(JSON.parse(await getSession())) // grab new session without having to reload page
+        try {
+            await Callback()
+            setUser(await getSession()) // grab user without having to reload page
+            window.history.pushState({}, '', '/') // clear nav history after successful login to prevent /callback API re-fire
+            navigate('/')
+        } catch {
+            navigate('/')
+        }
     }
 
     const Logout = async () => {
         await _Logout()
-        navigate('/')
         setUser(null)
+        navigate('/')
     }
 
-    if (isLoading)
-        return (
-            <>
-                <AppSkeleton />
-            </>
-        )
+    if (isLoading) return <AppSkeleton />
 
     return (
         <AuthContext.Provider

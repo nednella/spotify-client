@@ -3,15 +3,15 @@ import toast from 'react-hot-toast'
 
 export default async function Logout() {
     return await axios
-        .get('http://localhost:5000/logout', { withCredentials: true })
+        .get('http://localhost:5000/auth/logout', { withCredentials: true })
         .then((response) => {
             return toast.success(response.data)
         })
         .catch((error) => {
             if (!error.response) {
-                throw new Error(error.message) // network error
+                toast.error(error.message) // network error
             } else {
-                throw new Error(error.response.data) // server error
+                toast.error(error.response.data) // server error
             }
         })
 }
