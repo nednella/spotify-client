@@ -15,20 +15,11 @@ export const tokenExpiry = async (req, res, next) => {
         return next()
     }
 
-    try {
-        const response = await spotifyAPI.refreshAccessToken(user.refresh_token)
-        const { access_token, expires_in } = response.data
+    const response = await spotifyAPI.refreshAccessToken(user.refresh_token)
+    const { access_token, expires_in } = response.data
 
-        user.expiry_utc = calculateExpiryUTC(expires_in)
-        user.access_token = access_token
+    user.expiry_utc = calculateExpiryUTC(expires_in)
+    user.access_token = access_token
 
-        console.log(user)
-
-        next()
-    } catch (err) {
-        console.error(err)
-        res.status(err.body?.error.status || 500).end(
-            err.body?.error.message || 'Internal server error.'
-        )
-    }
+    next()
 }
