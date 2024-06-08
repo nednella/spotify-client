@@ -6,6 +6,8 @@ import LibraryItem from './LibraryItem'
 import LibraryItemLoading from './LibraryItemLoading'
 import LibraryEmpty from './LibraryEmpty'
 
+import ScrollArea from '../ScrollArea'
+
 const Library = () => {
     const { user } = useAuth()
     const loginModal = useLoginModal()
@@ -29,13 +31,12 @@ const Library = () => {
     }
 
     // TODO: library data handling
-    const playlistData = false
+    const playlistData = true
 
     return (
         <div className="relative flex h-full flex-col">
             <LibraryHeader fns={[createPlaylist]} />
-
-            <div className="h-full px-2">
+            <ScrollArea className="h-full px-2">
                 {playlistData ? (
                     <>
                         <LibraryItem
@@ -49,7 +50,7 @@ const Library = () => {
                 ) : (
                     <LibraryEmpty fns={[createPlaylist, searchPodcasts]} />
                 )}
-            </div>
+            </ScrollArea>
         </div>
     )
 }
