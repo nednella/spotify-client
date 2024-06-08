@@ -9,10 +9,8 @@ import { FiDownload } from 'react-icons/fi'
 import Login from '../api/auth/Login'
 import { useAuth } from '../hooks/useAuth'
 
-import AccountPopup from './modals/AccountPopup'
-import useAccountPopup from '../hooks/useAccountPopup'
-
 import Button from './Button'
+import AccountMenu from './menus/AccountMenu'
 
 interface HeaderProps {
     children?: React.ReactNode
@@ -24,7 +22,6 @@ const Header: React.FC<HeaderProps> = ({ children, className, style }) => {
     const { user } = useAuth()
     const navigate = useNavigate()
     const location = useLocation()
-    const accountPopup = useAccountPopup()
 
     return (
         <div
@@ -80,17 +77,15 @@ const Header: React.FC<HeaderProps> = ({ children, className, style }) => {
                                 <FiDownload />
                                 <p>Install App</p>
                             </Button>
-                            <Button
-                                onClick={accountPopup.onOpen}
-                                className="relative border-none bg-black p-1"
-                            >
-                                <img
-                                    className="size-6 rounded-full object-cover"
-                                    src={user?.images[0].url || 'src/assets/images/liked.png'}
-                                    alt=""
-                                />
-                            </Button>
-                            <AccountPopup />
+                            <AccountMenu>
+                                <Button className="relative border-none bg-black p-1">
+                                    <img
+                                        className="size-6 rounded-full object-cover"
+                                        src={user?.images[0].url || 'src/assets/images/liked.png'}
+                                        alt=""
+                                    />
+                                </Button>
+                            </AccountMenu>
                         </>
                     ) : (
                         <>
