@@ -13,7 +13,6 @@ const LibraryItem: React.FC<LibraryItemProps> = ({ image, title, author }) => {
                 cursor-pointer
                 gap-x-2
                 rounded-md 
-                bg-neutral-900
                 p-2
                 transition
                 hover:bg-neutral-800
