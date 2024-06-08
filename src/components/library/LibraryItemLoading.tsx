@@ -1,6 +1,6 @@
 const LibraryItemLoading = () => {
     return (
-        <div className="flex gap-x-2 bg-neutral-900 p-2">
+        <div className="flex gap-x-2 p-2">
             <div className="">
                 <div className="size-12 rounded-md bg-neutral-800"></div>
             </div>
