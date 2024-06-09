@@ -39,7 +39,7 @@ const App = () => {
         },
         {
             label: 'Playlist',
-            path: '/playlist',
+            path: '/playlist/*',
             element: user ? <Playlist /> : <Navigate to={'/'} />,
         },
         {

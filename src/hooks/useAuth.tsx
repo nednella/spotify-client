@@ -1,6 +1,6 @@
 import { createContext, useContext, useState } from 'react'
-import { useQuery } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 
 import { User } from '../types/User'
 
@@ -21,11 +21,12 @@ export const AuthContext = createContext<AuthContextType | undefined>(undefined)
 export const AuthContextProvider = ({ ...props }) => {
     const [user, setUser] = useState(null)
     const navigate = useNavigate()
+    const queryClient = useQueryClient()
 
     // Grab session on page load
     // TODO: useQuery is not returning a data property for use, causing an error
     const { isLoading } = useQuery({
-        queryKey: ['auth'],
+        queryKey: ['user'],
         queryFn: async () => {
             setUser(await getSession())
         },
@@ -45,6 +46,7 @@ export const AuthContextProvider = ({ ...props }) => {
     const Logout = async () => {
         await _Logout()
         setUser(null)
+        queryClient.removeQueries() // clear all cached data upon logout
         navigate('/')
     }
 

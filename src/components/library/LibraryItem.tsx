@@ -1,18 +1,23 @@
+import { useNavigate } from 'react-router-dom'
+
 interface LibraryItemProps {
     image: string
     title: string
     author: string
-    href?: string
+    href: string
 }
 
-const LibraryItem: React.FC<LibraryItemProps> = ({ image, title, author }) => {
+const LibraryItem: React.FC<LibraryItemProps> = ({ image, title, author, href }) => {
+    const navigate = useNavigate()
+
     return (
         <div
+            onClick={() => navigate(href)}
             className="
                 flex
                 cursor-pointer
                 gap-x-2
-                rounded-md 
+                rounded-md
                 p-2
                 transition
                 hover:bg-neutral-800

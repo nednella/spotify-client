@@ -1,3 +1,4 @@
+import { ExternalUrls } from './Misc'
 import { Image } from './Image'
 
 export interface User {
@@ -12,10 +13,6 @@ export interface User {
     product: Product
     type: string
     uri: string
-}
-
-export interface ExternalUrls {
-    spotify: string
 }
 
 export interface Followers {
