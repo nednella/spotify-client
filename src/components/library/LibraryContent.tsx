@@ -31,7 +31,7 @@ const LibraryContent: React.FC<LibraryContentProps> = ({ user, data }) => {
     const albums: Album[] = data.albums
     const artists: Artist[] = data.artists
 
-    console.log(yourPlaylists, albums, artists)
+    // TODO: add Liked Songs & Saved Episodes (if adding podcast functionality) category above accordion
 
     return (
         <div className="h-full w-full">
