@@ -21,7 +21,7 @@ router.get(
             offset = 0,
             total = 1 // tmp value to initialise while loop
 
-        const getPlaylists = async (access_token, offset) => {
+        const getPlaylists = async (access_token, limit, offset) => {
             const response = await spotifyAPI.getMePlaylists(access_token, limit, offset)
             return response.data
         }
