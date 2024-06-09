@@ -7,11 +7,25 @@ interface ScrollProps {
     className?: string
 }
 
-const Scroll: React.FC<ScrollProps> = ({ children, className }) => (
-    <ScrollArea.Root className={twMerge('overflow-hidden', className)}>
-        <ScrollArea.Viewport className="h-full w-full">{children}</ScrollArea.Viewport>
+const Scroll: React.FC<ScrollProps> = ({ children, className, ...props }) => (
+    <ScrollArea.Root
+        className={twMerge('overflow-hidden', className)}
+        {...props}
+    >
+        <ScrollArea.Viewport
+            asChild
+            className="!block h-full w-full"
+        >
+            {children}
+        </ScrollArea.Viewport>
         <ScrollArea.Scrollbar
-            className="touch-none select-none data-[orientation=horizontal]:h-3 data-[orientation=vertical]:w-3 data-[orientation=horizontal]:flex-col"
+            className="
+                touch-none
+                select-none
+                data-[orientation=horizontal]:h-3
+                data-[orientation=vertical]:w-3
+                data-[orientation=horizontal]:flex-col
+            "
             orientation="vertical"
         >
             <ScrollArea.Thumb className="w-10 bg-neutral-400/50 hover:bg-neutral-400/70" />
