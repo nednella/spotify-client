@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 
-import { useAuth } from '../../../hooks/useAuth'
+import { useAuth } from '../../hooks/useAuth'
 
-import Header from '../../../components/Header'
-import RecentCard from './components/RecentCard'
-import RecentCardLoading from './components/RecentCardLoading'
-import ContentSection from './components/ContentSection'
-import ContentSectionLoading from './components/ContentSectionLoading'
+import Header from '../../components/Header'
+import RecentCard from '../../components/homepage/RecentCard'
+import RecentCardLoading from '../../components/homepage/RecentCardLoading'
+import ContentSection from '../../components/homepage/ContentSection'
+import ContentSectionLoading from '../../components/homepage/ContentSectionLoading'
 
 const Home = () => {
     const { user } = useAuth()
@@ -22,7 +22,8 @@ const Home = () => {
 
     useEffect(() => {
         if (user) {
-            setColour('150, 23, 23')
+            setColour('6, 95, 70')
+            // setColour('150, 23, 23')
 
             if (scroll) {
                 setHeaderOpacity('1')
