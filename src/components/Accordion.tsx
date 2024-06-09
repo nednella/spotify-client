@@ -86,7 +86,7 @@ export const AccordionTrigger: React.FC<AccordionTriggerProps> = React.forwardRe
                         text-neutral-400
                         transition
                         group-hover:text-white
-                        group-data-[state=open]:text-white
+                        group-data-[state=open]:text-green-500
                     "
             >
                 <Icon
@@ -106,7 +106,7 @@ export const AccordionTrigger: React.FC<AccordionTriggerProps> = React.forwardRe
                         ease-[cubic-bezier(0.87,_0,_0.13,_1)]
                         group-hover:text-white
                         group-data-[state=open]:rotate-90
-                        group-data-[state=open]:text-white
+                        group-data-[state=open]:text-green-500
                     "
             />
         </RAccordion.Trigger>
