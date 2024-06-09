@@ -105,4 +105,16 @@ export default class spotifyAPI {
     getMe = (access_token) => {
         return new ApiRequest(access_token).setMethod('GET').setPath('/v1/me').build().execute()
     }
+
+    getMePlaylists = (access_token, limit, offset) => {
+        return new ApiRequest(access_token)
+            .setMethod('GET')
+            .setPath('/v1/me/playlists')
+            .setQueryParams({
+                limit: limit || 50,
+                offset: offset || 0,
+            })
+            .build()
+            .execute()
+    }
 }
