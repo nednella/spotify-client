@@ -38,30 +38,33 @@ export const Accordion: React.FC<AccordionProps> = ({ children, className }) => 
     </RAccordion.Root>
 )
 
-export const AccordionItem: React.FC<AccordionItemProps> = React.forwardRef(
-    ({ value, children, className, ...props }, forwardedRef) => (
-        <RAccordion.Item
-            value={value}
-            className={twMerge(
-                `
+export const AccordionItem: React.FC<AccordionItemProps> = React.forwardRef<
+    HTMLDivElement,
+    AccordionItemProps
+>(({ value, children, className, ...props }, forwardedRef) => (
+    <RAccordion.Item
+        value={value}
+        className={twMerge(
+            `
                     overflow-hidden
                 `,
-                className
-            )}
-            {...props}
-            ref={forwardedRef}
-        >
-            {children}
-        </RAccordion.Item>
-    )
-)
+            className
+        )}
+        {...props}
+        ref={forwardedRef}
+    >
+        {children}
+    </RAccordion.Item>
+))
 
-export const AccordionTrigger: React.FC<AccordionTriggerProps> = React.forwardRef(
-    ({ icon: Icon, label, className, ...props }, forwardedRef) => (
-        <RAccordion.Header className="flex">
-            <RAccordion.Trigger
-                className={twMerge(
-                    `
+export const AccordionTrigger: React.FC<AccordionTriggerProps> = React.forwardRef<
+    HTMLButtonElement,
+    AccordionTriggerProps
+>(({ icon: Icon, label, className, ...props }, forwardedRef) => (
+    <RAccordion.Header className="flex">
+        <RAccordion.Trigger
+            className={twMerge(
+                `
                         group
                         flex
                         flex-1
@@ -70,21 +73,31 @@ export const AccordionTrigger: React.FC<AccordionTriggerProps> = React.forwardRe
                         px-3
                         py-4
                     `,
-                    className
-                )}
-                {...props}
-                ref={forwardedRef}
+                className
+            )}
+            {...props}
+            ref={forwardedRef}
+        >
+            <div
+                className="
+                        inline-flex
+                        items-center
+                        gap-x-4
+                        text-neutral-400
+                        transition
+                        group-hover:text-white
+                        group-data-[state=open]:text-white
+                    "
             >
-                <div className="inline-flex items-center gap-x-4 text-neutral-400 transition group-hover:text-white">
-                    <Icon
-                        size={26}
-                        className=""
-                    />
-                    <p className="text-md font-medium">{label}</p>
-                </div>
-                <FiChevronRight
-                    size={20}
-                    className="
+                <Icon
+                    size={26}
+                    className=""
+                />
+                <p className="text-md font-medium">{label}</p>
+            </div>
+            <FiChevronRight
+                size={20}
+                className="
                         text-violet10
                         cursor-pointer
                         text-neutral-400
@@ -93,29 +106,30 @@ export const AccordionTrigger: React.FC<AccordionTriggerProps> = React.forwardRe
                         ease-[cubic-bezier(0.87,_0,_0.13,_1)]
                         group-hover:text-white
                         group-data-[state=open]:rotate-90
+                        group-data-[state=open]:text-white
                     "
-                />
-            </RAccordion.Trigger>
-        </RAccordion.Header>
-    )
-)
+            />
+        </RAccordion.Trigger>
+    </RAccordion.Header>
+))
 
-export const AccordionContent: React.FC<AccordionContentProps> = React.forwardRef(
-    ({ children, className, ...props }, forwardedRef) => (
-        <RAccordion.Content
-            className={twMerge(
-                `
+export const AccordionContent: React.FC<AccordionContentProps> = React.forwardRef<
+    HTMLDivElement,
+    AccordionContentProps
+>(({ children, className, ...props }, forwardedRef) => (
+    <RAccordion.Content
+        className={twMerge(
+            `
                     data-[state=open]:animate-slideDown
                     data-[state=closed]:animate-slideUp
                     overflow-hidden
                 `,
-                className
-            )}
-            {...props}
-            ref={forwardedRef}
-        >
-            {/* IMPORTANT: Must not specify any padding on Accordion.Content as it creates a laggy animation */}
-            <div className="py-4">{children}</div>{' '}
-        </RAccordion.Content>
-    )
-)
+            className
+        )}
+        {...props}
+        ref={forwardedRef}
+    >
+        {/* IMPORTANT: Must not specify any padding on Accordion.Content as it creates a laggy animation */}
+        <div className="py-4">{children}</div>{' '}
+    </RAccordion.Content>
+))
