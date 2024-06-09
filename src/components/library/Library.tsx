@@ -2,13 +2,13 @@ import { useAuth } from '../../hooks/useAuth'
 import { useQuery } from '@tanstack/react-query'
 
 import useLoginModal from '../../hooks/useLoginModal'
-import userPlaylists from '../../api/user/UserPlaylists'
-import { Playlist } from '../../types/Playlist'
+import userLibrary from '../../api/user/UserLibrary'
 
 import LibraryHeader from './LibraryHeader'
-import LibraryItem from './LibraryItem'
-import LibraryItemLoading from './LibraryItemLoading'
+import LibraryContent from './LibraryContent'
 import LibraryEmpty from './LibraryEmpty'
+
+import LibraryItemLoading from './LibraryItemLoading'
 import ScrollArea from '../ScrollArea'
 
 const Library = () => {
@@ -33,15 +33,10 @@ const Library = () => {
         console.log('Search for podcasts')
     }
 
-    const {
-        data: playlists,
-        isLoading,
-        isError,
-    } = useQuery({
+    const { data, isLoading, isError } = useQuery({
         queryKey: ['user', 'playlists'],
         queryFn: async () => {
-            const response = await userPlaylists()
-            console.log(response.data)
+            const response = await userLibrary()
             return response.data
         },
         enabled: user !== null,
@@ -54,25 +49,27 @@ const Library = () => {
                 {isLoading ? (
                     <>
                         <LibraryItemLoading />
+                        <LibraryItemLoading />
+                        <LibraryItemLoading />
+                        <LibraryItemLoading />
+                        <LibraryItemLoading />
+                        <LibraryItemLoading />
+                        <LibraryItemLoading />
+                        <LibraryItemLoading />
+                        <LibraryItemLoading />
+                        <LibraryItemLoading />
+                        <LibraryItemLoading />
+                        <LibraryItemLoading />
                     </>
                 ) : isError ? (
                     <p className="mt-4 text-center font-medium text-neutral-400">
                         Oops, something went wrong.
                     </p>
-                ) : playlists ? (
-                    playlists.map((playlist: Playlist) => (
-                        <LibraryItem
-                            key={playlist.id}
-                            image={
-                                playlist.images && playlist.images.length > 0
-                                    ? playlist.images[0].url
-                                    : './src/assets/images/placeholder.png'
-                            }
-                            title={playlist.name}
-                            author={playlist.owner.display_name}
-                            href={`${playlist.type}/${playlist.id}`}
-                        />
-                    ))
+                ) : user && data ? (
+                    <LibraryContent
+                        user={user}
+                        data={data}
+                    />
                 ) : (
                     <LibraryEmpty fns={[createPlaylist, searchPodcasts]} />
                 )}
