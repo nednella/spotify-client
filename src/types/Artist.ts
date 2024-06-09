@@ -1,30 +1,24 @@
 import { ExternalUrls, Followers } from './Misc'
 import { Image } from './Image'
 
-export interface User {
-    country: string
-    display_name: string
-    email: string
+export interface Artist {
     external_urls: ExternalUrls
     followers: Followers
+    genres: string[]
     href: string
     id: string
     images: Image[]
-    product: Product
+    name: string
+    popularity: number
     type: string
     uri: string
 }
 
-export interface PublicUserSimplified {
-    display_name: string
+export interface ArtistSimplified {
     external_urls: ExternalUrls
-    followers: Followers
     href: string
     id: string
+    name: string
     type: string
     uri: string
 }
-
-export interface PublicUser {}
-
-export type Product = 'free' | 'open' | 'premium'
