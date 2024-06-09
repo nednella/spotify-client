@@ -12,6 +12,7 @@ import { Artist } from '../../types/Artist'
 
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '../Accordion'
 import LibraryItem from './LibraryItem'
+import { useLocation } from 'react-router-dom'
 
 interface LibraryContentProps {
     user: User
@@ -19,6 +20,8 @@ interface LibraryContentProps {
 }
 
 const LibraryContent: React.FC<LibraryContentProps> = ({ user, data }) => {
+    const location = useLocation()
+
     const yourPlaylists: PlaylistSimplified[] = data.playlists.filter(
         (playlist: PlaylistSimplified) => playlist.owner.display_name === user.display_name
     )
@@ -51,6 +54,7 @@ const LibraryContent: React.FC<LibraryContentProps> = ({ user, data }) => {
                                     title={item.name}
                                     author={item.owner.display_name}
                                     type={item.type}
+                                    active={location.pathname === `/${item.type}/${item.id}`}
                                     href={`${item.type}/${item.id}`}
                                 />
                             ))}
@@ -76,6 +80,7 @@ const LibraryContent: React.FC<LibraryContentProps> = ({ user, data }) => {
                                     title={item.name}
                                     author={item.owner.display_name}
                                     type={item.type}
+                                    active={location.pathname === `/${item.type}/${item.id}`}
                                     href={`${item.type}/${item.id}`}
                                 />
                             ))}
@@ -101,6 +106,7 @@ const LibraryContent: React.FC<LibraryContentProps> = ({ user, data }) => {
                                     title={item.name}
                                     author={item.artists[0].name}
                                     type={item.type}
+                                    active={location.pathname === `/${item.type}/${item.id}`}
                                     href={`${item.type}/${item.id}`}
                                 />
                             ))}
@@ -126,6 +132,7 @@ const LibraryContent: React.FC<LibraryContentProps> = ({ user, data }) => {
                                     title={item.name}
                                     author={item.name}
                                     type={item.type}
+                                    active={location.pathname === `/${item.type}/${item.id}`}
                                     href={`${item.type}/${item.id}`}
                                 />
                             ))}

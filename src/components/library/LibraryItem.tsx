@@ -6,10 +6,11 @@ interface LibraryItemProps {
     title: string
     type: string
     author: string
+    active?: boolean
     href: string
 }
 
-const LibraryItem: React.FC<LibraryItemProps> = ({ image, title, type, author, href }) => {
+const LibraryItem: React.FC<LibraryItemProps> = ({ image, title, type, author, active, href }) => {
     const navigate = useNavigate()
 
     function toTitleCase(str: string) {
@@ -21,15 +22,19 @@ const LibraryItem: React.FC<LibraryItemProps> = ({ image, title, type, author, h
     return (
         <div
             onClick={() => navigate(href)}
-            className="
-                flex
-                cursor-pointer
-                gap-x-2
-                rounded-md
-                p-2
-                transition
-                hover:bg-neutral-800
-            "
+            className={twMerge(
+                `
+                    flex
+                    cursor-pointer
+                    select-none
+                    gap-x-2
+                    rounded-md
+                    p-2
+                    transition
+                    hover:bg-neutral-700/50
+                `,
+                active && 'bg-neutral-700/80 hover:bg-neutral-700'
+            )}
         >
             <div className="">
                 <img
