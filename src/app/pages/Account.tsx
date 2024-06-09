@@ -1,4 +1,4 @@
-import { FaUserAlt } from 'react-icons/fa'
+import { FiExternalLink } from 'react-icons/fi'
 
 import { useAuth } from '../../hooks/useAuth'
 
@@ -31,6 +31,7 @@ const Account = () => {
                             href="https://spotify.com/account"
                             rel="noreferrer"
                             className="
+                            group
                             flex
                             h-32
                             min-w-40
@@ -44,11 +45,13 @@ const Account = () => {
                             p-3
                         "
                         >
-                            <FaUserAlt
-                                className="text-neutral-300"
+                            <FiExternalLink
+                                className="text-neutral-300 transition group-hover:text-white"
                                 size={20}
                             />
-                            <p className="text-center font-bold text-neutral-300">Your account</p>
+                            <p className="text-center font-bold text-neutral-300 transition group-hover:text-white">
+                                Your account
+                            </p>
                         </a>
                     </div>
                     <Container
