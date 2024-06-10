@@ -16,9 +16,11 @@ interface HeaderProps {
     children?: React.ReactNode
     className?: string
     style?: React.CSSProperties
+    colour?: string
+    opacity?: string
 }
 
-const Header: React.FC<HeaderProps> = ({ children, className, style }) => {
+const Header: React.FC<HeaderProps> = ({ children, className, colour, opacity }) => {
     const { user } = useAuth()
     const navigate = useNavigate()
     const location = useLocation()
@@ -26,7 +28,10 @@ const Header: React.FC<HeaderProps> = ({ children, className, style }) => {
     return (
         <div
             className={twMerge('absolute top-0 z-50 h-fit w-full p-4', className)}
-            style={style}
+            style={{
+                backgroundColor: `rgba(${colour || '23, 23, 23'}, ${opacity || '1'})`,
+                transition: 'background-color .4s ease',
+            }}
         >
             <header
                 className={twMerge(
