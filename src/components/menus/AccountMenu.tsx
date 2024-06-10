@@ -25,7 +25,8 @@ const AccountMenu: React.FC<AccountMenuProps> = ({ children }) => {
                     align={'end'}
                     sideOffset={5}
                     className="
-                        box-shad
+                        relative
+                        z-50
                         h-fit
                         max-h-full
                         w-[180px]
@@ -37,6 +38,24 @@ const AccountMenu: React.FC<AccountMenuProps> = ({ children }) => {
                         transition
                     "
                 >
+                    <DropdownMenu.Item className="outline-none">
+                        <div
+                            className="
+                                flex
+                                h-10
+                                w-full
+                                cursor-pointer
+                                rounded-t-sm
+                                pl-3
+                                hover:bg-neutral-700
+                            "
+                            onClick={() => navigate('/profile')}
+                        >
+                            <button className="text-sm font-semibold text-neutral-200">
+                                Profile
+                            </button>
+                        </div>
+                    </DropdownMenu.Item>
                     <DropdownMenu.Item className="outline-none">
                         <div
                             className="
