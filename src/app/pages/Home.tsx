@@ -21,7 +21,7 @@ const Home = () => {
 
     // TODO: pull headerColour from random list, or from item, idk
 
-    // Header opacity change on scroll
+    // Header opacity update on scroll
     const ref = useRef(null)
     const scrollAreaRef = useRef(null)
 
@@ -31,7 +31,7 @@ const Home = () => {
         offset: ['start end', 'end end'],
     })
 
-    const updatedOpacity = useTransform(scrollY, [8, 64], [0, 1])
+    const updatedOpacity = useTransform(scrollY, [8, 64], [0, 1]) // Array 1: accepts px values from -> to
     updatedOpacity.on('change', (value) => setOpacity(value.toString()))
 
     useEffect(() => {
