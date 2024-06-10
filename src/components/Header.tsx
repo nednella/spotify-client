@@ -25,7 +25,7 @@ const Header: React.FC<HeaderProps> = ({ children, className, style }) => {
 
     return (
         <div
-            className={twMerge('sticky top-0 h-fit p-4', className)}
+            className={twMerge('absolute top-0 z-50 h-fit w-full p-4', className)}
             style={style}
         >
             <header
