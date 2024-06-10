@@ -9,6 +9,7 @@ import { FiDownload } from 'react-icons/fi'
 import Login from '../api/auth/Login'
 import { useAuth } from '../hooks/useAuth'
 
+import BackgroundColour from './BackgroundColour'
 import Button from './Button'
 import AccountMenu from './menus/AccountMenu'
 
@@ -26,16 +27,14 @@ const Header: React.FC<HeaderProps> = ({ children, className, colour, opacity })
     const location = useLocation()
 
     return (
-        <div
-            className={twMerge('absolute top-0 z-50 h-fit w-full p-4', className)}
-            style={{
-                backgroundColor: `rgba(${colour || '23, 23, 23'}, ${opacity || '1'})`,
-                transition: 'background-color .4s ease',
-            }}
-        >
+        <div className={twMerge('absolute top-0 z-50 h-fit w-full', className)}>
+            <BackgroundColour
+                colour={colour}
+                opacity={opacity}
+            />
             <header
                 className={twMerge(
-                    'flex h-[32px] w-full select-none items-center justify-between',
+                    'm-4 flex h-[32px] select-none items-center justify-between',
                     children && 'mb-4'
                 )}
             >

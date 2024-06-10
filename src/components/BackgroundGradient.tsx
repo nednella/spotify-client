@@ -1,19 +1,21 @@
 import React from 'react'
+import { twMerge } from 'tailwind-merge'
 
 interface BackgroundGradientProps {
     colour: string
+    size?: string
 }
 
-const BackgroundGradient: React.FC<BackgroundGradientProps> = ({ colour }) => {
+const BackgroundGradient: React.FC<BackgroundGradientProps> = ({ colour, size }) => {
     return (
         <div
-            className="absolute top-0 h-[400px] w-full"
+            className={twMerge(
+                'absolute top-0 w-full',
+                size === 'large' ? 'h-[400px]' : size === 'medium' ? 'h-[300px]' : 'h-[200px]'
+            )}
             style={{
-                backgroundImage: `
-                    linear-gradient(to bottom,
-                    rgb(${colour}),
-                    transparent)
-                `,
+                backgroundColor: `rgb(${colour})`,
+                backgroundImage: 'linear-gradient(rgba(0, 0, 0, .6) 0, rgb(23, 23, 23) 100%)',
             }}
         ></div>
     )
