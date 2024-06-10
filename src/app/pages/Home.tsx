@@ -1,18 +1,18 @@
 import { useEffect, useRef, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
+import { useScroll, useTransform } from 'framer-motion'
 
 import { useAuth } from '../../hooks/useAuth'
 
 import Header from '../../components/Header'
+import ScrollArea from '../../components/ScrollArea'
+import BackgroundColour from '../../components/BackgroundColour'
+import BackgroundGradient from '../../components/BackgroundGradient'
+import HeaderSpacer from '../../components/HeaderSpacer'
 import RecentCard from '../../components/homepage/RecentCard'
 import RecentCardLoading from '../../components/homepage/RecentCardLoading'
 import ContentSection from '../../components/homepage/ContentSection'
 import ContentSectionLoading from '../../components/homepage/ContentSectionLoading'
-import ScrollArea from '../../components/ScrollArea'
-
-import { useScroll, useTransform } from 'framer-motion'
-import BackgroundGradient from '../../components/BackgroundGradient'
-import HeaderSpacer from '../../components/HeaderSpacer'
 
 const Home = () => {
     const { user } = useAuth()
@@ -37,6 +37,7 @@ const Home = () => {
     useEffect(() => {
         setColour('6, 95, 70')
         // setColour('150, 23, 23')
+        setColour('240, 144, 184')
     }, [])
 
     return (
@@ -54,7 +55,10 @@ const Home = () => {
                     <>
                         {/* Content container */}
                         <div className="relative h-fit w-full">
-                            <BackgroundGradient colour={colour} />
+                            <BackgroundGradient
+                                colour={colour}
+                                size="large"
+                            />
                             <HeaderSpacer />
 
                             {/* Content */}
@@ -63,14 +67,12 @@ const Home = () => {
                                 className="absolute z-[1] h-fit w-full"
                             >
                                 {/* Sticky controls */}
-                                <h3
-                                    className="sticky top-[64px] z-20 h-[56px] w-full px-4"
-                                    style={{
-                                        backgroundColor: `rgba(${colour}, ${opacity})`,
-                                        transition: 'background-color .4s ease',
-                                    }}
-                                >
-                                    [Additional Nav Buttons]
+                                <h3 className="sticky top-[64px] z-20 h-[56px] w-full">
+                                    <BackgroundColour
+                                        colour={colour}
+                                        opacity={opacity}
+                                    />
+                                    <p className="px-4">[Additional Nav Buttons]</p>
                                 </h3>
 
                                 {/* Recently played */}
