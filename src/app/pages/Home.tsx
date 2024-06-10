@@ -12,6 +12,7 @@ import ScrollArea from '../../components/ScrollArea'
 
 import { useScroll, useTransform } from 'framer-motion'
 import BackgroundGradient from '../../components/BackgroundGradient'
+import HeaderSpacer from '../../components/HeaderSpacer'
 
 const Home = () => {
     const { user } = useAuth()
@@ -51,11 +52,8 @@ const Home = () => {
             >
                 {/* Content container */}
                 <div className="relative h-fit w-full">
-                    {/* background gradient */}
                     <BackgroundGradient colour={colour} />
-
-                    {/* Header spacer */}
-                    <div className="h-[64px] w-full"></div>
+                    <HeaderSpacer />
 
                     {/* Content */}
                     <section
