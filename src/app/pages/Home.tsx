@@ -50,89 +50,87 @@ const Home = () => {
                 ref={scrollAreaRef}
                 className="h-full w-full"
             >
-                {/* Content container */}
-                <div className="relative h-fit w-full">
-                    <BackgroundGradient colour={colour} />
-                    <HeaderSpacer />
+                {user ? (
+                    <>
+                        {/* Content container */}
+                        <div className="relative h-fit w-full">
+                            <BackgroundGradient colour={colour} />
+                            <HeaderSpacer />
 
-                    {/* Content */}
-                    <section
-                        ref={ref}
-                        className="absolute z-[1] h-fit w-full"
-                    >
-                        {/* Sticky controls */}
-                        <h3
-                            className="sticky top-[64px] z-20 h-[56px] w-full px-4"
-                            style={{
-                                backgroundColor: `rgba(${colour}, ${opacity})`,
-                                transition: 'background-color .4s ease',
-                            }}
-                        >
-                            [Additional Nav Buttons]
-                        </h3>
-
-                        {/* Recently played */}
-                        <section className="px-4 pb-4 pt-2">
+                            {/* Content */}
                             <section
-                                className="
-                                    mb-4
-                                    grid
-                                    grid-cols-1
-                                    gap-2
-                                    xsm:grid-cols-2
-                                    xl:grid-cols-4
-                                "
+                                ref={ref}
+                                className="absolute z-[1] h-fit w-full"
                             >
-                                <RecentCard
-                                    image={'/src/assets/images/mac.png'}
-                                    title={'Liked Songs'}
-                                    href={''}
-                                />
-                                <RecentCard
-                                    image=""
-                                    title={'Recent Playlist B'}
-                                    href={''}
-                                />
-                                <RecentCard
-                                    image={'/src/assets/images/liked.png'}
-                                    title={'Recent Playlist C'}
-                                    href={''}
-                                />
-                                <RecentCard
-                                    image={'/src/assets/images/liked.png'}
-                                    title={'Recent Playlist D'}
-                                    href={''}
-                                />
-                                <RecentCard
-                                    image={'/src/assets/images/liked.png'}
-                                    title={'Recent Playlist E'}
-                                    href={''}
-                                />
-                                <RecentCard
-                                    image={'/src/assets/images/liked.png'}
-                                    title={'Recent Playlist F'}
-                                    href={''}
-                                />
-                                <RecentCardLoading />
-                                <RecentCardLoading />
+                                {/* Sticky controls */}
+                                <h3
+                                    className="sticky top-[64px] z-20 h-[56px] w-full px-4"
+                                    style={{
+                                        backgroundColor: `rgba(${colour}, ${opacity})`,
+                                        transition: 'background-color .4s ease',
+                                    }}
+                                >
+                                    [Additional Nav Buttons]
+                                </h3>
+
+                                {/* Recently played */}
+                                <section className="px-4 pb-4 pt-2">
+                                    <section
+                                        className="
+                                mb-4
+                                grid
+                                grid-cols-1
+                                gap-2
+                                xsm:grid-cols-2
+                                xl:grid-cols-4
+                            "
+                                    >
+                                        <RecentCard
+                                            image={'/src/assets/images/mac.png'}
+                                            title={'Liked Songs'}
+                                            href={''}
+                                        />
+                                        <RecentCard
+                                            image=""
+                                            title={'Recent Playlist B'}
+                                            href={''}
+                                        />
+                                        <RecentCard
+                                            image={'/src/assets/images/liked.png'}
+                                            title={'Recent Playlist C'}
+                                            href={''}
+                                        />
+                                        <RecentCard
+                                            image={'/src/assets/images/liked.png'}
+                                            title={'Recent Playlist D'}
+                                            href={''}
+                                        />
+                                        <RecentCard
+                                            image={'/src/assets/images/liked.png'}
+                                            title={'Recent Playlist E'}
+                                            href={''}
+                                        />
+                                        <RecentCard
+                                            image={'/src/assets/images/liked.png'}
+                                            title={'Recent Playlist F'}
+                                            href={''}
+                                        />
+                                        <RecentCardLoading />
+                                        <RecentCardLoading />
+                                    </section>
+                                    <ContentSection title={'Content Title'} />
+                                    <ContentSectionLoading />
+                                    <ContentSectionLoading />
+                                    <ContentSectionLoading />
+                                </section>
                             </section>
-                            <ContentSection title={'Content Title'} />
-                            <ContentSectionLoading />
-                            <ContentSectionLoading />
-                            <ContentSectionLoading />
-                        </section>
-                    </section>
-                </div>
+                        </div>
+                    </>
+                ) : null}
+                {/* TODO: add "logged out" content */}
             </ScrollArea>
         </>
     )
 }
 
 export default Home
-
-// {user ? (
-//     <div className="h-full">
-//         {/* Content */}
-
-//     </div>
-// ) : null}
