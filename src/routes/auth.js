@@ -57,6 +57,7 @@ router.get(
     asyncHandler(async (req, res) => {
         const { access_token } = req.session.user
 
+        // Return authenticated user's profile as a method of validating session.
         const response = await spotifyAPI.getMe(access_token)
         res.status(200).json(response.data)
     })
