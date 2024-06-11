@@ -102,10 +102,22 @@ export default class spotifyAPI {
 
     /*  WEB API ENDPOINT METHODS */
 
+    /**
+     *
+     * @param {*} access_token
+     * @returns
+     */
     getMe = (access_token) => {
         return new ApiRequest(access_token).setMethod('GET').setPath('/v1/me').build().execute()
     }
 
+    /**
+     * Get a list of the playlists owned or followed by the current Spotify user.
+     * @param {*} access_token
+     * @param {*} limit
+     * @param {*} offset
+     * @returns
+     */
     getMePlaylists = (access_token, limit, offset) => {
         return new ApiRequest(access_token)
             .setMethod('GET')
@@ -113,6 +125,45 @@ export default class spotifyAPI {
             .setQueryParams({
                 limit: limit || 50,
                 offset: offset || 0,
+            })
+            .build()
+            .execute()
+    }
+
+    /**
+     * Get a list of the albums saved in the current Spotify user's 'Your Music' library.
+     * @param {*} access_token
+     * @param {*} limit
+     * @param {*} offset
+     * @returns
+     */
+    getMeAlbums = (access_token, limit, offset) => {
+        return new ApiRequest(access_token)
+            .setMethod('GET')
+            .setPath('/v1/me/albums')
+            .setQueryParams({
+                limit: limit || 50,
+                offset: offset || 0,
+            })
+            .build()
+            .execute()
+    }
+
+    /**
+     * Get the current user's followed artists.
+     * @param {*} access_token
+     * @param {*} limit
+     * @param {*} offset
+     * @returns
+     */
+    getMeArtists = (access_token, limit, after) => {
+        return new ApiRequest(access_token)
+            .setMethod('GET')
+            .setPath('/v1/me/following')
+            .setQueryParams({
+                type: 'artist',
+                limit: limit || 50,
+                after: after || null,
             })
             .build()
             .execute()
