@@ -1,9 +1,12 @@
 import express from 'express'
+
 import { spotifyAPI } from '../index.js'
-import { sessionAuth } from '../middleware/sessionAuth.js'
-import { tokenExpiry } from '../middleware/tokenExpiry.js'
-import { asyncHandler } from '../middleware/asyncHandler.js'
-import { calculateExpiryUTC } from '../utils.js'
+
+import sessionAuth from '../middleware/sessionAuth.js'
+import tokenExpiry from '../middleware/tokenExpiry.js'
+import asyncHandler from '../middleware/asyncHandler.js'
+
+import calculateExpiryUTC from '../common/utils/calculateExpiryUTC.js'
 
 const router = express.Router()
 

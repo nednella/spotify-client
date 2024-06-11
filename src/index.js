@@ -9,7 +9,7 @@ import SpotifyApi from './spotify-request-wrapper/spotify-request-wrapper.js'
 import auth from './routes/auth.js'
 import api from './routes/api.js'
 
-import { errorHandler } from './middleware/errorHandler.js'
+import errorHandler from './middleware/errorHandler.js'
 
 const CLIENT_PORT = process.env.CLIENT_PORT
 
