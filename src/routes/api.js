@@ -6,6 +6,14 @@ import sessionAuth from '../middleware/sessionAuth.js'
 import tokenExpiry from '../middleware/tokenExpiry.js'
 import asyncHandler from '../middleware/asyncHandler.js'
 
+import fetchLibraryItems, {
+    processPlaylistData,
+    processAlbumData,
+    processArtistData,
+} from '../common/helpers/fetchLibraryItems.js'
+
+import { SPOTIFY_API_PAGINATION_LIMIT } from '../common/constants/variables.js'
+
 const router = express.Router()
 
 /* API ROUTE MIDDLEWARE */
@@ -18,7 +26,9 @@ router.get(
     asyncHandler(async (req, res) => {
         const { access_token } = req.session.user
 
-        const limit = 50 // Limit for number of items fetched per call (maximum = 50)
+        const limit = SPOTIFY_API_PAGINATION_LIMIT
+
+        // TODO: getSavedSongs (Liked Songs playlist).
 
         const getPlaylists = async (access_token, limit, offset) => {
             const response = await spotifyAPI.getMePlaylists(access_token, limit, offset)
@@ -35,67 +45,10 @@ router.get(
             return response.data
         }
 
-        const fetchPlaylistItems = async (fetchFunction, access_token, limit) => {
-            let items = [],
-                total = 1,
-                offset = 0
-
-            while (items.length < total) {
-                const data = await fetchFunction(access_token, limit, offset)
-                if (!data || !data.items) break
-
-                items = items.concat(data.items)
-                total = data.total
-                offset += data.limit
-            }
-
-            return items
-        }
-
-        const fetchAlbumItems = async (fetchFunction, access_token, limit) => {
-            let items = [],
-                total = 1,
-                offset = 0
-
-            while (items.length < total) {
-                const data = await fetchFunction(access_token, limit, offset)
-                if (!data || !data.items) break
-
-                items = items.concat(data.items)
-                total = data.total
-                offset += data.limit
-            }
-
-            items.forEach((item) => {
-                Object.assign(item, item.album)
-                delete item.added_at
-                delete item.album
-            })
-
-            return items
-        }
-
-        const fetchArtistItems = async (fetchFunction, access_token, limit) => {
-            let items = [],
-                total = 1,
-                after = ''
-
-            while (items.length < total) {
-                const data = await fetchFunction(access_token, limit, after)
-                if (!data || !data.artists) break
-
-                items = items.concat(data.artists.items)
-                total = data.artists.total
-                after = data.artists.cursors.after
-            }
-
-            return items
-        }
-
         const [allPlaylists, allAlbums, allArtists] = await Promise.all([
-            fetchPlaylistItems(getPlaylists, access_token, limit),
-            fetchAlbumItems(getAlbums, access_token, limit),
-            fetchArtistItems(getArtists, access_token, limit),
+            fetchLibraryItems(getPlaylists, access_token, limit, processPlaylistData),
+            fetchLibraryItems(getAlbums, access_token, limit, processAlbumData),
+            fetchLibraryItems(getArtists, access_token, limit, processArtistData),
         ])
 
         res.status(200).json({ playlists: allPlaylists, albums: allAlbums, artists: allArtists })
