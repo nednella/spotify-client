@@ -8,7 +8,7 @@ import Header from '../Header'
 import ScrollArea from '../ScrollArea'
 import BackgroundColour from '../BackgroundColour'
 import BackgroundGradient from '../BackgroundGradient'
-import HeaderSpacer from '../../components/HeaderSpacer'
+import HeaderSpacer from '../HeaderSpacer'
 
 interface ContentWrapperProps {
     contentType: 'homepage' | 'playlist' | 'album' | 'artist' | 'profile'

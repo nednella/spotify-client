@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react'
 
+import PageWrapper from '../../components/content/PageWrapper'
+
 import RecentCard from '../../components/homepage/RecentCard'
 import RecentCardLoading from '../../components/homepage/RecentCardLoading'
 import ContentSection from '../../components/homepage/ContentSection'
 import ContentSectionLoading from '../../components/homepage/ContentSectionLoading'
-import ContentWrapper from '../../components/content/ContentWrapper'
 
 const Home = () => {
     const [colour, setColour] = useState<string | undefined>(undefined) // accepts 'r/g/b' format
@@ -21,7 +22,7 @@ const Home = () => {
 
     return (
         <>
-            <ContentWrapper
+            <PageWrapper
                 contentType="homepage"
                 colour={colour}
             >
@@ -74,7 +75,7 @@ const Home = () => {
                 <ContentSectionLoading />
                 <ContentSectionLoading />
                 <ContentSectionLoading />
-            </ContentWrapper>
+            </PageWrapper>
         </>
     )
 }

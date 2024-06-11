@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
-import ContentWrapper from '../../components/content/ContentWrapper'
+
+import PageWrapper from '../../components/content/PageWrapper'
+
 import ContentSection from '../../components/homepage/ContentSection'
 import ContentSectionLoading from '../../components/homepage/ContentSectionLoading'
 
@@ -12,14 +14,16 @@ const Profile = () => {
 
     return (
         <>
-            <ContentWrapper
+            <PageWrapper
                 contentType="profile"
                 colour={colour}
             >
                 <p>Test!</p>
                 <ContentSection title="Content Title" />
                 <ContentSectionLoading />
-            </ContentWrapper>
+                <ContentSectionLoading />
+                <ContentSectionLoading />
+            </PageWrapper>
         </>
     )
 }
