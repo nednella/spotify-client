@@ -14,104 +14,103 @@ import Button from './Button'
 import AccountMenu from './menus/AccountMenu'
 
 interface HeaderProps {
-    children?: React.ReactNode
     className?: string
     style?: React.CSSProperties
     colour?: string
     opacity?: string
 }
 
-const Header: React.FC<HeaderProps> = ({ children, className, colour, opacity }) => {
+const Header: React.FC<HeaderProps> = ({ className, colour, opacity }) => {
     const { user } = useAuth()
     const navigate = useNavigate()
     const location = useLocation()
 
     return (
-        <div className={twMerge('absolute top-0 z-50 h-fit w-full', className)}>
+        <div className={twMerge('absolute top-0 z-50 h-[64px] w-full', className)}>
             <BackgroundColour
                 colour={colour}
                 opacity={opacity}
             />
-            <header
-                className={twMerge(
-                    'm-4 flex h-[32px] select-none items-center justify-between',
-                    children && 'mb-4'
-                )}
-            >
-                {/* {Router Buttons} */}
-                <div className="hidden h-full gap-x-2 md:flex">
-                    <Button
-                        onClick={() => navigate(-1)}
-                        disabled={location.key === 'default'}
-                        className="flex items-center justify-center bg-black p-0 text-white disabled:opacity-50"
-                    >
-                        <RxCaretLeft size={32} />
-                    </Button>
-                    <Button
-                        onClick={() => navigate(1)}
-                        disabled={location.key === 'default'}
-                        className="flex items-center justify-center bg-black p-0 text-white disabled:opacity-50"
-                    >
-                        <RxCaretRight size={32} />
-                    </Button>
-                </div>
-                {/* {Mobile Buttons} */}
-                <div className="flex gap-x-4 md:hidden">
-                    <Button
-                        onClick={() => navigate('/')}
-                        className="bg-white p-2"
-                    >
-                        <HiHome size={20} />
-                    </Button>
-                    <Button
-                        onClick={() => navigate('/search')}
-                        className="bg-white p-2"
-                    >
-                        <HiSearch size={20} />
-                    </Button>
-                </div>
-                {/* {Account Buttons} */}
-                <div className="flex h-full items-center gap-x-2">
-                    {user ? (
-                        <>
-                            <Button
-                                onClick={() => navigate('/download')}
-                                className="hidden h-full items-center gap-x-2 bg-black px-4 py-0 text-white xsm:flex"
-                            >
-                                <FiDownload />
-                                <p>Install App</p>
-                            </Button>
-                            <AccountMenu>
-                                <Button className="relative border-none bg-black p-1">
-                                    <img
-                                        className="size-6 rounded-full object-cover"
-                                        src={user?.images[0].url || 'src/assets/images/liked.png'}
-                                        alt=""
-                                    />
+            {/* Header container */}
+            <div className="mx-auto h-[32px] max-w-[1400px]">
+                {/* Header content */}
+                <header className="m-4 flex select-none items-center justify-between">
+                    {/* {Router Buttons} */}
+                    <div className="hidden h-full gap-x-2 md:flex">
+                        <Button
+                            onClick={() => navigate(-1)}
+                            disabled={location.key === 'default'}
+                            className="flex items-center justify-center bg-black p-0 text-white disabled:opacity-50"
+                        >
+                            <RxCaretLeft size={32} />
+                        </Button>
+                        <Button
+                            onClick={() => navigate(1)}
+                            disabled={location.key === 'default'}
+                            className="flex items-center justify-center bg-black p-0 text-white disabled:opacity-50"
+                        >
+                            <RxCaretRight size={32} />
+                        </Button>
+                    </div>
+                    {/* {Mobile Buttons} */}
+                    <div className="flex gap-x-4 md:hidden">
+                        <Button
+                            onClick={() => navigate('/')}
+                            className="bg-white p-2"
+                        >
+                            <HiHome size={20} />
+                        </Button>
+                        <Button
+                            onClick={() => navigate('/search')}
+                            className="bg-white p-2"
+                        >
+                            <HiSearch size={20} />
+                        </Button>
+                    </div>
+                    {/* {Account Buttons} */}
+                    <div className="flex h-full items-center gap-x-2">
+                        {user ? (
+                            <>
+                                <Button
+                                    onClick={() => navigate('/download')}
+                                    className="hidden h-full items-center gap-x-2 bg-black px-4 py-0 text-white xsm:flex"
+                                >
+                                    <FiDownload />
+                                    <p>Install App</p>
                                 </Button>
-                            </AccountMenu>
-                        </>
-                    ) : (
-                        <>
-                            <a
-                                className="text-nowrap font-medium text-neutral-300 transition hover:opacity-75 active:scale-95"
-                                href="https://spotify.com/signup"
-                                rel="noreferrer"
-                            >
-                                Sign Up
-                            </a>
+                                <AccountMenu>
+                                    <Button className="relative border-none bg-black p-1">
+                                        <img
+                                            className="size-6 rounded-full object-cover"
+                                            src={
+                                                user?.images[0].url || 'src/assets/images/liked.png'
+                                            }
+                                            alt=""
+                                        />
+                                    </Button>
+                                </AccountMenu>
+                            </>
+                        ) : (
+                            <>
+                                <a
+                                    className="text-nowrap font-medium text-neutral-300 transition hover:opacity-75 active:scale-95"
+                                    href="https://spotify.com/signup"
+                                    rel="noreferrer"
+                                >
+                                    Sign Up
+                                </a>
 
-                            <Button
-                                onClick={Login}
-                                className="ml-2 border-none px-6 py-2"
-                            >
-                                Log In
-                            </Button>
-                        </>
-                    )}
-                </div>
-            </header>
-            {children}
+                                <Button
+                                    onClick={Login}
+                                    className="ml-2 border-none px-6 py-2"
+                                >
+                                    Log In
+                                </Button>
+                            </>
+                        )}
+                    </div>
+                </header>
+            </div>
         </div>
     )
 }
