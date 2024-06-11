@@ -7,6 +7,7 @@ import Content from '../components/Content'
 
 import Home from './pages/Home'
 import Search from './pages/Search'
+import Profile from './pages/Profile'
 import Account from './pages/Account'
 import Download from './pages/Download'
 import Playlist from './pages/Playlist'
@@ -26,6 +27,11 @@ const App = () => {
             label: 'Search',
             path: '/search',
             element: <Search />,
+        },
+        {
+            label: 'Profile',
+            path: '/profile',
+            element: user ? <Profile /> : <Navigate to={'/'} />,
         },
         {
             label: 'Account',
