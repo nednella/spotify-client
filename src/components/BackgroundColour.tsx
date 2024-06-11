@@ -15,7 +15,7 @@ const BackgroundColour: React.FC<BackgroundColourProps> = ({ opacity, colour }) 
                 opacity: opacity || 0,
                 backgroundColor: `rgba(${colour || '23, 23, 23'})`,
                 backgroundImage: colour
-                    ? `linear-gradient(rgba(0, 0, 0, .3) 0, rgba(0, 0, 0, .3) 100%)`
+                    ? `linear-gradient(rgba(0, 0, 0, .2) 0, rgba(0, 0, 0, .2) 100%)`
                     : '',
                 transition: 'opacity .7s ease',
             }}
