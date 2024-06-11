@@ -13,14 +13,14 @@ const Scroll = React.forwardRef<HTMLDivElement, ScrollProps>(
     ({ children, className, ...props }, forwardedRef) => {
         return (
             <ScrollArea.Root
-                // TODO: uncomment - type="scroll"
-                className={twMerge('overflow-hidden', className)}
+                type="scroll"
+                className="overflow-hidden"
                 {...props}
             >
                 <ScrollArea.Viewport
                     ref={forwardedRef}
                     asChild
-                    className="!block h-full w-full"
+                    className={twMerge('!block h-full w-full', className)}
                 >
                     {children}
                 </ScrollArea.Viewport>
