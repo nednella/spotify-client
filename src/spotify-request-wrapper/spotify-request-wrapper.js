@@ -103,9 +103,9 @@ export default class spotifyAPI {
     /*  WEB API ENDPOINT METHODS */
 
     /**
-     *
-     * @param {*} access_token
-     * @returns
+     * Get detailed profile information about the curent user.
+     * @param {*} access_token - Authenticated user's access token.
+     * @returns {Promise} - A promise that if successful, resolves into an object containing the requested information.
      */
     getMe = (access_token) => {
         return new ApiRequest(access_token).setMethod('GET').setPath('/v1/me').build().execute()
@@ -113,10 +113,11 @@ export default class spotifyAPI {
 
     /**
      * Get a list of the playlists owned or followed by the current Spotify user.
-     * @param {*} access_token
-     * @param {*} limit
-     * @param {*} offset
-     * @returns
+     * Docs URL: https://developer.spotify.com/documentation/web-api/reference/get-a-list-of-current-users-playlists
+     * @param {string} access_token - Authenticated user's access token.
+     * @param {number} limit - Spotify API pagination page limit.
+     * @param {number} offset - Spotify API pagination page offset.
+     * @returns {Promise} - A promise that if successful, resolves into an object containing the requested information.
      */
     getMePlaylists = (access_token, limit, offset) => {
         return new ApiRequest(access_token)
@@ -132,10 +133,11 @@ export default class spotifyAPI {
 
     /**
      * Get a list of the albums saved in the current Spotify user's 'Your Music' library.
-     * @param {*} access_token
-     * @param {*} limit
-     * @param {*} offset
-     * @returns
+     * Docs URL: https://developer.spotify.com/documentation/web-api/reference/get-users-saved-albums
+     * @param {string} access_token - Authenticated user's access token.
+     * @param {number} limit - Spotify API pagination page limit.
+     * @param {number} offset - Spotify API pagination page offset.
+     * @returns {Promise} - A promise that if successful, resolves into an object containing the requested information.
      */
     getMeAlbums = (access_token, limit, offset) => {
         return new ApiRequest(access_token)
@@ -151,10 +153,11 @@ export default class spotifyAPI {
 
     /**
      * Get the current user's followed artists.
-     * @param {*} access_token
-     * @param {*} limit
-     * @param {*} offset
-     * @returns
+     * Docs URL: https://developer.spotify.com/documentation/web-api/reference/get-followed
+     * @param {string} access_token - Authenticated user's access token.
+     * @param {number} limit - Spotify API pagination page limit.
+     * @param {number} offset - Spotify API pagination page offset.
+     * @returns {Promise} - A promise that if successful, resolves into an object containing the requested information.
      */
     getMeArtists = (access_token, limit, after) => {
         return new ApiRequest(access_token)
