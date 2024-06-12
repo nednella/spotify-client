@@ -27,7 +27,7 @@ const LibraryHeader: React.FC<LibraryHeaderProps> = ({ fns: [createPlaylist] }) 
                         size={26}
                         className="text-neutral-400"
                     />
-                    <p className="text-md font-medium text-neutral-400">Your Library</p>
+                    <p className="text-md font-medium text-neutral-400">My Library</p>
                 </div>
                 <AiOutlinePlus
                     onClick={createPlaylist}

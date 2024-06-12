@@ -1,4 +1,5 @@
 import React from 'react'
+import { useLocation } from 'react-router-dom'
 
 import { MdLibraryMusic } from 'react-icons/md'
 import { PiVinylRecord } from 'react-icons/pi'
@@ -11,8 +12,12 @@ import { Album } from '../../types/Album'
 import { Artist } from '../../types/Artist'
 
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '../Accordion'
+import LikedSongs from './LikedSongs'
 import LibraryItem from './LibraryItem'
-import { useLocation } from 'react-router-dom'
+import NoPlaylists from './NoPlaylists'
+import NoFollowedPlaylists from './NoFollowedPlaylists'
+import NoAlbums from './NoAlbums'
+import NoArtists from './NoArtists'
 
 interface LibraryContentProps {
     user: User
@@ -22,6 +27,7 @@ interface LibraryContentProps {
 const LibraryContent: React.FC<LibraryContentProps> = ({ user, data }) => {
     const location = useLocation()
 
+    const tracks = 'data.tracks'
     const yourPlaylists: PlaylistSimplified[] = data.playlists.filter(
         (playlist: PlaylistSimplified) => playlist.owner.display_name === user.display_name
     )
@@ -31,85 +37,103 @@ const LibraryContent: React.FC<LibraryContentProps> = ({ user, data }) => {
     const albums: Album[] = data.albums
     const artists: Artist[] = data.artists
 
-    // TODO: add Liked Songs & Saved Episodes (if adding podcast functionality) category above accordion
+    // TODO: add Saved Episodes (if adding podcast functionality) category above accordion
 
     return (
         <div className="h-full w-full">
             <Accordion>
-                {yourPlaylists && yourPlaylists.length > 0 && (
+                {tracks && (
+                    <LikedSongs
+                        active={location.pathname === '/playlist/liked'}
+                        href={'playlist/liked'}
+                    />
+                )}
+                {yourPlaylists && (
                     <AccordionItem value="your-playlists">
                         <AccordionTrigger
                             icon={MdLibraryMusic}
-                            label={'Your Playlists'}
+                            label={'Your playlists'}
                         />
                         <AccordionContent>
-                            {yourPlaylists.map((item: PlaylistSimplified) => (
-                                <LibraryItem
-                                    key={item.id}
-                                    image={
-                                        item.images && item.images.length > 0
-                                            ? item.images[0].url
-                                            : './src/assets/images/placeholder.png'
-                                    }
-                                    title={item.name}
-                                    author={item.owner.display_name}
-                                    type={item.type}
-                                    active={location.pathname === `/${item.type}/${item.id}`}
-                                    href={`${item.type}/${item.id}`}
-                                />
-                            ))}
+                            {Array.isArray(yourPlaylists) && yourPlaylists.length > 0 ? (
+                                yourPlaylists.map((item: PlaylistSimplified) => (
+                                    <LibraryItem
+                                        key={item.id}
+                                        image={
+                                            item.images && item.images.length > 0
+                                                ? item.images[0].url
+                                                : './src/assets/images/placeholder.png'
+                                        }
+                                        title={item.name}
+                                        author={item.owner.display_name}
+                                        type={item.type}
+                                        active={location.pathname === `/${item.type}/${item.id}`}
+                                        href={`${item.type}/${item.id}`}
+                                    />
+                                ))
+                            ) : (
+                                <NoPlaylists />
+                            )}
                         </AccordionContent>
                     </AccordionItem>
                 )}
 
-                {followedPlaylists && followedPlaylists.length > 0 && (
+                {followedPlaylists && (
                     <AccordionItem value="followed-playlists">
                         <AccordionTrigger
                             icon={MdLibraryMusic}
-                            label={'Followed Playlists'}
+                            label={'Followed playlists'}
                         />
                         <AccordionContent>
-                            {followedPlaylists.map((item: PlaylistSimplified) => (
-                                <LibraryItem
-                                    key={item.id}
-                                    image={
-                                        item.images && item.images.length > 0
-                                            ? item.images[0].url
-                                            : './src/assets/images/placeholder.png'
-                                    }
-                                    title={item.name}
-                                    author={item.owner.display_name}
-                                    type={item.type}
-                                    active={location.pathname === `/${item.type}/${item.id}`}
-                                    href={`${item.type}/${item.id}`}
-                                />
-                            ))}
+                            {Array.isArray(followedPlaylists) && followedPlaylists.length > 0 ? (
+                                followedPlaylists.map((item: PlaylistSimplified) => (
+                                    <LibraryItem
+                                        key={item.id}
+                                        image={
+                                            item.images && item.images.length > 0
+                                                ? item.images[0].url
+                                                : './src/assets/images/placeholder.png'
+                                        }
+                                        title={item.name}
+                                        author={item.owner.display_name}
+                                        type={item.type}
+                                        active={location.pathname === `/${item.type}/${item.id}`}
+                                        href={`${item.type}/${item.id}`}
+                                    />
+                                ))
+                            ) : (
+                                <NoFollowedPlaylists />
+                            )}
                         </AccordionContent>
                     </AccordionItem>
                 )}
 
-                {albums && albums.length > 0 && (
+                {albums && (
                     <AccordionItem value="albums">
                         <AccordionTrigger
                             icon={PiVinylRecord}
                             label={'Albums'}
                         />
                         <AccordionContent>
-                            {albums.map((item: Album) => (
-                                <LibraryItem
-                                    key={item.id}
-                                    image={
-                                        item.images && item.images.length > 0
-                                            ? item.images[0].url
-                                            : './src/assets/images/placeholder.png'
-                                    }
-                                    title={item.name}
-                                    author={item.artists[0].name}
-                                    type={item.type}
-                                    active={location.pathname === `/${item.type}/${item.id}`}
-                                    href={`${item.type}/${item.id}`}
-                                />
-                            ))}
+                            {Array.isArray(albums) && albums.length > 0 ? (
+                                albums.map((item: Album) => (
+                                    <LibraryItem
+                                        key={item.id}
+                                        image={
+                                            item.images && item.images.length > 0
+                                                ? item.images[0].url
+                                                : './src/assets/images/placeholder.png'
+                                        }
+                                        title={item.name}
+                                        author={item.artists[0].name}
+                                        type={item.type}
+                                        active={location.pathname === `/${item.type}/${item.id}`}
+                                        href={`${item.type}/${item.id}`}
+                                    />
+                                ))
+                            ) : (
+                                <NoAlbums />
+                            )}
                         </AccordionContent>
                     </AccordionItem>
                 )}
@@ -121,21 +145,25 @@ const LibraryContent: React.FC<LibraryContentProps> = ({ user, data }) => {
                             label={'Artists'}
                         />
                         <AccordionContent>
-                            {artists.map((item: Artist) => (
-                                <LibraryItem
-                                    key={item.id}
-                                    image={
-                                        item.images && item.images.length > 0
-                                            ? item.images[0]?.url
-                                            : './src/assets/images/liked.png'
-                                    }
-                                    title={item.name}
-                                    author={item.name}
-                                    type={item.type}
-                                    active={location.pathname === `/${item.type}/${item.id}`}
-                                    href={`${item.type}/${item.id}`}
-                                />
-                            ))}
+                            {Array.isArray(artists) && artists.length > 0 ? (
+                                artists.map((item: Artist) => (
+                                    <LibraryItem
+                                        key={item.id}
+                                        image={
+                                            item.images && item.images.length > 0
+                                                ? item.images[0]?.url
+                                                : './src/assets/images/liked.png'
+                                        }
+                                        title={item.name}
+                                        author={item.name}
+                                        type={item.type}
+                                        active={location.pathname === `/${item.type}/${item.id}`}
+                                        href={`${item.type}/${item.id}`}
+                                    />
+                                ))
+                            ) : (
+                                <NoArtists />
+                            )}
                         </AccordionContent>
                     </AccordionItem>
                 )}
