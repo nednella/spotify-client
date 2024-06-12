@@ -25,3 +25,19 @@ export interface Album {
     type: string
     uri: string
 }
+
+export interface AlbumSimplified {
+    album_type: string
+    artists: ArtistSimplified[]
+    available_markets: string[]
+    external_urls: ExternalUrls
+    href: string
+    id: string
+    images: Image[]
+    name: string
+    release_date: string
+    release_date_precision: string
+    total_tracks: number
+    type: string
+    uri: string
+}
