@@ -17,9 +17,7 @@ const BackgroundGradient: React.FC<BackgroundGradientProps> = ({ colour, classNa
             )}
             style={{
                 backgroundColor: `rgb(${colour})`,
-                backgroundImage: colour
-                    ? 'linear-gradient(rgba(0, 0, 0, .6) 0, rgb(23, 23, 23) 100%)'
-                    : '',
+                backgroundImage: colour ? 'linear-gradient(rgba(0, 0, 0, .6) 0, rgb(23, 23, 23) 100%)' : '',
             }}
         ></div>
     )

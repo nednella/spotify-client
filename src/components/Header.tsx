@@ -82,9 +82,7 @@ const Header: React.FC<HeaderProps> = ({ className, colour, opacity }) => {
                                     <Button className="relative border-none bg-black p-1">
                                         <img
                                             className="size-6 rounded-full object-cover"
-                                            src={
-                                                user?.images[0].url || 'src/assets/images/liked.png'
-                                            }
+                                            src={user?.images[0].url || 'src/assets/images/liked.png'}
                                             alt=""
                                         />
                                     </Button>

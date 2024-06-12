@@ -23,9 +23,8 @@ const Download = () => {
                         src="src/assets/images/mac.png"
                     />
                     <div className="flex flex-col items-center">
-                        <h2 className="xsm:text-3xl text-center text-xl font-bold">
-                            Seamlessly listen the music you love. Download the Spotify app for your
-                            computer.
+                        <h2 className="text-center text-xl font-bold xsm:text-3xl">
+                            Seamlessly listen the music you love. Download the Spotify app for your computer.
                         </h2>
                         <a
                             className="mt-8 w-[200px]"

@@ -23,9 +23,7 @@ const Account = () => {
                         "
                         >
                             <p className="mb-2 text-xs font-normal">Your Plan</p>
-                            <p className="pl-4 text-3xl font-bold text-pink-200/90">
-                                {user?.product} user
-                            </p>
+                            <p className="pl-4 text-3xl font-bold text-pink-200/90">{user?.product} user</p>
                         </Container>
                         <a
                             href="https://spotify.com/account"
@@ -68,9 +66,7 @@ const Account = () => {
                                 <p className="mb-3 text-lg font-bold">{user?.id}</p>
                             </div>
                             <div>
-                                <p className="text-xs font-medium text-neutral-400">
-                                    Email address
-                                </p>
+                                <p className="text-xs font-medium text-neutral-400">Email address</p>
                                 <p className="mb-3 text-lg font-bold">{user?.email}</p>
                             </div>
                             <div>
@@ -90,23 +86,17 @@ const Account = () => {
                         p-3
                     "
                     >
-                        <p className="mb-4 text-2xl font-bold">
-                            If you'd like to revoke access to this app
-                        </p>
+                        <p className="mb-4 text-2xl font-bold">If you'd like to revoke access to this app</p>
                         <div className="pl-4">
                             <p className="mb-3 font-semibold text-neutral-400">
-                                1. Click on "Your account" to redirect to the real Spotify account
-                                settings page
+                                1. Click on "Your account" to redirect to the real Spotify account settings page
                             </p>
                             <p className="mb-3 font-semibold text-neutral-400">
                                 2. Go to the "Security and Privacy" section
                             </p>
+                            <p className="mb-3 font-semibold text-neutral-400">3. Go to "Manage apps"</p>
                             <p className="mb-3 font-semibold text-neutral-400">
-                                3. Go to "Manage apps"
-                            </p>
-                            <p className="mb-3 font-semibold text-neutral-400">
-                                4. Find the item named "Spotify Web Player" by nednella and click
-                                remove access
+                                4. Find the item named "Spotify Web Player" by nednella and click remove access
                             </p>
                         </div>
                     </Container>
