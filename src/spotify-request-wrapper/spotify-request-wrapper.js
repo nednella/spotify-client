@@ -104,11 +104,31 @@ export default class spotifyAPI {
 
     /**
      * Get detailed profile information about the curent user.
-     * @param {*} access_token - Authenticated user's access token.
+     * @param {string} access_token - Authenticated user's access token.
      * @returns {Promise} - A promise that if successful, resolves into an object containing the requested information.
      */
     getMe = (access_token) => {
         return new ApiRequest(access_token).setMethod('GET').setPath('/v1/me').build().execute()
+    }
+
+    /**
+     * Get a list of the songs saved in the current user's library.
+     * Docs URL: https://developer.spotify.com/documentation/web-api/reference/get-users-saved-tracks
+     * @param {string} access_token - Authenticated user's access token.
+     * @param {number} limit - Spotify API pagination page limit.
+     * @param {number} offset - Spotify API pagination page offset.
+     * @returns {Promise} - A promise that if successful, resolves into an object containing the requested information.
+     */
+    getMeTracks = (access_token, limit, offset) => {
+        return new ApiRequest(access_token)
+            .setMethod('GET')
+            .setPath('/v1/me/tracks')
+            .setQueryParams({
+                limit: limit || 20,
+                offset: offset || 0,
+            })
+            .build()
+            .execute()
     }
 
     /**
@@ -124,7 +144,7 @@ export default class spotifyAPI {
             .setMethod('GET')
             .setPath('/v1/me/playlists')
             .setQueryParams({
-                limit: limit || 50,
+                limit: limit || 20,
                 offset: offset || 0,
             })
             .build()
@@ -144,7 +164,7 @@ export default class spotifyAPI {
             .setMethod('GET')
             .setPath('/v1/me/albums')
             .setQueryParams({
-                limit: limit || 50,
+                limit: limit || 20,
                 offset: offset || 0,
             })
             .build()
@@ -165,7 +185,7 @@ export default class spotifyAPI {
             .setPath('/v1/me/following')
             .setQueryParams({
                 type: 'artist',
-                limit: limit || 50,
+                limit: limit || 20,
                 after: after || null,
             })
             .build()

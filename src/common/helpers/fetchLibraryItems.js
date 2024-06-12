@@ -3,7 +3,7 @@
  * @param {function} fetchFn - API fetch function that returns response.data.
  * @param {string} access_token - Authenticated user's access token.
  * @param {number} limit - Spotify API pagination page limit.
- * @param {*} processData - Function to process the data returned from the fetchFn.
+ * @param {function} processData - Function to process the data returned from fetchFn.
  * @returns An array of the requested data.
  */
 const fetchLibraryItems = async (fetchFn, access_token, limit, processData) => {
@@ -31,6 +31,13 @@ const fetchLibraryItems = async (fetchFn, access_token, limit, processData) => {
 // Data parsing functions.
 // Most responses contain paginated data, which is not needed as I'm looping until all data is pulled, by comparing quantity of stored data to the specified total in the response.
 // Functions should parse data to return required parameters, according to the data structures presented in the Spotify API docs.
+
+// https://developer.spotify.com/documentation/web-api/reference/get-users-saved-tracks
+export const processTrackData = (data) => ({
+    items: data.items,
+    total: data.total,
+    limit: data.limit,
+})
 
 // https://developer.spotify.com/documentation/web-api/reference/get-a-list-of-current-users-playlists
 export const processPlaylistData = (data) => ({

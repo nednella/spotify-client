@@ -7,6 +7,7 @@ import tokenExpiry from '../middleware/tokenExpiry.js'
 import asyncHandler from '../middleware/asyncHandler.js'
 
 import fetchLibraryItems, {
+    processTrackData,
     processPlaylistData,
     processAlbumData,
     processArtistData,
@@ -25,10 +26,12 @@ router.get(
     '/user/library',
     asyncHandler(async (req, res) => {
         const { access_token } = req.session.user
-
         const limit = SPOTIFY_API_PAGINATION_LIMIT
 
-        // TODO: getSavedSongs (Liked Songs playlist).
+        const getTracks = async (access_token, limit, offset) => {
+            const response = await spotifyAPI.getMeTracks(access_token, limit, offset)
+            return response.data
+        }
 
         const getPlaylists = async (access_token, limit, offset) => {
             const response = await spotifyAPI.getMePlaylists(access_token, limit, offset)
@@ -45,13 +48,19 @@ router.get(
             return response.data
         }
 
-        const [allPlaylists, allAlbums, allArtists] = await Promise.all([
+        const [allTracks, allPlaylists, allAlbums, allArtists] = await Promise.all([
+            fetchLibraryItems(getTracks, access_token, limit, processTrackData),
             fetchLibraryItems(getPlaylists, access_token, limit, processPlaylistData),
             fetchLibraryItems(getAlbums, access_token, limit, processAlbumData),
             fetchLibraryItems(getArtists, access_token, limit, processArtistData),
         ])
 
-        res.status(200).json({ playlists: allPlaylists, albums: allAlbums, artists: allArtists })
+        res.status(200).json({
+            tracks: allTracks,
+            playlists: allPlaylists,
+            albums: allAlbums,
+            artists: allArtists,
+        })
     })
 )
 
