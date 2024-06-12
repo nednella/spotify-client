@@ -64,6 +64,60 @@ router.get(
     })
 )
 
+router.get(
+    '/artist/:id',
+    asyncHandler(async (req, res) => {
+        const { access_token } = req.session.user
+        const { id } = req.params
+
+        const getArtist = async (access_token, id) => {
+            const response = await spotifyAPI.getArtist(access_token, id)
+            return response.data
+        }
+
+        const getTopTracks = async (access_token, id) => {
+            const response = await spotifyAPI.getArtistTopTracks(access_token, id)
+            return response.data.tracks
+        }
+
+        const getAlbums = async (access_token, id, include_groups, limit, offset) => {
+            const response = await spotifyAPI.getArtistAlbums(
+                access_token,
+                id,
+                include_groups,
+                limit,
+                offset
+            )
+            return response.data.items
+        }
+
+        const getRelated = async (access_token, id) => {
+            const response = await spotifyAPI.getArtistRelatedArtists(access_token, id)
+            return response.data.artists
+        }
+
+        const [artist, top_tracks, albums, related_artists] = await Promise.all([
+            getArtist(access_token, id),
+            getTopTracks(access_token, id),
+            getAlbums(access_token, id, 'single,album,appears_on', 50, 0), // Shouldn't need looping. Not many artists will have > 50 data points.
+            getRelated(access_token, id),
+        ])
+
+        res.status(200).json({
+            artist: artist,
+            top_tracks: top_tracks,
+            albums: albums,
+            related_artists: related_artists,
+        })
+    })
+)
+
+/* PLACEHOLDER ROUTE */
+router.get(
+    '',
+    asyncHandler(async (req, res) => {})
+)
+
 /* TEST ROUTE */
 // Access via http://localhost:[SERVER_PORT]/test/123 ---> returns { testId: 123 }
 router.get('/test/:testId', (req, res) => {

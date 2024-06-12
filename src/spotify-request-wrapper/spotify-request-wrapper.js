@@ -191,4 +191,72 @@ export default class spotifyAPI {
             .build()
             .execute()
     }
+
+    /**
+     * Get Spotify catalog information for a single artist.
+     * Docs URL: https://developer.spotify.com/documentation/web-api/reference/get-an-artist
+     * @param {string} access_token - Authenticated user's access token.
+     * @param {string} id - Unique artist Spotify ID.
+     * @returns {Promise} - A promise that if successful, resolves into an object containing the requested information.
+     */
+    getArtist = (access_token, id) => {
+        return new ApiRequest(access_token)
+            .setMethod('GET')
+            .setPath(`/v1/artists/${id}`)
+            .build()
+            .execute()
+    }
+
+    /**
+     * Get Spotify catalog information about an artist's top tracks by country. [country not provided -- defaults to user's specified country]
+     * Docs URL: https://developer.spotify.com/documentation/web-api/reference/get-an-artists-top-tracks
+     * @param {string} access_token - Authenticated user's access token.
+     * @param {string} id - Unique artist Spotify ID.
+     * @returns {Promise} - A promise that if successful, resolves into an object containing the requested information.
+     */
+    getArtistTopTracks = (access_token, id) => {
+        return new ApiRequest(access_token)
+            .setMethod('GET')
+            .setPath(`/v1/artists/${id}/top-tracks`)
+            .build()
+            .execute()
+    }
+
+    /**
+     * Get Spotify catalog information about an artist's albums.
+     * Docs URL: https://developer.spotify.com/documentation/web-api/reference/get-an-artists-albums
+     * @param {string} access_token - Authenticated user's access token.
+     * @param {string} id - Unique artist Spotify ID.
+     * @param {*} include_groups - A comma-separated list of keywords used to filter the response. Valid values: album, single, appears_on, compilation
+     * @param {number} limit - Spotify API pagination page limit.
+     * @param {number} offset - Spotify API pagination page offset.
+     * @returns {Promise} - A promise that if successful, resolves into an object containing the requested information.
+     */
+    getArtistAlbums = (access_token, id, include_groups, limit, offset) => {
+        return new ApiRequest(access_token)
+            .setMethod('GET')
+            .setPath(`/v1/artists/${id}/albums`)
+            .setQueryParams({
+                include_groups: include_groups,
+                limit: limit || 20,
+                offset: offset || 0,
+            })
+            .build()
+            .execute()
+    }
+
+    /**
+     * Get Spotify catalog information about artists similar to a given artist. Similarity based on analysis of Spotify community's listening history.
+     * Docs URL: https://developer.spotify.com/documentation/web-api/reference/get-an-artists-related-artists
+     * @param {string} access_token - Authenticated user's access token.
+     * @param {string} id - Unique artist Spotify ID.
+     * @returns {Promise} - A promise that if successful, resolves into an object containing the requested information.
+     */
+    getArtistRelatedArtists = (access_token, id) => {
+        return new ApiRequest(access_token)
+            .setMethod('GET')
+            .setPath(`/v1/artists/${id}/related-artists`)
+            .build()
+            .execute()
+    }
 }
