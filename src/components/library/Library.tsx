@@ -1,6 +1,6 @@
-import { useAuth } from '../../hooks/useAuth'
 import { useQuery } from '@tanstack/react-query'
 
+import { useAuth } from '../../hooks/useAuth'
 import useLoginModal from '../../hooks/useLoginModal'
 import userLibrary from '../../api/user/UserLibrary'
 
@@ -22,15 +22,6 @@ const Library = () => {
 
         // TODO: playlistModal.onOpen()
         console.log('Open playlist modal')
-    }
-
-    const searchPodcasts = () => {
-        if (!user) {
-            return loginModal.onOpen()
-        }
-
-        // TODO: search podcasts functionality
-        console.log('Search for podcasts')
     }
 
     const { data, isLoading, isError } = useQuery({
@@ -62,16 +53,14 @@ const Library = () => {
                         <LibraryItemLoading />
                     </>
                 ) : isError ? (
-                    <p className="mt-4 text-center font-medium text-neutral-400">
-                        Oops, something went wrong.
-                    </p>
+                    <p className="mt-4 text-center font-medium text-neutral-400">Oops, something went wrong.</p>
                 ) : user && data ? (
                     <LibraryContent
                         user={user}
                         data={data}
                     />
                 ) : (
-                    <LibraryEmpty fns={[createPlaylist, searchPodcasts]} />
+                    <LibraryEmpty />
                 )}
             </ScrollArea>
         </div>
