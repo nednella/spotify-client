@@ -14,7 +14,7 @@ const Scroll = React.forwardRef<HTMLDivElement, ScrollProps>(
         return (
             <ScrollArea.Root
                 type="scroll"
-                className="overflow-hidden"
+                className="h-full overflow-hidden"
                 {...props}
             >
                 <ScrollArea.Viewport
