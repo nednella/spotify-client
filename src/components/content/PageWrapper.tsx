@@ -22,6 +22,7 @@ const ContentWrapper: React.FC<ContentWrapperProps> = ({ contentType, children, 
 
     // TODO: pull headerColour from random list, or from item, idk
 
+    // TODO: restrict functionality to authenticated user state to prevent warning
     // Scroll header opacity functionality
     const contentRef = useRef(null)
     const scrollAreaRef = useRef(null)
@@ -117,9 +118,7 @@ const ContentWrapper: React.FC<ContentWrapperProps> = ({ contentType, children, 
                     }}
                 >
                     {/* Heading content */}
-                    <section className="mx-auto h-full w-full max-w-[1400px]">
-                        Heading component
-                    </section>
+                    <section className="mx-auto h-full w-full max-w-[1400px]">Heading component</section>
                 </div>
                 {/* Content container */}
                 <div className="relative z-[1] h-fit w-full">

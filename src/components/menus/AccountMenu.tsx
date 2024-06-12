@@ -51,9 +51,7 @@ const AccountMenu: React.FC<AccountMenuProps> = ({ children }) => {
                             "
                             onClick={() => navigate('/profile')}
                         >
-                            <button className="text-sm font-semibold text-neutral-200">
-                                Profile
-                            </button>
+                            <button className="text-sm font-semibold text-neutral-200">Profile</button>
                         </div>
                     </DropdownMenu.Item>
                     <DropdownMenu.Item className="outline-none">
@@ -69,9 +67,7 @@ const AccountMenu: React.FC<AccountMenuProps> = ({ children }) => {
                             "
                             onClick={() => navigate('/account')}
                         >
-                            <button className="text-sm font-semibold text-neutral-200">
-                                Account
-                            </button>
+                            <button className="text-sm font-semibold text-neutral-200">Account</button>
                         </div>
                     </DropdownMenu.Item>
                     <DropdownMenu.Separator className="m-[5px] h-[1px] bg-neutral-600" />
@@ -88,9 +84,7 @@ const AccountMenu: React.FC<AccountMenuProps> = ({ children }) => {
                             "
                             onClick={Logout}
                         >
-                            <button className="text-sm font-semibold text-neutral-200">
-                                Log out
-                            </button>
+                            <button className="text-sm font-semibold text-neutral-200">Log out</button>
                         </div>
                     </DropdownMenu.Item>
                     <DropdownMenu.Arrow

@@ -6,12 +6,12 @@ const Playlist = () => {
             <Header />
             <main
                 className="
-                    to-50vh
                     flex
                     flex-grow
                     flex-col
                     bg-gradient-to-b
                     from-red-800
+                    to-50vh
                 "
             >
                 {/* // Playlist info */}
@@ -55,12 +55,8 @@ const Playlist = () => {
                             md:gap-0
                         "
                     >
-                        <span className="hidden truncate text-sm font-semibold md:block">
-                            Playlist
-                        </span>
-                        <span className="truncate text-wrap text-4xl font-black">
-                            Chill House Summer 2024
-                        </span>
+                        <span className="hidden truncate text-sm font-semibold md:block">Playlist</span>
+                        <span className="truncate text-wrap text-4xl font-black">Chill House Summer 2024</span>
                         <span className="truncate text-wrap text-sm font-normal text-neutral-400">
                             Summer chill tracks to vibe or dance to in 2024. Updated weekly.
                         </span>
@@ -83,10 +79,10 @@ const Playlist = () => {
                     {/* className="absolute top-16 w-[calc(100%-32px)] */}
                     <div
                         className="
-                            grid-cols-playlist-table
                             mb-2
                             hidden
                             h-[32px]
+                            grid-cols-playlist-table
                             items-center
                             gap-x-4
                             border-b
@@ -102,7 +98,7 @@ const Playlist = () => {
                         <span>Length</span>
                     </div>
                     {/* // Table body */}
-                    <span className="md:grid-cols-playlist-table px-4 md:grid md:gap-x-4">
+                    <span className="px-4 md:grid md:grid-cols-playlist-table md:gap-x-4">
                         {/* // TODO: table row design - for mobile display SONG TITLE COLUMN ONLY */}
                         Table filled with PlaylistTableRow items
                     </span>
