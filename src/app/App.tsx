@@ -7,10 +7,11 @@ import Content from '../components/Content'
 
 import Home from './pages/Home'
 import Search from './pages/Search'
+import Playlist from './pages/Playlist'
+import Artist from './pages/Artist'
 import Profile from './pages/Profile'
 import Account from './pages/Account'
 import Download from './pages/Download'
-import Playlist from './pages/Playlist'
 import Callback from './pages/Callback'
 import NotFound from './pages/NotFound'
 
@@ -29,6 +30,16 @@ const App = () => {
             element: <Search />,
         },
         {
+            label: 'Playlist',
+            path: '/playlist/*',
+            element: user ? <Playlist /> : <Navigate to={'/'} />,
+        },
+        {
+            label: 'Artist',
+            path: '/artist/:id',
+            element: user ? <Artist /> : <Navigate to={'/'} />,
+        },
+        {
             label: 'Profile',
             path: '/profile',
             element: user ? <Profile /> : <Navigate to={'/'} />,
@@ -42,11 +53,6 @@ const App = () => {
             label: 'Download',
             path: '/download',
             element: user ? <Download /> : <Navigate to={'/'} />,
-        },
-        {
-            label: 'Playlist',
-            path: '/playlist/*',
-            element: user ? <Playlist /> : <Navigate to={'/'} />,
         },
         {
             label: 'Callback',
