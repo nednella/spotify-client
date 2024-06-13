@@ -1,12 +1,16 @@
 import { useEffect, useState } from 'react'
 
-import PageWrapper from '../../components/content/PageWrapper'
+import { useAuth } from '../../hooks/useAuth'
 
-import ContentSection from '../../components/homepage/ContentSection'
+import ProfileWrapper from '../../components/content/ProfileWrapper'
 import ContentSectionLoading from '../../components/homepage/ContentSectionLoading'
 
 const Profile = () => {
+    const { user } = useAuth()
     const [colour, setColour] = useState<string | undefined>(undefined) // accepts 'r/g/b' format
+
+    // TODO: import user library information (user-created playlists)
+    // TODO: useQuery user's top artists and tracks in the last 4 weeks
 
     useEffect(() => {
         setColour('16, 88, 184')
@@ -14,16 +18,19 @@ const Profile = () => {
 
     return (
         <>
-            <PageWrapper
-                contentType="profile"
-                colour={colour}
-            >
-                <p>Test!</p>
-                <ContentSection title="Content Title" />
-                <ContentSectionLoading />
-                <ContentSectionLoading />
-                <ContentSectionLoading />
-            </PageWrapper>
+            {user && (
+                <ProfileWrapper
+                    user={user}
+                    colour={colour}
+                >
+                    {/* TODO: Profile page content */}
+                    <ContentSectionLoading />
+                    <ContentSectionLoading />
+                    <ContentSectionLoading />
+                    <ContentSectionLoading />
+                    <ContentSectionLoading />
+                </ProfileWrapper>
+            )}
         </>
     )
 }
