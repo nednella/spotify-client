@@ -1,8 +1,10 @@
 import React, { useRef } from 'react'
 
-import TemplateWrapper from './TemplateWrapper'
-import BackgroundGradient from '../BackgroundGradient'
 import { Artist } from '../../types/Artist'
+
+import TemplateWrapper from './TemplateWrapper'
+import HeaderSpacer from '../HeaderSpacer'
+import BackgroundGradient from '../BackgroundGradient'
 
 interface ArtistWrapperProps {
     artist: Artist
@@ -21,30 +23,75 @@ const ArtistWrapper: React.FC<ArtistWrapperProps> = ({ artist, colour, children 
         >
             {/* Heading container */}
             <div
-                className="h-[300px] w-[full] pb-4"
+                className="h-fit w-[full] pb-4 md:h-[300px]"
                 style={{
                     backgroundColor: `rgb(${colour})`,
                     backgroundImage: 'linear-gradient(transparent 0, rgba(0, 0, 0, .5) 100%)',
                 }}
             >
+                <HeaderSpacer className="md:hidden" />
                 {/* Heading content */}
-                <section className="mx-auto flex h-full w-full max-w-[1400px] items-end px-4">
-                    <div className="mr-4 w-fit">
-                        <div className="flex size-40 items-center justify-center">
-                            <img
-                                className="h-40 w-40 rounded-md object-cover"
-                                src={
-                                    artist.images && artist.images[0]
-                                        ? artist.images[0].url
-                                        : '../src/assets/images/liked.png'
-                                }
-                            />
-                        </div>
+                <section
+                    className="
+                        mx-auto
+                        flex
+                        h-full
+                        max-w-[1400px]
+                        flex-col
+                        px-4
+                        md:flex-row
+                    "
+                >
+                    {/* Image container */}
+                    <div
+                        className="
+                            mb-4
+                            max-h-[288px]
+                            min-h-[128px]
+                            w-[40vw]
+                            min-w-[128px]
+                            max-w-[288px]
+                            self-center
+                            md:mb-0
+                            md:mr-4
+                            md:max-h-[128px]
+                            md:max-w-[128px]
+                            md:self-end
+                        "
+                    >
+                        {/* Image */}
+                        <img
+                            className="rounded-full object-cover"
+                            src={
+                                artist.images && artist.images[0]
+                                    ? artist.images[0].url
+                                    : '../src/assets/images/liked.png'
+                            }
+                        />
                     </div>
-                    <div className="w-full overflow-hidden">
-                        <p>Artist</p>
-                        <p className="text-7xl font-extrabold">{artist.name}</p>
-                        <p className="mt-4 text-sm font-normal">{followers} Followers</p>
+                    {/* Details container */}
+                    <div
+                        className="
+                            flex
+                            flex-col
+                            gap-y-2
+                            overflow-hidden
+                            md:self-end
+                        "
+                    >
+                        {/* Details */}
+                        <p className="hidden md:block">Artist</p>
+                        <p
+                            className="
+                                text-3xl
+                                font-bold
+                                md:text-7xl
+                                md:font-extrabold
+                            "
+                        >
+                            {artist.name}
+                        </p>
+                        <p className="text-sm font-normal">{followers} Followers</p>
                     </div>
                 </section>
             </div>
