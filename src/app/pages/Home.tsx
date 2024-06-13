@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import PageWrapper from '../../components/content/PageWrapper'
+import HomeWrapper from '../../components/content/HomeWrapper'
 
 import RecentCard from '../../components/homepage/RecentCard'
 import RecentCardLoading from '../../components/homepage/RecentCardLoading'
@@ -22,10 +22,7 @@ const Home = () => {
 
     return (
         <>
-            <PageWrapper
-                contentType="homepage"
-                colour={colour}
-            >
+            <HomeWrapper colour={colour}>
                 {/* Recently played */}
                 <section
                     className="
@@ -75,7 +72,7 @@ const Home = () => {
                 <ContentSectionLoading />
                 <ContentSectionLoading />
                 <ContentSectionLoading />
-            </PageWrapper>
+            </HomeWrapper>
         </>
     )
 }
