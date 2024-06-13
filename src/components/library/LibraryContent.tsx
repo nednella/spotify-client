@@ -60,7 +60,7 @@ const LibraryContent: React.FC<LibraryContentProps> = ({ user, data }) => {
                                     <LibraryItem
                                         key={item.id}
                                         image={
-                                            item.images && item.images.length > 0
+                                            item.images && item.images[0]
                                                 ? item.images[0].url
                                                 : './src/assets/images/placeholder.png'
                                         }
@@ -90,7 +90,7 @@ const LibraryContent: React.FC<LibraryContentProps> = ({ user, data }) => {
                                     <LibraryItem
                                         key={item.id}
                                         image={
-                                            item.images && item.images.length > 0
+                                            item.images && item.images[0]
                                                 ? item.images[0].url
                                                 : './src/assets/images/placeholder.png'
                                         }
@@ -120,7 +120,7 @@ const LibraryContent: React.FC<LibraryContentProps> = ({ user, data }) => {
                                     <LibraryItem
                                         key={item.id}
                                         image={
-                                            item.images && item.images.length > 0
+                                            item.images && item.images[0]
                                                 ? item.images[0].url
                                                 : './src/assets/images/placeholder.png'
                                         }
@@ -150,8 +150,8 @@ const LibraryContent: React.FC<LibraryContentProps> = ({ user, data }) => {
                                     <LibraryItem
                                         key={item.id}
                                         image={
-                                            item.images && item.images.length > 0
-                                                ? item.images[0]?.url
+                                            item.images && item.images[0]
+                                                ? item.images[0].url
                                                 : './src/assets/images/liked.png'
                                         }
                                         title={item.name}
