@@ -22,12 +22,12 @@ const LibraryHeader: React.FC<LibraryHeaderProps> = ({ fns: [createPlaylist] }) 
                     py-4
                 "
             >
-                <div className="inline-flex items-center gap-x-2">
+                <div className="inline-flex items-center gap-x-4">
                     <TbPlaylist
                         size={26}
                         className="text-neutral-400"
                     />
-                    <p className="text-md font-medium text-neutral-400">Your Library</p>
+                    <p className="text-md font-medium text-neutral-400">My Library</p>
                 </div>
                 <AiOutlinePlus
                     onClick={createPlaylist}

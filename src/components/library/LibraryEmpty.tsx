@@ -1,13 +1,7 @@
-import React from 'react'
+import NoPlaylists from './NoPlaylists'
+import NoPodcasts from './NoPodcasts'
 
-import Button from '../Button'
-import Container from '../Container'
-
-interface LibraryEmptyProps {
-    fns: (() => void)[]
-}
-
-const LibraryEmpty: React.FC<LibraryEmptyProps> = ({ fns: [createPlaylist, searchPodcasts] }) => {
+const LibraryEmpty = () => {
     return (
         <div
             className="
@@ -20,30 +14,8 @@ const LibraryEmpty: React.FC<LibraryEmptyProps> = ({ fns: [createPlaylist, searc
             "
         >
             <div className="flex flex-col gap-y-4">
-                <Container className="select-none overflow-hidden bg-neutral-800 p-4">
-                    <h3 className="textlg truncate font-bold">Create your first playlist</h3>
-                    <p className="mt-2 text-sm font-semibold">It's easy, we'll help you</p>
-                    <Button
-                        onClick={createPlaylist}
-                        className="mt-4 w-fit bg-white px-4 py-1"
-                    >
-                        Create playlist
-                    </Button>
-                </Container>
-                <Container className="select-none overflow-hidden bg-neutral-800 p-4">
-                    <h3 className="textlg truncate text-wrap font-bold">
-                        Let's find some podcasts to follow
-                    </h3>
-                    <p className="mt-2 text-sm font-semibold">
-                        We'll keep you updated on new episodes
-                    </p>
-                    <Button
-                        onClick={searchPodcasts}
-                        className="mt-4 w-fit bg-white px-4 py-1"
-                    >
-                        Browse podcasts
-                    </Button>
-                </Container>
+                <NoPlaylists />
+                <NoPodcasts />
             </div>
 
             <div
