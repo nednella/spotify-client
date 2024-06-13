@@ -62,7 +62,7 @@ const PlaylistWrapper: React.FC<PlaylistWrapperProps> = ({ colour, children }) =
                         <img
                             className="
                                 aspect-square
-                                rounded-full
+                                rounded-md
                                 object-cover
                             "
                             // src={
