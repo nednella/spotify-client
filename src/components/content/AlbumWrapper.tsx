@@ -62,7 +62,7 @@ const AlbumWrapper: React.FC<AlbumWrapperProps> = ({ colour, children }) => {
                         <img
                             className="
                                 aspect-square
-                                rounded-full
+                                rounded-md
                                 object-cover
                             "
                             // src={
