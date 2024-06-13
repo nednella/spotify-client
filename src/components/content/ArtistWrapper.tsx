@@ -61,7 +61,11 @@ const ArtistWrapper: React.FC<ArtistWrapperProps> = ({ artist, colour, children 
                     >
                         {/* Image */}
                         <img
-                            className="rounded-full object-cover"
+                            className="
+                                aspect-square
+                                rounded-full
+                                object-cover
+                            "
                             src={
                                 artist.images && artist.images[0]
                                     ? artist.images[0].url
@@ -85,7 +89,7 @@ const ArtistWrapper: React.FC<ArtistWrapperProps> = ({ artist, colour, children 
                             className="
                                 text-3xl
                                 font-bold
-                                md:text-7xl
+                                md:text-5xl
                                 md:font-extrabold
                             "
                         >
