@@ -7,7 +7,7 @@ import getArtist from '../../api/artist/getArtist'
 
 import Loading from './Loading'
 import NotFound from './NotFound'
-import PageWrapper from '../../components/content/PageWrapper'
+import ArtistWrapper from '../../components/content/ArtistWrapper'
 import ContentSectionLoading from '../../components/homepage/ContentSectionLoading'
 
 const Artist = () => {
@@ -15,15 +15,24 @@ const Artist = () => {
     const { id: artist_id } = useParams()
     const [colour, setColour] = useState<string | undefined>(undefined) // accepts 'r/g/b' format
 
-    useEffect(() => {
-        setColour('16, 88, 184')
-    }, [])
-
     const { data, isLoading, isError } = useQuery({
         queryKey: ['artist', artist_id],
         queryFn: async () => getArtist(artist_id),
         enabled: user !== null,
     })
+
+    if (data) {
+        console.log(data)
+    }
+
+    useEffect(() => {
+        setColour('16, 88, 114')
+        // setColour('6, 95, 70')
+        // setColour('150, 23, 23')
+        // setColour('240, 144, 184')
+        // setColour('250,230,250')
+        // setColour('29, 185, 84')
+    }, [data])
 
     return isLoading ? (
         <Loading />
@@ -32,13 +41,13 @@ const Artist = () => {
     ) : (
         user &&
         data && (
-            <PageWrapper
-                contentType="artist"
+            <ArtistWrapper
+                artist={data.artist}
                 colour={colour}
             >
-                <p>Test! {artist_id}</p>
+                {/* TODO: Artist page content */}
                 <ContentSectionLoading />
-            </PageWrapper>
+            </ArtistWrapper>
         )
     )
 }
