@@ -73,7 +73,7 @@ const Header: React.FC<HeaderProps> = ({ className, colour, opacity }) => {
                             <>
                                 <Button
                                     onClick={() => navigate('/download')}
-                                    className="hidden h-full items-center gap-x-2 bg-black px-4 py-0 text-white xsm:flex"
+                                    className="hidden h-full items-center gap-x-2 bg-black px-4 py-0 text-white md:flex"
                                 >
                                     <FiDownload />
                                     <p>Install App</p>
