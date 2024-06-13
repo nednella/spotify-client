@@ -1,10 +1,15 @@
+import { useQuery } from '@tanstack/react-query'
+
 import { useAuth } from '../../hooks/useAuth'
 import useLoginModal from '../../hooks/useLoginModal'
+import userLibrary from '../../api/user/UserLibrary'
 
 import LibraryHeader from './LibraryHeader'
-import LibraryItem from './LibraryItem'
-import LibraryItemLoading from './LibraryItemLoading'
+import LibraryContent from './LibraryContent'
 import LibraryEmpty from './LibraryEmpty'
+
+import LibraryItemLoading from './LibraryItemLoading'
+import ScrollArea from '../ScrollArea'
 
 const Library = () => {
     const { user } = useAuth()
@@ -19,37 +24,45 @@ const Library = () => {
         console.log('Open playlist modal')
     }
 
-    const searchPodcasts = () => {
-        if (!user) {
-            return loginModal.onOpen()
-        }
-
-        // TODO: search podcasts functionality
-        console.log('Search for podcasts')
-    }
-
-    // TODO: library data handling
-    const playlistData = false
+    const { data, isLoading, isError } = useQuery({
+        queryKey: ['user', 'playlists'],
+        queryFn: async () => {
+            const response = await userLibrary()
+            return response.data
+        },
+        enabled: user !== null,
+    })
 
     return (
         <div className="relative flex h-full flex-col">
             <LibraryHeader fns={[createPlaylist]} />
-
-            <div className="h-full px-2">
-                {playlistData ? (
+            <ScrollArea className="h-full w-full px-2">
+                {isLoading ? (
                     <>
-                        <LibraryItem
-                            image={'./src/assets/images/liked.png'}
-                            title={'Playlist #33'}
-                            author={'Ben Allenden'}
-                            href={''}
-                        />
+                        <LibraryItemLoading />
+                        <LibraryItemLoading />
+                        <LibraryItemLoading />
+                        <LibraryItemLoading />
+                        <LibraryItemLoading />
+                        <LibraryItemLoading />
+                        <LibraryItemLoading />
+                        <LibraryItemLoading />
+                        <LibraryItemLoading />
+                        <LibraryItemLoading />
+                        <LibraryItemLoading />
                         <LibraryItemLoading />
                     </>
+                ) : isError ? (
+                    <p className="mt-4 text-center font-medium text-neutral-400">Oops, something went wrong.</p>
+                ) : user && data ? (
+                    <LibraryContent
+                        user={user}
+                        data={data}
+                    />
                 ) : (
-                    <LibraryEmpty fns={[createPlaylist, searchPodcasts]} />
+                    <LibraryEmpty />
                 )}
-            </div>
+            </ScrollArea>
         </div>
     )
 }

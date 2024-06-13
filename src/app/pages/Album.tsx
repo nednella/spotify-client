@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 
-import PlaylistWrapper from '../../components/content/PlaylistWrapper'
+import AlbumWrapper from '../../components/content/AlbumWrapper.tsx'
 import ContentSectionLoading from '../../components/homepage/ContentSectionLoading'
 
-const Playlist = () => {
+const Album = () => {
     const [colour, setColour] = useState<string | undefined>(undefined) // accepts 'r/g/b' format
 
     useEffect(() => {
@@ -12,12 +12,12 @@ const Playlist = () => {
 
     return (
         <>
-            <PlaylistWrapper colour={colour}>
-                {/* TODO: Playlist page content */}
+            <AlbumWrapper colour={colour}>
+                {/* TODO: Album page content */}
                 <ContentSectionLoading />
-            </PlaylistWrapper>
+            </AlbumWrapper>
         </>
     )
 }
 
-export default Playlist
+export default Album

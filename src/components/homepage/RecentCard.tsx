@@ -1,8 +1,8 @@
 import React from 'react'
 import { RiPlayLargeFill } from 'react-icons/ri'
 
-import { useAuth } from '../../../../hooks/useAuth'
-import useLoginModal from '../../../../hooks/useLoginModal'
+import { useAuth } from '../../hooks/useAuth'
+import useLoginModal from '../../hooks/useLoginModal'
 
 interface RecentCardProps {
     image: string
