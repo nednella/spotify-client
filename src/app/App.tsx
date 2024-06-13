@@ -8,6 +8,7 @@ import Content from '../components/Content'
 import Home from './pages/Home'
 import Search from './pages/Search'
 import Playlist from './pages/Playlist'
+import Album from './pages/Album'
 import Artist from './pages/Artist'
 import Profile from './pages/Profile'
 import Account from './pages/Account'
@@ -33,6 +34,11 @@ const App = () => {
             label: 'Playlist',
             path: '/playlist/*',
             element: user ? <Playlist /> : <Navigate to={'/'} />,
+        },
+        {
+            label: 'Album',
+            path: '/album/*',
+            element: user ? <Album /> : <Navigate to={'/'} />,
         },
         {
             label: 'Artist',
