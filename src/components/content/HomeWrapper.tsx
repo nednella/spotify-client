@@ -1,8 +1,10 @@
 import React, { useRef } from 'react'
 
 import { useAuth } from '../../hooks/useAuth'
+import useScrollOpacity from '../../hooks/useScrollOpacity'
 
-import TemplateWrapper from './TemplateWrapper'
+import Header from '../Header'
+import ContentWrapper from './ContentScrollWrapper'
 import HeaderSpacer from '../HeaderSpacer'
 import BackgroundGradient from '../BackgroundGradient'
 // import BackgroundColour from '../BackgroundColour'
@@ -14,54 +16,58 @@ interface HomeWrapperProps {
 
 const HomeWrapper: React.FC<HomeWrapperProps> = ({ colour, children }) => {
     const { user } = useAuth()
+    const { opacity } = useScrollOpacity()
     const contentRef = useRef(null)
 
     return (
-        <TemplateWrapper
-            contentRef={contentRef}
-            colour={colour}
-        >
-            {user ? (
-                <>
-                    {/* Background gradient */}
-                    <BackgroundGradient
-                        colour={colour}
-                        size="large"
-                    />
+        <>
+            <Header
+                opacity={opacity}
+                colour={colour}
+            />
+            <ContentWrapper contentRef={contentRef}>
+                {user ? (
+                    <>
+                        {/* Background gradient */}
+                        <BackgroundGradient
+                            colour={colour}
+                            size="large"
+                        />
 
-                    {/* Header spacer */}
-                    <HeaderSpacer />
+                        {/* Header spacer */}
+                        <HeaderSpacer />
 
-                    {/* Content container */}
-                    <div className="relative z-[1] h-fit w-full">
-                        {/* Content */}
-                        <section
-                            ref={contentRef}
-                            className="mx-auto h-fit w-full max-w-[1400px] p-4"
-                        >
-                            {children}
-                        </section>
-                    </div>
-                </>
-            ) : (
-                <>
-                    {/* Header spacer */}
-                    <HeaderSpacer />
+                        {/* Content container */}
+                        <div className="relative z-[1] h-fit w-full">
+                            {/* Content */}
+                            <section
+                                ref={contentRef}
+                                className="mx-auto h-fit w-full max-w-[1400px] p-4"
+                            >
+                                {children}
+                            </section>
+                        </div>
+                    </>
+                ) : (
+                    <>
+                        {/* Header spacer */}
+                        <HeaderSpacer />
 
-                    {/* Content container */}
-                    <div className="relative z-[1] h-fit w-full">
-                        {/* Content */}
-                        <section
-                            ref={contentRef}
-                            className="mx-auto h-fit w-full max-w-[1400px] p-4"
-                        >
-                            {/* TODO: add "logged out" content */}
-                            <p>You are logged out.</p>
-                        </section>
-                    </div>
-                </>
-            )}
-        </TemplateWrapper>
+                        {/* Content container */}
+                        <div className="relative z-[1] h-fit w-full">
+                            {/* Content */}
+                            <section
+                                ref={contentRef}
+                                className="mx-auto h-fit w-full max-w-[1400px] p-4"
+                            >
+                                {/* TODO: add "logged out" content */}
+                                <p>You are logged out.</p>
+                            </section>
+                        </div>
+                    </>
+                )}
+            </ContentWrapper>
+        </>
     )
 }
 

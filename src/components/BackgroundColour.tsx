@@ -1,7 +1,7 @@
 import React from 'react'
 
 interface BackgroundColourProps {
-    opacity?: string
+    opacity?: number
     colour?: string
 }
 
