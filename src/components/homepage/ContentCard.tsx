@@ -1,5 +1,6 @@
 import React from 'react'
-import { RiPlayLargeFill } from 'react-icons/ri'
+
+import PlayButton from '../PlayButton'
 
 interface ContentCardProps {
     image: string
@@ -32,32 +33,21 @@ const ContentCard: React.FC<ContentCardProps> = ({ image, title, subtitle }) => 
                     className="rounded-md object-cover"
                     alt=""
                 />
-                <div
+                <PlayButton
+                    isPlaying={false}
+                    size={24}
                     className="
                         absolute
                         bottom-0
                         right-0
                         mb-2
                         mr-2
-                        flex
                         translate-y-1/4
-                        items-center
-                        justify-center
-                        rounded-full
-                        bg-green-500
-                        p-3
                         opacity-0
-                        transition
-                        hover:scale-105
                         group-hover:translate-y-0
                         group-hover:opacity-100
                     "
-                >
-                    <RiPlayLargeFill
-                        className="text-black"
-                        size={24}
-                    />
-                </div>
+                />
             </div>
             <div className="h-16 w-full overflow-hidden text-left">
                 <p className="truncate font-normal">{title}</p>
