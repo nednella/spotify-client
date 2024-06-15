@@ -2,7 +2,10 @@ import React, { useRef } from 'react'
 
 import { User } from '../../types/User'
 
-import TemplateWrapper from './TemplateWrapper'
+import useScrollOpacity from '../../hooks/useScrollOpacity'
+
+import Header from '../Header'
+import ContentWrapper from './ContentScrollWrapper'
 import HeaderSpacer from '../HeaderSpacer'
 import BackgroundGradient from '../BackgroundGradient'
 
@@ -13,25 +16,28 @@ interface ProfileWrapperProps {
 }
 
 const ProfileWrapper: React.FC<ProfileWrapperProps> = ({ user, colour, children }) => {
+    const { opacity } = useScrollOpacity()
     const contentRef = useRef(null)
-    console.log(user)
+
     return (
-        <TemplateWrapper
-            contentRef={contentRef}
-            colour={colour}
-        >
-            {/* Heading container */}
-            <div
-                className="h-fit w-[full] pb-4 md:h-[300px]"
-                style={{
-                    backgroundColor: `rgb(${colour})`,
-                    backgroundImage: 'linear-gradient(transparent 0, rgba(0, 0, 0, .5) 100%)',
-                }}
-            >
-                <HeaderSpacer className="md:hidden" />
-                {/* Heading content */}
-                <section
-                    className="
+        <>
+            <Header
+                opacity={opacity}
+                colour={colour}
+            />
+            <ContentWrapper contentRef={contentRef}>
+                {/* Heading container */}
+                <div
+                    className="h-fit w-[full] pb-4 md:h-[300px]"
+                    style={{
+                        backgroundColor: `rgb(${colour})`,
+                        backgroundImage: 'linear-gradient(transparent 0, rgba(0, 0, 0, .5) 100%)',
+                    }}
+                >
+                    <HeaderSpacer className="md:hidden" />
+                    {/* Heading content */}
+                    <section
+                        className="
                         mx-auto
                         flex
                         h-full
@@ -40,10 +46,10 @@ const ProfileWrapper: React.FC<ProfileWrapperProps> = ({ user, colour, children 
                         px-4
                         md:flex-row
                     "
-                >
-                    {/* Image container */}
-                    <div
-                        className="
+                    >
+                        {/* Image container */}
+                        <div
+                            className="
                             mb-4
                             max-h-[288px]
                             min-h-[128px]
@@ -57,64 +63,65 @@ const ProfileWrapper: React.FC<ProfileWrapperProps> = ({ user, colour, children 
                             md:max-w-[128px]
                             md:self-end
                         "
-                    >
-                        {/* Image */}
-                        <img
-                            className="
+                        >
+                            {/* Image */}
+                            <img
+                                className="
                                 aspect-square
                                 rounded-full
                                 object-cover
                             "
-                            src={user.images && user.images[1] ? user.images[1].url : '../src/assets/images/liked.png'}
-                        />
-                    </div>
-                    {/* Details container */}
-                    <div
-                        className="
+                                src={
+                                    user.images && user.images[1]
+                                        ? user.images[1].url
+                                        : '../src/assets/images/liked.png'
+                                }
+                            />
+                        </div>
+                        {/* Details container */}
+                        <div
+                            className="
                             flex
                             flex-col
                             gap-y-2
                             overflow-hidden
                             md:self-end
                         "
-                    >
-                        {/* Details */}
-                        <p className="hidden md:block">Profile</p>
-                        <p
-                            className="
+                        >
+                            {/* Details */}
+                            <p className="hidden md:block">Profile</p>
+                            <p
+                                className="
                                 text-3xl
                                 font-bold
                                 md:text-5xl
                                 md:font-extrabold
                             "
-                        >
-                            {user.display_name}
-                        </p>
-                        <p className="text-sm font-normal">{user.followers.total} Followers</p>
-                    </div>
-                </section>
-            </div>
-            {/* Content container */}
-            <div className="relative z-[1] h-fit w-full">
-                <BackgroundGradient
-                    colour={colour}
-                    className="z-[-1]"
-                    size="large"
-                />
-                {/* Content */}
-                <section
-                    ref={contentRef}
-                    className="mx-auto h-fit w-full max-w-[1400px] p-4"
-                >
-                    {children}
-                </section>
-            </div>
-        </TemplateWrapper>
+                            >
+                                {user.display_name}
+                            </p>
+                            <p className="text-sm font-normal">{user.followers.total} Followers</p>
+                        </div>
+                    </section>
+                </div>
+                {/* Content container */}
+                <div className="relative z-[1] h-fit w-full">
+                    <BackgroundGradient
+                        colour={colour}
+                        className="z-[-1]"
+                        size="large"
+                    />
+                    {/* Content */}
+                    <section
+                        ref={contentRef}
+                        className="mx-auto h-fit w-full max-w-[1400px] p-4"
+                    >
+                        {children}
+                    </section>
+                </div>
+            </ContentWrapper>
+        </>
     )
 }
 
 export default ProfileWrapper
-
-{
-    /* Heading content */
-}
