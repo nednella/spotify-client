@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import AlbumWrapper from '../../components/content/AlbumWrapper.tsx'
+import AlbumWrapper from '../../components/wrappers/AlbumWrapper.tsx'
 import ContentSectionLoading from '../../components/homepage/ContentSectionLoading'
 
 const Album = () => {

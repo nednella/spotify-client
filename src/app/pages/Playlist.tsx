@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import PlaylistWrapper from '../../components/content/PlaylistWrapper'
+import PlaylistWrapper from '../../components/wrappers/PlaylistWrapper'
 import ContentSectionLoading from '../../components/homepage/ContentSectionLoading'
 
 const Playlist = () => {

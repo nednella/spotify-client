@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 
 import { useAuth } from '../../hooks/useAuth'
 
-import ProfileWrapper from '../../components/content/ProfileWrapper'
+import ProfileWrapper from '../../components/wrappers/ProfileWrapper'
 import ContentSectionLoading from '../../components/homepage/ContentSectionLoading'
 
 const Profile = () => {
