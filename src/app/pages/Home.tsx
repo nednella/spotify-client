@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import HomeWrapper from '../../components/content/HomeWrapper'
+import HomeWrapper from '../../components/wrappers/HomeWrapper'
 
 import RecentCard from '../../components/homepage/RecentCard'
 import RecentCardLoading from '../../components/homepage/RecentCardLoading'
