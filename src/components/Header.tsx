@@ -29,6 +29,7 @@ const Header: React.FC<HeaderProps> = ({ className, opacity, colour }) => {
             <BackgroundColour
                 colour={colour}
                 opacity={opacity}
+                gradient={true}
             />
             {/* Header container */}
             <div className="mx-auto h-[32px] max-w-[1400px]">
