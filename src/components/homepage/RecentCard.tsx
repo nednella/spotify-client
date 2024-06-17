@@ -29,7 +29,7 @@ const RecentCard: React.FC<RecentCardProps> = ({ image, title, href }) => {
     }
 
     return (
-        <button
+        <div
             onClick={onClick}
             className="
                 group
@@ -92,7 +92,7 @@ const RecentCard: React.FC<RecentCardProps> = ({ image, title, href }) => {
                     "
                 />
             </div>
-        </button>
+        </div>
     )
 }
 

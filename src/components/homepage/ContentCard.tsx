@@ -11,7 +11,7 @@ interface ContentCardProps {
 const ContentCard: React.FC<ContentCardProps> = ({ image, title, subtitle }) => {
     // TODO: rounded-full on image for artist content
     return (
-        <button
+        <div
             onClick={() => {}}
             className="
                 group
@@ -53,7 +53,7 @@ const ContentCard: React.FC<ContentCardProps> = ({ image, title, subtitle }) => 
                 <p className="truncate font-normal">{title}</p>
                 <p className="truncate text-wrap text-sm text-neutral-400">{subtitle}</p>
             </div>
-        </button>
+        </div>
     )
 }
 
