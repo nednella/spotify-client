@@ -5,7 +5,6 @@ import { useQuery } from '@tanstack/react-query'
 import useScrollOpacity from '../../hooks/useScrollOpacity'
 import { useAuth } from '../../hooks/useAuth'
 import { useLibrary } from '../../hooks/useLibrary'
-
 import getArtist from '../../api/artist/getArtist'
 
 import Loading from './Loading'
@@ -14,6 +13,8 @@ import ArtistWrapper from '../../components/wrappers/ArtistWrapper'
 import BackgroundColour from '../../components/BackgroundColour'
 import { TabMenu, TabItems, TabTrigger, TabContent } from '../../components/TabMenu'
 import ActionBar from '../../components/ActionBar'
+import TrackList from '../../components/playlist/TrackList'
+
 import ContentSectionLoading from '../../components/homepage/ContentSectionLoading'
 
 const Artist = () => {
@@ -90,6 +91,11 @@ const Artist = () => {
                             libraryData={libraryData.artists}
                             contentType="artist"
                             contentId={artistData.id}
+                        />
+                        <TrackList
+                            songs={artistData.top_tracks}
+                            header={false}
+                            album={true}
                         />
                         <ContentSectionLoading />
                         <ContentSectionLoading />
