@@ -13,7 +13,7 @@ import ArtistWrapper from '../../components/wrappers/ArtistWrapper'
 import BackgroundColour from '../../components/BackgroundColour'
 import { TabMenu, TabItems, TabTrigger, TabContent } from '../../components/TabMenu'
 import ActionBar from '../../components/ActionBar'
-import TrackList from '../../components/playlist/TrackList'
+import TrackList from '../../components/songs/TrackList'
 
 import ContentSectionLoading from '../../components/homepage/ContentSectionLoading'
 
