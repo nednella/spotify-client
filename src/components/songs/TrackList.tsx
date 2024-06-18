@@ -36,17 +36,18 @@ const TrackList: React.FC<TrackListProps> = ({ songs, header, album }) => {
                     <FaRegClock size={16} />
                 </p>
             </TrackListHeader>
-
-            {songs.map((song, index) => (
-                <TrackListItem
-                    key={index}
-                    index={index}
-                    song={song}
-                    album={album}
-                    selected={selectedIndex === index}
-                    onSelect={handleSelect}
-                ></TrackListItem>
-            ))}
+            <div className="mb-10 rounded-md border border-transparent">
+                {songs.map((song, index) => (
+                    <TrackListItem
+                        key={index}
+                        index={index}
+                        song={song}
+                        album={album}
+                        selected={selectedIndex === index}
+                        onSelect={handleSelect}
+                    ></TrackListItem>
+                ))}
+            </div>
         </>
     )
 }
@@ -69,7 +70,7 @@ const TrackListHeader: React.FC<TrackListHeader> = ({ className, children, displ
                     mb-2
                     grid
                     select-none
-                    grid-cols-[16px_minmax(120px,6fr)_minmax(40px,1fr)]
+                    grid-cols-[16px_minmax(120px,6fr)_40px]
                     items-center
                     gap-x-4
                     border-b
@@ -78,7 +79,7 @@ const TrackListHeader: React.FC<TrackListHeader> = ({ className, children, displ
                     text-sm
                     font-normal
                     text-neutral-400
-                    md:data-[display-album=true]:grid-cols-[16px_minmax(120px,6fr)_minmax(120px,4fr)_minmax(40px,1fr)]
+                    md:data-[display-album=true]:grid-cols-[16px_minmax(120px,6fr)_minmax(120px,4fr)_40px]
                 `,
                 className
             )}
