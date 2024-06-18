@@ -49,8 +49,8 @@ const TrackListItem: React.FC<TrackListItem> = ({ index, song, album, selected, 
         >
             {/* Track index */}
             <ItemContainer
-                selected={selected}
-                column={1}
+                data-selected={selected}
+                data-column={1}
                 className="
                     text-right
                     text-base
@@ -83,8 +83,8 @@ const TrackListItem: React.FC<TrackListItem> = ({ index, song, album, selected, 
 
             {/* Track details */}
             <ItemContainer
-                selected={selected}
-                column={2}
+                data-selected={selected}
+                data-column={2}
                 className="
                     flex
                     items-center
@@ -140,8 +140,8 @@ const TrackListItem: React.FC<TrackListItem> = ({ index, song, album, selected, 
             {/* Track album */}
             {album && (
                 <ItemContainer
-                    selected={selected}
-                    column={3}
+                    data-selected={selected}
+                    data-column={3}
                     className="
                         overflow-hidden
                         truncate
@@ -163,8 +163,8 @@ const TrackListItem: React.FC<TrackListItem> = ({ index, song, album, selected, 
 
             {/* Track duration */}
             <ItemContainer
-                selected={selected}
-                column={4}
+                data-selected={selected}
+                data-column={4}
                 className="
                     overflow-hidden
                     truncate
@@ -178,18 +178,14 @@ const TrackListItem: React.FC<TrackListItem> = ({ index, song, album, selected, 
 }
 
 interface ItemContainerProps {
-    selected: boolean
-    column: number
     children: React.ReactNode
     className?: string
     style?: CSSProperties
 }
 
-const ItemContainer: React.FC<ItemContainerProps> = ({ selected, column, children, className, style }) => {
+const ItemContainer: React.FC<ItemContainerProps> = ({ children, className, style, ...props }) => {
     return (
         <div
-            data-selected={selected}
-            data-column={column}
             className={twMerge(
                 `
                     data-[column="3"]:hidden
@@ -198,6 +194,7 @@ const ItemContainer: React.FC<ItemContainerProps> = ({ selected, column, childre
                 className
             )}
             style={style}
+            {...props}
         >
             {children}
         </div>
