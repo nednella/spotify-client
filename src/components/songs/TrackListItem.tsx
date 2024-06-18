@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { CSSProperties } from 'react'
 import { Link } from 'react-router-dom'
 import { twMerge } from 'tailwind-merge'
+import { RiPlayLargeFill } from 'react-icons/ri'
 
 import { Track } from '../../types/Track'
 import { convertTrackDuration } from '../../utils/convertTrackDuration'
+import Tooltip from '../Tooltip'
 
 interface TrackListItem {
     index: number
@@ -14,8 +16,9 @@ interface TrackListItem {
 }
 
 const TrackListItem: React.FC<TrackListItem> = ({ index, song, album, selected, onSelect }) => {
-    // TODO: render play button instead of track index when selected
-    // TODO: render add to library button between album and duration when selected
+    // TODO: Tooltip onClick --> Play Song
+    // TODO: SOCKET OnPlay --> Track # & Track title --> text-green-500
+    // TODO: Render add to library button between album and duration when selected
 
     const duration = convertTrackDuration(song.duration_ms)
 
@@ -26,6 +29,7 @@ const TrackListItem: React.FC<TrackListItem> = ({ index, song, album, selected, 
             data-selected={selected}
             onClick={() => onSelect(index)}
             className="
+                group
                 grid
                 h-14
                 select-none
@@ -47,16 +51,46 @@ const TrackListItem: React.FC<TrackListItem> = ({ index, song, album, selected, 
             <ItemContainer
                 selected={selected}
                 column={1}
-                className="text-center text-base"
+                className="
+                    text-right
+                    text-base
+                "
+                style={{ direction: 'rtl' }}
             >
-                {index + 1}
+                <Tooltip
+                    message={`Play ${song.name} by ${song.artists[0].name}`}
+                    data-selected={selected}
+                    className="
+                            hidden 
+                            text-white
+                            group-hover:block
+                            data-[selected=true]:block
+                        "
+                >
+                    <RiPlayLargeFill />
+                </Tooltip>
+                <p
+                    data-selected={selected}
+                    className="
+                        pr-1
+                        group-hover:hidden
+                        data-[selected=true]:hidden
+                    "
+                >
+                    {index + 1}
+                </p>
             </ItemContainer>
 
             {/* Track details */}
             <ItemContainer
                 selected={selected}
                 column={2}
-                className="flex items-center"
+                className="
+                    flex
+                    items-center
+                    overflow-hidden
+                    truncate
+                "
             >
                 {/* Image container */}
                 <div
@@ -85,10 +119,13 @@ const TrackListItem: React.FC<TrackListItem> = ({ index, song, album, selected, 
                         {song.artists.map((artist, index) => (
                             <React.Fragment key={index}>
                                 <Link
+                                    data-selected={selected}
                                     to={`/artist/${artist.id}`}
                                     className="
                                             hover:text-white
                                             hover:underline
+                                            group-hover:text-white
+                                            data-[selected=true]:text-white
                                         "
                                 >
                                     {artist.name}
@@ -106,6 +143,9 @@ const TrackListItem: React.FC<TrackListItem> = ({ index, song, album, selected, 
                     selected={selected}
                     column={3}
                     className="
+                        overflow-hidden
+                        truncate
+                        group-hover:text-white
                         data-[selected=true]:text-white
                     "
                 >
@@ -125,7 +165,11 @@ const TrackListItem: React.FC<TrackListItem> = ({ index, song, album, selected, 
             <ItemContainer
                 selected={selected}
                 column={4}
-                className="text-center"
+                className="
+                    overflow-hidden
+                    truncate
+                    text-center
+                "
             >
                 {duration}
             </ItemContainer>
@@ -137,23 +181,23 @@ interface ItemContainerProps {
     selected: boolean
     column: number
     children: React.ReactNode
-    className: string
+    className?: string
+    style?: CSSProperties
 }
 
-const ItemContainer: React.FC<ItemContainerProps> = ({ selected, column, children, className }) => {
+const ItemContainer: React.FC<ItemContainerProps> = ({ selected, column, children, className, style }) => {
     return (
         <div
             data-selected={selected}
             data-column={column}
             className={twMerge(
                 `
-                    overflow-hidden
-                    truncate
                     data-[column="3"]:hidden
                     md:data-[column="3"]:block
                 `,
                 className
             )}
+            style={style}
         >
             {children}
         </div>
