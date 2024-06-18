@@ -44,7 +44,7 @@ const TrackListItem: React.FC<TrackListItem> = ({ index, song, album, selected, 
                 hover:bg-neutral-700/50
                 data-[selected=true]:bg-neutral-500/50
                 data-[selected=true]:hover:bg-neutral-500/50
-                md:data-[display-album=true]:grid-cols-[16px_minmax(120px,6fr)_minmax(120px,4fr)_40px]
+                md:data-[display-album=true]:grid-cols-[16px_minmax(120px,6fr)_minmax(120px,5fr)_40px]
              "
         >
             {/* Track index */}

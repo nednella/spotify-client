@@ -79,7 +79,7 @@ const TrackListHeader: React.FC<TrackListHeader> = ({ className, children, displ
                     text-sm
                     font-normal
                     text-neutral-400
-                    md:data-[display-album=true]:grid-cols-[16px_minmax(120px,6fr)_minmax(120px,4fr)_40px]
+                    md:data-[display-album=true]:grid-cols-[16px_minmax(120px,6fr)_minmax(120px,5fr)_40px]
                 `,
                 className
             )}
