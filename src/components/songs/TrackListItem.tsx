@@ -29,7 +29,7 @@ const TrackListItem: React.FC<TrackListItem> = ({ index, song, album, selected, 
                 grid
                 h-14
                 select-none
-                grid-cols-[16px_minmax(120px,6fr)_minmax(40px,1fr)]
+                grid-cols-[16px_minmax(120px,6fr)_40px]
                 items-center
                 gap-x-4
                 rounded-md
@@ -40,7 +40,7 @@ const TrackListItem: React.FC<TrackListItem> = ({ index, song, album, selected, 
                 hover:bg-neutral-700/50
                 data-[selected=true]:bg-neutral-500/50
                 data-[selected=true]:hover:bg-neutral-500/50
-                md:data-[display-album=true]:grid-cols-[16px_minmax(120px,6fr)_minmax(120px,4fr)_minmax(40px,1fr)]
+                md:data-[display-album=true]:grid-cols-[16px_minmax(120px,6fr)_minmax(120px,4fr)_40px]
              "
         >
             {/* Track index */}
@@ -106,12 +106,18 @@ const TrackListItem: React.FC<TrackListItem> = ({ index, song, album, selected, 
                     selected={selected}
                     column={3}
                     className="
-                        hover:text-white
-                        hover:underline
                         data-[selected=true]:text-white
                     "
                 >
-                    <Link to={`/album/${song.album.id}`}>{song.album.name}</Link>
+                    <Link
+                        to={`/album/${song.album.id}`}
+                        className="
+                            hover:text-white
+                            hover:underline
+                        "
+                    >
+                        {song.album.name}
+                    </Link>
                 </ItemContainer>
             )}
 
