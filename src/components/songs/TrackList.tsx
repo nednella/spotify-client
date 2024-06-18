@@ -29,7 +29,7 @@ const TrackList: React.FC<TrackListProps> = ({ songs, header, album }) => {
                 display={header}
                 album={album}
             >
-                <p className="justify-self-center text-base">#</p>
+                <p className="justify-self-end text-base">#</p>
                 <p>Title</p>
                 {album && <p className="hidden md:block">Album</p>}
                 <p className="justify-self-center">
