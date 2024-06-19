@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
 import PlaylistWrapper from '../../components/wrappers/PlaylistWrapper'
-import ContentSectionLoading from '../../components/homepage/ContentSectionLoading'
+import ContentSectionLoading from '../../components/content/ContentSectionLoading'
 
 const Playlist = () => {
     const [colour, setColour] = useState<string | undefined>(undefined) // accepts 'r/g/b' format

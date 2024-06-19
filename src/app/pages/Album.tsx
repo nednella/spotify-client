@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
 import AlbumWrapper from '../../components/wrappers/AlbumWrapper.tsx'
-import ContentSectionLoading from '../../components/homepage/ContentSectionLoading'
+import ContentSectionLoading from '../../components/content/ContentSectionLoading.tsx'
 
 const Album = () => {
     const [colour, setColour] = useState<string | undefined>(undefined) // accepts 'r/g/b' format

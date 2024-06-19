@@ -1,9 +1,10 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 import PlayButton from '../PlayButton'
 
 interface ContentCardProps {
-    image: string
+    image?: string
     title: string
     subtitle: string
 }
@@ -11,17 +12,16 @@ interface ContentCardProps {
 const ContentCard: React.FC<ContentCardProps> = ({ image, title, subtitle }) => {
     // TODO: rounded-full on image for artist content
     return (
-        <div
-            onClick={() => {}}
+        <Link
+            to={''}
             className="
                 group
-                relative
                 flex
+                max-w-[210px]
                 cursor-pointer
                 flex-col
                 gap-y-2
                 rounded-lg
-                bg-neutral-400/5
                 p-4
                 transition
                 hover:bg-neutral-800
@@ -53,7 +53,7 @@ const ContentCard: React.FC<ContentCardProps> = ({ image, title, subtitle }) => 
                 <p className="truncate font-normal">{title}</p>
                 <p className="truncate text-wrap text-sm text-neutral-400">{subtitle}</p>
             </div>
-        </div>
+        </Link>
     )
 }
 
