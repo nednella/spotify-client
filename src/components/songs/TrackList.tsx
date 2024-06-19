@@ -7,12 +7,13 @@ import { Track } from '../../types/Track'
 import TrackListItem from './TrackListItem'
 
 interface TrackListProps {
+    title: string
     songs: Track[]
     header: boolean
     album: boolean
 }
 
-const TrackList: React.FC<TrackListProps> = ({ songs, header, album }) => {
+const TrackList: React.FC<TrackListProps> = ({ title, songs, header, album }) => {
     const [selectedIndex, setSelectedIndex] = useState<number | null>(null)
     // TODO: handle click outside of TrackList --> remove selected
 
@@ -25,6 +26,7 @@ const TrackList: React.FC<TrackListProps> = ({ songs, header, album }) => {
     }
     return (
         <>
+            <p className="mb-4 mt-2 select-none text-2xl font-bold">{title}</p>
             <TrackListHeader
                 display={header}
                 album={album}
@@ -36,7 +38,7 @@ const TrackList: React.FC<TrackListProps> = ({ songs, header, album }) => {
                     <FaRegClock size={16} />
                 </p>
             </TrackListHeader>
-            <div className="mb-10 rounded-md border border-transparent">
+            <div className="mb-4 rounded-md border border-transparent">
                 {songs.map((song, index) => (
                     <TrackListItem
                         key={index}
