@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { useAuth } from '../../hooks/useAuth'
 
 import ProfileWrapper from '../../components/wrappers/ProfileWrapper'
-import ContentSectionLoading from '../../components/homepage/ContentSectionLoading'
+import ContentSectionLoading from '../../components/content/ContentSectionLoading'
 
 const Profile = () => {
     const { user } = useAuth()
