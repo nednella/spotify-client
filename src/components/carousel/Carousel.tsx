@@ -118,15 +118,22 @@ interface CarouselContainerProps {
     children: React.ReactNode
 }
 
-export const CarouselContainer: React.FC<CarouselContainerProps> = ({ children }) => {
-    return <div className="flex h-fit w-full">{children}</div>
+export const CarouselContainer: React.FC<CarouselContainerProps> = ({ children, ...props }) => {
+    return (
+        <div
+            className="flex h-fit w-full"
+            {...props}
+        >
+            {children}
+        </div>
+    )
 }
 
 interface CarouselSlideProps {
     children: React.ReactNode
 }
 
-export const CarouselSlide: React.FC<CarouselSlideProps> = ({ children }) => {
+export const CarouselSlide: React.FC<CarouselSlideProps> = ({ children, ...props }) => {
     return (
         <div
             className="
@@ -139,6 +146,7 @@ export const CarouselSlide: React.FC<CarouselSlideProps> = ({ children }) => {
                 xl:w-[20%]
                 2xl:w-[calc(100%/6)]
             "
+            {...props}
         >
             {children}
         </div>
