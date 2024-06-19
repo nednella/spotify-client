@@ -2,18 +2,20 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 
 import PlayButton from '../PlayButton'
+import { twMerge } from 'tailwind-merge'
 
 interface ContentCardProps {
     image?: string
     title: string
     subtitle: string
+    href: string
 }
 
-const ContentCard: React.FC<ContentCardProps> = ({ image, title, subtitle }) => {
+const ContentCard: React.FC<ContentCardProps> = ({ image, title, subtitle, href }) => {
     // TODO: rounded-full on image for artist content
     return (
         <Link
-            to={''}
+            to={href}
             className="
                 group
                 flex
@@ -27,11 +29,26 @@ const ContentCard: React.FC<ContentCardProps> = ({ image, title, subtitle }) => 
                 hover:bg-neutral-800
             "
         >
-            <div className="relative flex flex-grow items-center justify-center">
+            <div
+                className="
+                    relative
+                    flex
+                    flex-grow
+                    items-center
+                    justify-center
+                "
+            >
                 <img
                     src={image || './src/assets/images/liked.png'}
-                    className="rounded-md object-cover"
-                    alt=""
+                    className={twMerge(
+                        `
+                            aspect-square 
+                            rounded-md 
+                            object-cover
+                        `,
+                        subtitle === 'Artist' && 'rounded-full'
+                    )}
+                    alt="Content image"
                 />
                 <PlayButton
                     isPlaying={false}
@@ -49,7 +66,7 @@ const ContentCard: React.FC<ContentCardProps> = ({ image, title, subtitle }) => 
                     "
                 />
             </div>
-            <div className="h-16 w-full overflow-hidden text-left">
+            <div className="h-fit max-h-16 w-full overflow-hidden text-left">
                 <p className="truncate font-normal">{title}</p>
                 <p className="truncate text-wrap text-sm text-neutral-400">{subtitle}</p>
             </div>
