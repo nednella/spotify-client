@@ -232,14 +232,14 @@ export default class spotifyAPI {
      * @param {number} offset - Spotify API pagination page offset.
      * @returns {Promise} - A promise that if successful, resolves into an object containing the requested information.
      */
-    getArtistAlbums = (access_token, id, include_groups, limit, offset) => {
+    getArtistAlbums = (access_token, id, limit, offset, include_groups) => {
         return new ApiRequest(access_token)
             .setMethod('GET')
             .setPath(`/v1/artists/${id}/albums`)
             .setQueryParams({
-                include_groups: include_groups,
                 limit: limit || 20,
                 offset: offset || 0,
+                include_groups: include_groups,
             })
             .build()
             .execute()

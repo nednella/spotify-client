@@ -6,12 +6,11 @@ import sessionAuth from '../middleware/sessionAuth.js'
 import tokenExpiry from '../middleware/tokenExpiry.js'
 import asyncHandler from '../middleware/asyncHandler.js'
 
-import fetchLibraryItems, {
-    processTrackData,
-    processPlaylistData,
+import fetchPaginatedItems, {
+    processData,
     processAlbumData,
     processArtistData,
-} from '../common/helpers/fetchLibraryItems.js'
+} from '../common/helpers/fetchItems.js'
 
 import { SPOTIFY_API_PAGINATION_LIMIT } from '../common/constants/variables.js'
 
@@ -49,10 +48,10 @@ router.get(
         }
 
         const [allTracks, allPlaylists, allAlbums, allArtists] = await Promise.all([
-            fetchLibraryItems(getTracks, access_token, limit, processTrackData),
-            fetchLibraryItems(getPlaylists, access_token, limit, processPlaylistData),
-            fetchLibraryItems(getAlbums, access_token, limit, processAlbumData),
-            fetchLibraryItems(getArtists, access_token, limit, processArtistData),
+            fetchPaginatedItems(getTracks, access_token, limit, [], processData),
+            fetchPaginatedItems(getPlaylists, access_token, limit, [], processData),
+            fetchPaginatedItems(getAlbums, access_token, limit, [], processAlbumData),
+            fetchPaginatedItems(getArtists, access_token, limit, [], processArtistData),
         ])
 
         res.status(200).json({
@@ -69,6 +68,8 @@ router.get(
     asyncHandler(async (req, res) => {
         const { access_token } = req.session.user
         const { id } = req.params
+        const limit = SPOTIFY_API_PAGINATION_LIMIT
+        const data_types = 'single,album'
 
         const getArtist = async (access_token, id) => {
             const response = await spotifyAPI.getArtist(access_token, id)
@@ -80,15 +81,15 @@ router.get(
             return response.data.tracks
         }
 
-        const getAlbums = async (access_token, id, include_groups, limit, offset) => {
+        const getAlbums = async (access_token, limit, offset, id, include_groups) => {
             const response = await spotifyAPI.getArtistAlbums(
                 access_token,
                 id,
-                include_groups,
                 limit,
-                offset
+                offset,
+                include_groups
             )
-            return response.data.items
+            return response.data
         }
 
         const getRelated = async (access_token, id) => {
@@ -99,7 +100,7 @@ router.get(
         const [artist, top_tracks, albums, related_artists] = await Promise.all([
             getArtist(access_token, id),
             getTopTracks(access_token, id),
-            getAlbums(access_token, id, 'single,album,appears_on', 50, 0), // Shouldn't need looping. Not many artists will have > 50 data points.
+            fetchPaginatedItems(getAlbums, access_token, limit, [id, data_types], processData),
             getRelated(access_token, id),
         ])
 
