@@ -43,6 +43,8 @@ const ActionBar: React.FC<ActionBarProps> = ({ libraryData, contentType, content
         }
     }
 
+    // TODO: LibraryButton onClick
+
     return (
         <>
             <div className={twMerge('flex h-20 items-center py-4', className)}>
