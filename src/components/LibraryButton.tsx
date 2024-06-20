@@ -37,12 +37,16 @@ const Button: React.FC<ButtonProps> = ({ children, className }) => {
 interface LibraryButtonProps {
     inLibrary: boolean
     size: number
+    className?: string
 }
 
-const LibraryButton: React.FC<LibraryButtonProps> = ({ inLibrary, size }) => {
+const LibraryButton: React.FC<LibraryButtonProps> = ({ inLibrary, size, className, ...props }) => {
     return inLibrary ? (
         <Tooltip message="Remove from Your Library">
-            <Button>
+            <Button
+                className={className}
+                {...props}
+            >
                 <GrFormCheckmark
                     size={size}
                     className="text-black"
@@ -51,7 +55,10 @@ const LibraryButton: React.FC<LibraryButtonProps> = ({ inLibrary, size }) => {
         </Tooltip>
     ) : (
         <Tooltip message="Add to Your Library">
-            <Button className="border-2 border-neutral-500 bg-transparent hover:border-white">
+            <Button
+                className={twMerge('border-2 border-neutral-500 bg-transparent hover:border-white', className)}
+                {...props}
+            >
                 <MdAdd
                     size={size}
                     className="text-neutral-500 transition group-hover:text-white"
