@@ -44,7 +44,6 @@ export const Carousel: React.FC<CarouselProps> = ({ title, children }) => {
             <div className="mt-6 flex items-center justify-between pb-1">
                 <p className="text-2xl font-bold">{title}</p>
                 <div className="flex gap-x-2">
-                    {/* TODO: Nav buttons */}
                     <CarouselButton
                         direction={'left'}
                         onClick={onPrevButtonClick}
@@ -57,15 +56,12 @@ export const Carousel: React.FC<CarouselProps> = ({ title, children }) => {
                     />
                 </div>
             </div>
-            <div className="flex"></div>
-            {/* TODO: Viewport */}
             <CarouselViewport
                 ref={emblaRef}
                 className="flex w-full"
             >
                 {children}
             </CarouselViewport>
-            {/* TODO: Dot navigation */}
         </section>
     )
 }
