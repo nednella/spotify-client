@@ -27,6 +27,7 @@ export interface Album {
 }
 
 export interface AlbumSimplified {
+    album_group: string
     album_type: string
     artists: ArtistSimplified[]
     available_markets: string[]
