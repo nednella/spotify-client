@@ -6,6 +6,7 @@ import { RiPlayLargeFill } from 'react-icons/ri'
 import { Track } from '../../types/Track'
 import { convertTrackDuration } from '../../utils/convertTrackDuration'
 import Tooltip from '../Tooltip'
+import LibraryButton from '../LibraryButton'
 
 interface TrackListItem {
     index: number
@@ -16,11 +17,16 @@ interface TrackListItem {
 }
 
 const TrackListItem: React.FC<TrackListItem> = ({ index, song, album, selected, onSelect }) => {
-    // TODO: Tooltip onClick --> Play Song
-    // TODO: SOCKET OnPlay --> Track # & Track title --> text-green-500
-    // TODO: Render add to library button between album and duration when selected
-
     const duration = convertTrackDuration(song.duration_ms)
+
+    const onPlayClick = (e: React.MouseEvent) => {
+        e.stopPropagation()
+
+        // TODO: Tooltip onClick --> Play Song
+        // TODO: SOCKET OnPlay --> Track # & Track title --> text-green-500
+    }
+
+    // TODO: LibraryButton onClick
 
     return (
         <div
@@ -33,7 +39,7 @@ const TrackListItem: React.FC<TrackListItem> = ({ index, song, album, selected, 
                 grid
                 h-14
                 select-none
-                grid-cols-[16px_minmax(120px,6fr)_40px]
+                grid-cols-[16px_minmax(120px,6fr)_80px]
                 items-center
                 gap-x-4
                 rounded-md
@@ -44,7 +50,7 @@ const TrackListItem: React.FC<TrackListItem> = ({ index, song, album, selected, 
                 hover:bg-neutral-700/50
                 data-[selected=true]:bg-neutral-500/50
                 data-[selected=true]:hover:bg-neutral-500/50
-                md:data-[display-album=true]:grid-cols-[16px_minmax(120px,6fr)_minmax(120px,5fr)_40px]
+                md:data-[display-album=true]:grid-cols-[16px_minmax(120px,6fr)_minmax(120px,5fr)_80px]
              "
         >
             {/* Track index */}
@@ -59,22 +65,20 @@ const TrackListItem: React.FC<TrackListItem> = ({ index, song, album, selected, 
             >
                 <Tooltip
                     message={`Play ${song.name} by ${song.artists[0].name}`}
-                    data-selected={selected}
                     className="
                             hidden 
                             text-white
                             group-hover:block
-                            data-[selected=true]:block
+                            group-data-[selected=true]:block
                         "
                 >
-                    <RiPlayLargeFill />
+                    <RiPlayLargeFill onClick={(e) => onPlayClick(e)} />
                 </Tooltip>
                 <p
-                    data-selected={selected}
                     className="
                         pr-1
                         group-hover:hidden
-                        data-[selected=true]:hidden
+                        group-data-[selected=true]:hidden
                     "
                 >
                     {index + 1}
@@ -119,13 +123,12 @@ const TrackListItem: React.FC<TrackListItem> = ({ index, song, album, selected, 
                         {song.artists.map((artist, index) => (
                             <React.Fragment key={index}>
                                 <Link
-                                    data-selected={selected}
                                     to={`/artist/${artist.id}`}
                                     className="
                                             hover:text-white
                                             hover:underline
                                             group-hover:text-white
-                                            data-[selected=true]:text-white
+                                            group-data-[selected=true]:text-white
                                         "
                                 >
                                     {artist.name}
@@ -140,13 +143,12 @@ const TrackListItem: React.FC<TrackListItem> = ({ index, song, album, selected, 
             {/* Track album */}
             {album && (
                 <ItemContainer
-                    data-selected={selected}
                     data-column={3}
                     className="
                         overflow-hidden
                         truncate
                         group-hover:text-white
-                        data-[selected=true]:text-white
+                        group-data-[selected=true]:text-white
                     "
                 >
                     <Link
@@ -163,15 +165,24 @@ const TrackListItem: React.FC<TrackListItem> = ({ index, song, album, selected, 
 
             {/* Track duration */}
             <ItemContainer
-                data-selected={selected}
                 data-column={4}
                 className="
+                    flex
+                    justify-between
                     overflow-hidden
                     truncate
-                    text-center
                 "
             >
-                {duration}
+                <LibraryButton
+                    inLibrary={false}
+                    size={0}
+                    className="
+                        hidden
+                        group-hover:block
+                        group-data-[selected=true]:block
+                    "
+                />
+                <p className="justify-self-end">{duration}</p>
             </ItemContainer>
         </div>
     )

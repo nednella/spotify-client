@@ -34,7 +34,7 @@ const TrackList: React.FC<TrackListProps> = ({ title, songs, header, album }) =>
                 <p className="justify-self-end text-base">#</p>
                 <p>Title</p>
                 {album && <p className="hidden md:block">Album</p>}
-                <p className="justify-self-center">
+                <p className="justify-self-end pr-2">
                     <FaRegClock size={16} />
                 </p>
             </TrackListHeader>
@@ -72,7 +72,7 @@ const TrackListHeader: React.FC<TrackListHeader> = ({ className, children, displ
                     mb-2
                     grid
                     select-none
-                    grid-cols-[16px_minmax(120px,6fr)_40px]
+                    grid-cols-[16px_minmax(120px,6fr)_80px]
                     items-center
                     gap-x-4
                     border-b
@@ -81,7 +81,7 @@ const TrackListHeader: React.FC<TrackListHeader> = ({ className, children, displ
                     text-sm
                     font-normal
                     text-neutral-400
-                    md:data-[display-album=true]:grid-cols-[16px_minmax(120px,6fr)_minmax(120px,5fr)_40px]
+                    md:data-[display-album=true]:grid-cols-[16px_minmax(120px,6fr)_minmax(120px,5fr)_80px]
                 `,
                 className
             )}
