@@ -5,14 +5,14 @@ import { GrFormCheckmark } from 'react-icons/gr'
 import { MdAdd } from 'react-icons/md'
 import Tooltip from './Tooltip'
 
-interface ButtonProps {
+interface ContainerProps {
     children: React.ReactNode
     className?: string
 }
 
-const Button: React.FC<ButtonProps> = ({ children, className }) => {
+const Container: React.FC<ContainerProps> = ({ children, className }) => {
     return (
-        <button
+        <div
             className={twMerge(
                 `
                     group
@@ -30,7 +30,7 @@ const Button: React.FC<ButtonProps> = ({ children, className }) => {
             )}
         >
             {children}
-        </button>
+        </div>
     )
 }
 
@@ -43,7 +43,7 @@ interface LibraryButtonProps {
 const LibraryButton: React.FC<LibraryButtonProps> = ({ inLibrary, size, className, ...props }) => {
     return inLibrary ? (
         <Tooltip message="Remove from Your Library">
-            <Button
+            <Container
                 className={className}
                 {...props}
             >
@@ -51,11 +51,11 @@ const LibraryButton: React.FC<LibraryButtonProps> = ({ inLibrary, size, classNam
                     size={size}
                     className="text-black"
                 />
-            </Button>
+            </Container>
         </Tooltip>
     ) : (
         <Tooltip message="Add to Your Library">
-            <Button
+            <Container
                 className={twMerge('border-2 border-neutral-500 bg-transparent hover:border-white', className)}
                 {...props}
             >
@@ -63,7 +63,7 @@ const LibraryButton: React.FC<LibraryButtonProps> = ({ inLibrary, size, classNam
                     size={size}
                     className="text-neutral-500 transition group-hover:text-white"
                 />
-            </Button>
+            </Container>
         </Tooltip>
     )
 }
