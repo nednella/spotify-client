@@ -6,6 +6,8 @@ import useScrollOpacity from '../../hooks/useScrollOpacity'
 import { useAuth } from '../../hooks/useAuth'
 import { useLibrary } from '../../hooks/useLibrary'
 import getArtist from '../../api/artist/getArtist'
+import { Artist as ArtistType } from '../../types/Artist'
+import { AlbumSimplified } from '../../types/Album'
 
 import Loading from './Loading'
 import NotFound from './NotFound'
@@ -13,9 +15,12 @@ import ArtistWrapper from '../../components/wrappers/ArtistWrapper'
 import BackgroundColour from '../../components/BackgroundColour'
 import { TabMenu, TabItems, TabTrigger, TabContent } from '../../components/TabMenu'
 import ActionBar from '../../components/ActionBar'
+import GenreBar from '../../components/GenreBar'
 import TrackList from '../../components/songs/TrackList'
-
-import ContentSectionLoading from '../../components/homepage/ContentSectionLoading'
+import { Carousel, CarouselContainer, CarouselSlide } from '../../components/carousel/Carousel'
+import ContentCard from '../../components/content/ContentCard'
+import ContentSection from '../../components/content/ContentSection'
+import Footer from '../../components/Footer'
 
 const Artist = () => {
     const { id: artistId } = useParams()
@@ -32,6 +37,7 @@ const Artist = () => {
         queryKey: ['artist', artistId],
         queryFn: async () => getArtist(artistId),
         enabled: user !== null && artistId !== null,
+        staleTime: 300000, // 1000 * 300 seconds
     })
 
     useEffect(() => {
@@ -49,6 +55,21 @@ const Artist = () => {
 
     if (!artistId) return <NotFound />
 
+    let most_recent, albums, singles
+    if (artistData) {
+        // Cap most recent to 20
+        most_recent = artistData.albums.slice(0, 20)
+        // Sort oldest to newest (newest -> oldest separates albums from singles in the sort)
+        most_recent = most_recent.sort(
+            (a: AlbumSimplified, b: AlbumSimplified) =>
+                Number(a.release_date.substring(0, 4)) - Number(b.release_date.substring(0, 4))
+        )
+        // Sort newest to oldest
+        most_recent = most_recent.reverse()
+        albums = artistData.albums.filter((album: AlbumSimplified) => album.album_type === 'album')
+        singles = artistData.albums.filter((album: AlbumSimplified) => album.album_type === 'single')
+    }
+
     return isLoading ? (
         <Loading />
     ) : isError ? (
@@ -62,7 +83,7 @@ const Artist = () => {
                 colour={colour}
             >
                 <TabMenu>
-                    <TabItems className="sticky top-[64px]">
+                    <TabItems className="sticky top-[64px] z-50">
                         <BackgroundColour opacity={opacity} />
                         <div className="mx-auto max-w-[1400px]">
                             <TabTrigger
@@ -77,10 +98,6 @@ const Artist = () => {
                                 value="tab-3"
                                 title="Singles & EPs"
                             />
-                            <TabTrigger
-                                value="tab-4"
-                                title="Compilations"
-                            />
                         </div>
                     </TabItems>
                     <TabContent
@@ -92,33 +109,112 @@ const Artist = () => {
                             contentType="artist"
                             contentId={artistData.id}
                         />
+                        <GenreBar items={artistData.artist.genres} />
                         <TrackList
+                            title="Popular"
                             songs={artistData.top_tracks}
                             header={false}
-                            album={true}
+                            album={false}
                         />
-                        <ContentSectionLoading />
-                        <ContentSectionLoading />
-                        <ContentSectionLoading />
-                        <ContentSectionLoading />
+                        <Carousel title={'Most recent releases'}>
+                            <CarouselContainer>
+                                {most_recent.map((album: AlbumSimplified) => (
+                                    <CarouselSlide key={album.id}>
+                                        <ContentCard
+                                            image={
+                                                album.images && album.images[0]
+                                                    ? album.images[0].url
+                                                    : '../src/assets/images/liked.png'
+                                            }
+                                            title={album.name}
+                                            subtitle={
+                                                album.album_type === 'album'
+                                                    ? `${album.release_date.substring(0, 4)} \u2022 Album`
+                                                    : `${album.release_date.substring(0, 4)} \u2022 Single`
+                                            }
+                                            href={`/${album.type}/${album.id}`}
+                                        />
+                                    </CarouselSlide>
+                                ))}
+                            </CarouselContainer>
+                        </Carousel>
+                        <Carousel title={'Fans also like'}>
+                            <CarouselContainer>
+                                {artistData.related_artists.map((artist: ArtistType) => (
+                                    <CarouselSlide key={artist.id}>
+                                        <ContentCard
+                                            image={
+                                                artist.images && artist.images[0]
+                                                    ? artist.images[0].url
+                                                    : '../src/assets/images/liked.png'
+                                            }
+                                            title={artist.name}
+                                            subtitle={'Artist'}
+                                            href={`/${artist.type}/${artist.id}`}
+                                        />
+                                    </CarouselSlide>
+                                ))}
+                            </CarouselContainer>
+                        </Carousel>
+                        <Footer />
                     </TabContent>
                     <TabContent
                         className="mx-auto max-w-[1400px]"
                         value="tab-2"
                     >
-                        <p>Content 2</p>
+                        {albums.length > 0 ? (
+                            <>
+                                <ContentSection>
+                                    {albums.map((album: AlbumSimplified) => (
+                                        <ContentCard
+                                            key={album.id}
+                                            image={
+                                                album.images && album.images[0]
+                                                    ? album.images[0].url
+                                                    : '../src/assets/images/liked.png'
+                                            }
+                                            title={album.name}
+                                            subtitle={`${album.release_date.substring(0, 4)} \u2022 Album`}
+                                            href={`/${album.type}/${album.id}`}
+                                        />
+                                    ))}
+                                </ContentSection>
+                                <Footer />
+                            </>
+                        ) : (
+                            <div className="mt-10 flex items-center justify-center">
+                                <p className="font-medium">It appears this artist has not released any albums.</p>
+                            </div>
+                        )}
                     </TabContent>
                     <TabContent
                         className="mx-auto max-w-[1400px]"
                         value="tab-3"
                     >
-                        <p>Content 3</p>
-                    </TabContent>
-                    <TabContent
-                        className="mx-auto max-w-[1400px]"
-                        value="tab-4"
-                    >
-                        <p>Content 4</p>
+                        {singles.length > 0 ? (
+                            <>
+                                <ContentSection>
+                                    {singles.map((album: AlbumSimplified) => (
+                                        <ContentCard
+                                            key={album.id}
+                                            image={
+                                                album.images && album.images[0]
+                                                    ? album.images[0].url
+                                                    : '../src/assets/images/liked.png'
+                                            }
+                                            title={album.name}
+                                            subtitle={`${album.release_date.substring(0, 4)} \u2022 Single`}
+                                            href={`/${album.type}/${album.id}`}
+                                        />
+                                    ))}
+                                </ContentSection>
+                                <Footer />
+                            </>
+                        ) : (
+                            <div className="mt-10 flex items-center justify-center">
+                                <p className="font-medium">It appears this artist has not released any singles.</p>
+                            </div>
+                        )}
                     </TabContent>
                 </TabMenu>
             </ArtistWrapper>

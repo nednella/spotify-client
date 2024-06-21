@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react'
+import { twMerge } from 'tailwind-merge'
+import { FiExternalLink } from 'react-icons/fi'
 
 import { PlaylistSimplified } from '../types/Playlist'
 import { Album } from '../types/Album'
@@ -7,16 +9,16 @@ import { Artist } from '../types/Artist'
 import Button from './Button'
 import PlayButton from './PlayButton'
 import LibraryButton from './LibraryButton'
-import { twMerge } from 'tailwind-merge'
 
 interface ActionBarProps {
     libraryData: PlaylistSimplified[] | Album[] | Artist[]
     contentType: 'playlist' | 'album' | 'artist'
     contentId: string
+    contentHref: string
     className?: string
 }
 
-const ActionBar: React.FC<ActionBarProps> = ({ libraryData, contentType, contentId, className }) => {
+const ActionBar: React.FC<ActionBarProps> = ({ libraryData, contentType, contentId, contentHref, className }) => {
     const [isPlaying] = useState(false)
     const [inLibrary, setInLibrary] = useState(false)
 
@@ -47,28 +49,29 @@ const ActionBar: React.FC<ActionBarProps> = ({ libraryData, contentType, content
 
     return (
         <>
-            <div className={twMerge('flex h-20 items-center py-4', className)}>
-                {/* Play/pause button */}
-                <span className="mr-6">
-                    {isPlaying ? (
-                        <PlayButton
-                            size={24}
-                            isPlaying={true}
-                            className="shadow-black/30"
-                        />
-                    ) : (
-                        <PlayButton
-                            size={24}
-                            isPlaying={false}
-                            className="shadow-black/30"
-                        />
-                    )}
-                </span>
+            <div className={twMerge('flex h-20 items-center justify-between py-4', className)}>
+                <div className="flex items-center">
+                    {/* Play/pause button */}
+                    <span className="mr-6">
+                        {isPlaying ? (
+                            <PlayButton
+                                size={24}
+                                isPlaying={true}
+                                className="shadow-black/30"
+                            />
+                        ) : (
+                            <PlayButton
+                                size={24}
+                                isPlaying={false}
+                                className="shadow-black/30"
+                            />
+                        )}
+                    </span>
 
-                {/* Add/remove from library */}
-                {contentType === 'artist' ? (
-                    <Button
-                        className="
+                    {/* Add/remove from library */}
+                    {contentType === 'artist' ? (
+                        <Button
+                            className="
                             mr-6
                             w-fit
                             border
@@ -80,21 +83,71 @@ const ActionBar: React.FC<ActionBarProps> = ({ libraryData, contentType, content
                             hover:border-white
                             hover:opacity-100
                         "
-                        onClick={addToLibrary}
+                            onClick={addToLibrary}
+                        >
+                            {inLibrary ? <p className="font-bold">Following</p> : <p>Follow</p>}
+                        </Button>
+                    ) : inLibrary ? (
+                        <LibraryButton
+                            inLibrary={true}
+                            size={24}
+                        />
+                    ) : (
+                        <LibraryButton
+                            inLibrary={false}
+                            size={24}
+                        />
+                    )}
+                </div>
+
+                {/* External links */}
+                <div
+                    className="
+                        flex
+                        h-8
+                        w-fit
+                        rounded-md
+                        border-2
+                        border-neutral-800/50
+                    "
+                >
+                    <div
+                        className="
+                            flex
+                            h-full
+                            w-8
+                            items-center
+                            justify-center
+                            bg-neutral-800/50
+                        "
                     >
-                        {inLibrary ? <p className="font-bold">Following</p> : <p>Follow</p>}
-                    </Button>
-                ) : inLibrary ? (
-                    <LibraryButton
-                        inLibrary={true}
-                        size={24}
-                    />
-                ) : (
-                    <LibraryButton
-                        inLibrary={false}
-                        size={24}
-                    />
-                )}
+                        <FiExternalLink
+                            className="text-neutral-400"
+                            size={20}
+                        />
+                    </div>
+                    <div
+                        className="
+                            flex
+                            h-full
+                            w-fit
+                            rounded-r-md
+                            bg-neutral-700/50
+                        "
+                    >
+                        <span className="flex w-8 items-center justify-center">
+                            <a
+                                href={contentHref}
+                                target="_blank"
+                            >
+                                <img
+                                    src="../../public/spotify-icon.svg"
+                                    className="h-5 w-5"
+                                />
+                            </a>
+                        </span>
+                    </div>
+                </div>
             </div>
         </>
     )
