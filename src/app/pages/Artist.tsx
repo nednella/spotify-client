@@ -107,7 +107,8 @@ const Artist = () => {
                         <ActionBar
                             libraryData={libraryData.artists}
                             contentType="artist"
-                            contentId={artistData.id}
+                            contentId={artistData.artist.id}
+                            contentHref={artistData.artist.external_urls.spotify}
                         />
                         <GenreBar items={artistData.artist.genres} />
                         <TrackList
