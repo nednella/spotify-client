@@ -112,6 +112,28 @@ export default class spotifyAPI {
     }
 
     /**
+     * Get the current user's topa rtists or tracks based on calculated affinity, over a 1y, 6mo or 4 week duration.
+     * @param {*} access_token - Authenticated user's access token.
+     * @param {number} limit - Spotify API pagination page limit.
+     * @param {number} offset - Spotify API pagination page offset.
+     * @param {*} type - The type of entity to return. Valid values: 'artists', 'tracks'.
+     * @param {*} time_range - Over what time from the affinities are computed. Valid values: 'long_term', 'medium_term', 'short_term'.
+     * @returns - A promise that if successful, resolves into an object containing the requested information.
+     */
+    getMeTopItems = (access_token, limit, offset, type, time_range) => {
+        return new ApiRequest(access_token)
+            .setMethod('GET')
+            .setPath(`/v1/me/top/${type}`)
+            .setQueryParams({
+                limit: limit || 20,
+                offset: offset || 0,
+                time_range: time_range,
+            })
+            .build()
+            .execute()
+    }
+
+    /**
      * Get a list of the songs saved in the current user's library.
      * Docs URL: https://developer.spotify.com/documentation/web-api/reference/get-users-saved-tracks
      * @param {string} access_token - Authenticated user's access token.
