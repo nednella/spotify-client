@@ -7,13 +7,14 @@ import { Track } from '../../types/Track'
 import TrackListItem from './TrackListItem'
 
 interface TrackListProps {
-    title: string
+    title?: string
     songs: Track[]
     header: boolean
     album: boolean
+    shallow?: boolean
 }
 
-const TrackList: React.FC<TrackListProps> = ({ title, songs, header, album }) => {
+const TrackList: React.FC<TrackListProps> = ({ title, songs, header, album, shallow }) => {
     const [selectedIndex, setSelectedIndex] = useState<number | null>(null)
     // TODO: handle click outside of TrackList --> remove selected
 
@@ -26,7 +27,7 @@ const TrackList: React.FC<TrackListProps> = ({ title, songs, header, album }) =>
     }
     return (
         <>
-            <p className="mb-4 mt-2 select-none text-2xl font-bold">{title}</p>
+            {title && <p className="mb-4 mt-2 select-none text-2xl font-bold">{title}</p>}
             <TrackListHeader
                 display={header}
                 album={album}
@@ -39,16 +40,27 @@ const TrackList: React.FC<TrackListProps> = ({ title, songs, header, album }) =>
                 </p>
             </TrackListHeader>
             <div className="mb-4 rounded-md border border-transparent">
-                {songs.map((song, index) => (
-                    <TrackListItem
-                        key={index}
-                        index={index}
-                        song={song}
-                        album={album}
-                        selected={selectedIndex === index}
-                        onSelect={handleSelect}
-                    ></TrackListItem>
-                ))}
+                {shallow
+                    ? songs.slice(0, 5).map((song, index) => (
+                          <TrackListItem
+                              key={index}
+                              index={index}
+                              song={song}
+                              album={album}
+                              selected={selectedIndex === index}
+                              onSelect={handleSelect}
+                          ></TrackListItem>
+                      ))
+                    : songs.map((song, index) => (
+                          <TrackListItem
+                              key={index}
+                              index={index}
+                              song={song}
+                              album={album}
+                              selected={selectedIndex === index}
+                              onSelect={handleSelect}
+                          ></TrackListItem>
+                      ))}
             </div>
         </>
     )
