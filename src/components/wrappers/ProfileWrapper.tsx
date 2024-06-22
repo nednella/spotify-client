@@ -114,7 +114,7 @@ const ProfileWrapper: React.FC<ProfileWrapperProps> = ({ user, colour, children 
                     {/* Content */}
                     <section
                         ref={contentRef}
-                        className="mx-auto h-fit w-full max-w-[1400px] p-4"
+                        className="h-fit w-full"
                     >
                         {children}
                     </section>
