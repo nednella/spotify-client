@@ -5,15 +5,18 @@ import { useQuery } from '@tanstack/react-query'
 import useScrollOpacity from '../../hooks/useScrollOpacity'
 import { useAuth } from '../../hooks/useAuth'
 import { useLibrary } from '../../hooks/useLibrary'
+
 import getArtist from '../../api/artist/getArtist'
+
 import { Artist as ArtistType } from '../../types/Artist'
 import { AlbumSimplified } from '../../types/Album'
 
 import Loading from './Loading'
 import NotFound from './NotFound'
+
 import ArtistWrapper from '../../components/wrappers/ArtistWrapper'
-import BackgroundColour from '../../components/BackgroundColour'
 import { TabMenu, TabItems, TabTrigger, TabContent } from '../../components/TabMenu'
+import BackgroundColour from '../../components/BackgroundColour'
 import ActionBar from '../../components/ActionBar'
 import GenreBar from '../../components/GenreBar'
 import TrackList from '../../components/songs/TrackList'
@@ -23,10 +26,9 @@ import ContentSection from '../../components/content/ContentSection'
 import Footer from '../../components/Footer'
 
 const Artist = () => {
+    const [colour, setColour] = useState<string | undefined>(undefined) // accepts 'r/g/b' format
     const { id: artistId } = useParams()
     const { opacity } = useScrollOpacity()
-    const [colour, setColour] = useState<string | undefined>(undefined) // accepts 'r/g/b' format
-
     const { user } = useAuth()
     const { data: libraryData, isLoading: libraryLoading, isError: libraryError } = useLibrary()
     const {
