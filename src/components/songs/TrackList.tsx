@@ -2,21 +2,28 @@ import React, { useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 import { FaRegClock } from 'react-icons/fa'
 
+import useScrollOpacity from '../../hooks/useScrollOpacity'
+
 import { Track } from '../../types/Track'
 
+import BackgroundColour from '../BackgroundColour'
 import TrackListItem from './TrackListItem'
 
 interface TrackListProps {
     title?: string
     songs: Track[]
     header: boolean
+    sticky?: boolean
     album: boolean
     shallow?: boolean
 }
 
-const TrackList: React.FC<TrackListProps> = ({ title, songs, header, album, shallow }) => {
+const TrackList: React.FC<TrackListProps> = ({ title, songs, header, sticky, album, shallow }) => {
     const [selectedIndex, setSelectedIndex] = useState<number | null>(null)
+    const { opacity } = useScrollOpacity()
+
     // TODO: handle click outside of TrackList --> remove selected
+    // TODO: expand/reduce button to change state of displayed items from 5 -> 10 when 'shallow' is enabled
 
     const handleSelect = (index: number) => {
         if (selectedIndex === index) {
@@ -31,7 +38,12 @@ const TrackList: React.FC<TrackListProps> = ({ title, songs, header, album, shal
             <TrackListHeader
                 display={header}
                 album={album}
+                className={twMerge('', sticky && 'sticky top-[64px]', opacity === 1 && 'mx-[-16px] px-8')}
             >
+                <BackgroundColour
+                    opacity={opacity}
+                    gradient={true}
+                />
                 <p className="justify-self-end text-base">#</p>
                 <p>Title</p>
                 {album && <p className="hidden md:block">Album</p>}
@@ -69,13 +81,13 @@ const TrackList: React.FC<TrackListProps> = ({ title, songs, header, album, shal
 export default TrackList
 
 interface TrackListHeader {
-    className?: string
-    children: React.ReactNode
     display: boolean
     album: boolean
+    className?: string
+    children: React.ReactNode
 }
 
-const TrackListHeader: React.FC<TrackListHeader> = ({ className, children, display, album }) => {
+const TrackListHeader: React.FC<TrackListHeader> = ({ display, album, className, children }) => {
     return display ? (
         <div
             data-display-album={album}
@@ -83,6 +95,7 @@ const TrackListHeader: React.FC<TrackListHeader> = ({ className, children, displ
                 `
                     mb-2
                     grid
+                    h-[35px]
                     select-none
                     grid-cols-[16px_minmax(120px,6fr)_80px]
                     items-center
