@@ -37,7 +37,7 @@ const App = () => {
         },
         {
             label: 'Album',
-            path: '/album/*',
+            path: '/album/:id',
             element: user ? <Album /> : <Navigate to={'/'} />,
         },
         {
