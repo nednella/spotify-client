@@ -64,6 +64,35 @@ router.get(
 )
 
 router.get(
+    '/user/top-items',
+    asyncHandler(async (req, res) => {
+        const { access_token } = req.session.user
+        const limit = SPOTIFY_API_PAGINATION_LIMIT
+
+        const getUserTopItems = async (access_token, limit, offset, type, time_range) => {
+            const response = await spotifyAPI.getMeTopItems(
+                access_token,
+                limit,
+                offset,
+                type,
+                time_range
+            )
+            return response.data.items
+        }
+
+        const [top_tracks, top_artists] = await Promise.all([
+            getUserTopItems(access_token, limit, 0, 'tracks', 'short_term'),
+            getUserTopItems(access_token, limit, 0, 'artists', 'short_term'),
+        ])
+
+        res.status(200).json({
+            top_tracks,
+            top_artists,
+        })
+    })
+)
+
+router.get(
     '/artist/:id',
     asyncHandler(async (req, res) => {
         const { access_token } = req.session.user
@@ -109,35 +138,6 @@ router.get(
             top_tracks: top_tracks,
             albums: albums,
             related_artists: related_artists,
-        })
-    })
-)
-
-router.get(
-    '/user/top-items',
-    asyncHandler(async (req, res) => {
-        const { access_token } = req.session.user
-        const limit = SPOTIFY_API_PAGINATION_LIMIT
-
-        const getUserTopItems = async (access_token, limit, offset, type, time_range) => {
-            const response = await spotifyAPI.getMeTopItems(
-                access_token,
-                limit,
-                offset,
-                type,
-                time_range
-            )
-            return response.data.items
-        }
-
-        const [top_tracks, top_artists] = await Promise.all([
-            getUserTopItems(access_token, limit, 0, 'tracks', 'short_term'),
-            getUserTopItems(access_token, limit, 0, 'artists', 'short_term'),
-        ])
-
-        res.status(200).json({
-            top_tracks,
-            top_artists,
         })
     })
 )
