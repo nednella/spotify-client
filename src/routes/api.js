@@ -142,6 +142,24 @@ router.get(
     })
 )
 
+router.get(
+    '/album/:id',
+    asyncHandler(async (req, res) => {
+        const { access_token } = req.session.user
+        const { id } = req.params
+        const limit = SPOTIFY_API_PAGINATION_LIMIT
+
+        const getAlbum = async (access_token, id) => {
+            const response = await spotifyAPI.getAlbum(access_token, id)
+            return response.data
+        }
+
+        const [album] = await Promise.all([getAlbum(access_token, id)])
+
+        res.status(200).json({ album })
+    })
+)
+
 /* PLACEHOLDER ROUTE */
 router.get(
     '',

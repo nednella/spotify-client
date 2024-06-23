@@ -27,6 +27,7 @@ export default class spotifyAPI {
 
     /**
      * Retrieve URL in which the user can sign in with their Spotify account and grant permissions.
+     * Docs URL: https://developer.spotify.com/documentation/web-api/concepts/authorization
      * @param {string} state - A parameter that you can use to maintain a value between the request and
      * the callback to redirect_uri. It is useful to prevent CSRF exploits.
      * @return {string} The URL where the user can give application permissions.
@@ -48,6 +49,7 @@ export default class spotifyAPI {
 
     /**
      * Request an access and refresh token using the authorisation code flow provided by Spotify's API.
+     * Docs URL: https://developer.spotify.com/documentation/web-api/tutorials/code-flow
      * @param {string} authCode - A code that the authorisation code flow provides within the callback URL.
      * @returns {Promise | undefined} A promise that if successful, resolves into an object containing the
      * access token, refresh token, token type and time to expiration. If rejected, it contains an error object.
@@ -75,6 +77,7 @@ export default class spotifyAPI {
 
     /**
      * Retrieve URL in which the user can sign in with their Spotify account and grant permissions.
+     * Docs URL: https://developer.spotify.com/documentation/web-api/tutorials/refreshing-tokens
      * @param {string} refreshToken - The token provided by Spotify's auth API to request new access tokens with.
      * @returns {Promise | undefined} A promise that if successful, resolves into an object containing the
      * refreshed access token, token type and time to expiration. If rejected, it contains an error object.
@@ -102,8 +105,11 @@ export default class spotifyAPI {
 
     /*  WEB API ENDPOINT METHODS */
 
+    /* USER ENDPOINTS */
+
     /**
      * Get detailed profile information about the curent user.
+     * Docs URL: https://developer.spotify.com/documentation/web-api/reference/get-current-users-profile
      * @param {string} access_token - Authenticated user's access token.
      * @returns {Promise} - A promise that if successful, resolves into an object containing the requested information.
      */
@@ -113,6 +119,7 @@ export default class spotifyAPI {
 
     /**
      * Get the current user's topa rtists or tracks based on calculated affinity, over a 1y, 6mo or 4 week duration.
+     * Docs URL: https://developer.spotify.com/documentation/web-api/reference/get-users-top-artists-and-tracks
      * @param {*} access_token - Authenticated user's access token.
      * @param {number} limit - Spotify API pagination page limit.
      * @param {number} offset - Spotify API pagination page offset.
@@ -214,6 +221,11 @@ export default class spotifyAPI {
             .execute()
     }
 
+    /* MISC ENDPOINTS */
+    // TODO: add check if user is following X among other misc calls
+
+    /* ARTIST ENDPOINTS */
+
     /**
      * Get Spotify catalog information for a single artist.
      * Docs URL: https://developer.spotify.com/documentation/web-api/reference/get-an-artist
@@ -278,6 +290,23 @@ export default class spotifyAPI {
         return new ApiRequest(access_token)
             .setMethod('GET')
             .setPath(`/v1/artists/${id}/related-artists`)
+            .build()
+            .execute()
+    }
+
+    /* ALBUM ENDPOINTS */
+
+    /**
+     * Get Spotify catalog information for a single album.
+     * Docs URL: https://developer.spotify.com/documentation/web-api/reference/get-an-album
+     * @param {string} access_token - Authenticated user's access token.
+     * @param {string} id - Unique album Spotify ID.
+     * @returns - A promise that if successful, resolves into an object containing the requested information.
+     */
+    getAlbum = (access_token, id) => {
+        return new ApiRequest(access_token)
+            .setMethod('GET')
+            .setPath(`/v1/albums/${id}`)
             .build()
             .execute()
     }
