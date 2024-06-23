@@ -1,6 +1,6 @@
 import React, { useRef } from 'react'
 
-// import { Album } from '../../types/Album'
+import { Album } from '../../types/Album'
 
 import useScrollOpacity from '../../hooks/useScrollOpacity'
 
@@ -8,16 +8,22 @@ import Header from '../Header'
 import ContentWrapper from './ContentScrollWrapper'
 import HeaderSpacer from '../HeaderSpacer'
 import BackgroundGradient from '../BackgroundGradient'
+import { Link } from 'react-router-dom'
+import { convertAlbumDuration } from '../../common/convertAlbumDuration'
 
 interface AlbumWrapperProps {
-    // album: Album
+    album: Album
     colour?: string
     children: React.ReactNode
 }
 
-const AlbumWrapper: React.FC<AlbumWrapperProps> = ({ colour, children }) => {
+const AlbumWrapper: React.FC<AlbumWrapperProps> = ({ album, colour, children }) => {
     const { opacity } = useScrollOpacity()
     const contentRef = useRef(null)
+
+    const totalListeningLength = convertAlbumDuration(
+        album.tracks.items.reduce((n, { duration_ms }) => n + duration_ms, 0).toString()
+    )
 
     return (
         <>
@@ -71,12 +77,11 @@ const AlbumWrapper: React.FC<AlbumWrapperProps> = ({ colour, children }) => {
                                 rounded-md
                                 object-cover
                             "
-                                // src={
-                                //     album.images && album.images[0]
-                                //         ? album.images[0].url
-                                //         : '../src/assets/images/liked.png'
-                                // }
-                                src={'../src/assets/images/liked.png'}
+                                src={
+                                    album.images && album.images[0]
+                                        ? album.images[0].url
+                                        : '../src/assets/images/liked.png'
+                                }
                             />
                         </div>
                         {/* Details container */}
@@ -99,7 +104,7 @@ const AlbumWrapper: React.FC<AlbumWrapperProps> = ({ colour, children }) => {
                                 md:font-extrabold
                             "
                             >
-                                Album Name
+                                {album.name}
                             </p>
                             <div
                                 className="
@@ -115,15 +120,28 @@ const AlbumWrapper: React.FC<AlbumWrapperProps> = ({ colour, children }) => {
                                 <div
                                     className="
                                     flex
-                                    gap-x-2
+                                    flex-wrap
                                     text-sm
                                     font-normal
                                 "
                                 >
-                                    <p>Album author</p>
-                                    <p>Release year</p>
-                                    <p>Song count</p>
-                                    <p>Approx. listening length</p>
+                                    {album.artists.map((artist, index) => (
+                                        <React.Fragment key={index}>
+                                            <Link
+                                                to={`/${artist.type}/${artist.id}`}
+                                                className="font-bold hover:underline"
+                                            >
+                                                {artist.name}
+                                            </Link>
+                                            {index < album.artists.length - 1 && <span className="mx-1">&bull;</span>}
+                                        </React.Fragment>
+                                    ))}
+                                    <span className="mx-1">&bull;</span>
+                                    <span>{album.release_date.substring(0, 4)}</span>
+                                    <span className="mx-1">&bull;</span>
+                                    <span>
+                                        {album.total_tracks} songs, {totalListeningLength}
+                                    </span>
                                 </div>
                             </div>
                         </div>
