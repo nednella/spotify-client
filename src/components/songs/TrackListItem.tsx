@@ -4,7 +4,7 @@ import { twMerge } from 'tailwind-merge'
 import { RiPlayLargeFill } from 'react-icons/ri'
 
 import { Track } from '../../types/Track'
-import { convertTrackDuration } from '../../utils/convertTrackDuration'
+import { convertTrackDuration } from '../../common/convertTrackDuration'
 import Tooltip from '../Tooltip'
 import LibraryButton from '../LibraryButton'
 
@@ -97,23 +97,23 @@ const TrackListItem: React.FC<TrackListItem> = ({ index, song, album, selected, 
                 "
             >
                 {/* Image container */}
-                <div
-                    className="
+                {song.album && (
+                    <div
+                        className="
                         mr-3
                         max-h-10
                         max-w-10
                     "
-                >
-                    <img
-                        className="rounded-sm object-cover"
-                        src={
-                            song.album && song.album.images[0]
-                                ? song.album.images[0].url
-                                : '../src/assets/images/placeholder.png'
-                        }
-                        alt="Album artwork"
-                    />
-                </div>
+                    >
+                        <img
+                            className="rounded-sm object-cover"
+                            src={
+                                song.album.images[0] ? song.album.images[0].url : '../src/assets/images/placeholder.png'
+                            }
+                            alt="Album artwork"
+                        />
+                    </div>
+                )}
                 {/* Details container */}
                 <div className="flex flex-col overflow-hidden">
                     {/* Track title */}
@@ -123,7 +123,7 @@ const TrackListItem: React.FC<TrackListItem> = ({ index, song, album, selected, 
                         {song.artists.map((artist, index) => (
                             <React.Fragment key={index}>
                                 <Link
-                                    to={`/artist/${artist.id}`}
+                                    to={`/${artist.type}/${artist.id}`}
                                     className="
                                             hover:text-white
                                             hover:underline
