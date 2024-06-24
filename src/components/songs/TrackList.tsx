@@ -94,7 +94,7 @@ const TrackListHeader: React.FC<TrackListHeader> = ({ display, album, className,
             className={twMerge(
                 `
                     mb-2
-                    grid
+                    hidden
                     h-[35px]
                     select-none
                     grid-cols-[16px_minmax(120px,6fr)_80px]
@@ -106,6 +106,7 @@ const TrackListHeader: React.FC<TrackListHeader> = ({ display, album, className,
                     text-sm
                     font-normal
                     text-neutral-400
+                    md:grid
                     md:data-[display-album=true]:grid-cols-[16px_minmax(120px,6fr)_minmax(120px,5fr)_80px]
                 `,
                 className
