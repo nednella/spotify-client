@@ -18,7 +18,6 @@ import ArtistWrapper from '../../components/wrappers/ArtistWrapper'
 import { TabMenu, TabItems, TabTrigger, TabContent } from '../../components/TabMenu'
 import BackgroundColour from '../../components/BackgroundColour'
 import ActionBar from '../../components/ActionBar'
-import GenreBar from '../../components/GenreBar'
 import TrackList from '../../components/songs/TrackList'
 import { Carousel, CarouselContainer, CarouselSlide } from '../../components/carousel/Carousel'
 import ContentCard from '../../components/content/ContentCard'
@@ -112,7 +111,6 @@ const Artist = () => {
                             contentId={artistData.artist.id}
                             contentHref={artistData.artist.external_urls.spotify}
                         />
-                        <GenreBar items={artistData.artist.genres} />
                         <TrackList
                             title="Popular"
                             songs={artistData.top_tracks}
