@@ -7,7 +7,7 @@ export interface Track {
     artists: ArtistSimplified[]
     available_markets: string[]
     disc_number: string
-    duration_ms: string
+    duration_ms: number
     explicit: boolean
     external_ids: ExternalIds
     external_urls: ExternalUrls
