@@ -40,8 +40,6 @@ const Playlist = () => {
 
     if (!playlistId) return <NotFound />
 
-    if (playlistData) console.log(playlistData)
-
     return isLoading ? (
         <Loading />
     ) : isError ? (
