@@ -3,17 +3,18 @@
  * @param {function} fetchFn - API fetch function that returns response.data.
  * @param {string} access_token - Authenticated user's access token.
  * @param {number} limit - Spotify API pagination page limit.
+ * @param {number} itemCap - Loop will exit after reaching specified number of items. Default is uncapped. Must be set to 'undefined' for uncapped.
  * @param {Array} options - An array of additionally required items for the paginated API endpoint (e.g., artist ID, requested data type).
  * @param {function} processData - Function to process the data returned from fetchFn.
  * @returns An array of the requested data.
  */
-const fetchPaginatedItems = async (fetchFn, access_token, limit, options, processData) => {
+const fetchPaginatedItems = async (fetchFn, access_token, limit, itemCap = Infinity, options, processData) => {
     let items = [],
         total = 1,
         offset = 0,
         after = ''
 
-    while (items.length < total) {
+    while (items.length < total && items.length < itemCap) {
         const data = await fetchFn(access_token, limit, offset, ...options)
         if (!data) break
 
@@ -38,6 +39,13 @@ const fetchPaginatedItems = async (fetchFn, access_token, limit, options, proces
 // https://developer.spotify.com/documentation/web-api/reference/get-an-artists-albums
 export const processData = (data) => ({
     items: data.items,
+    total: data.total,
+    limit: data.limit,
+})
+
+// https://developer.spotify.com/documentation/web-api/reference/get-playlists-tracks
+export const processPlaylistData = (data) => ({
+    items: data.items.map((item) => ({ ...item.track })),
     total: data.total,
     limit: data.limit,
 })
