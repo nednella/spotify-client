@@ -35,7 +35,7 @@ const AlbumWrapper: React.FC<AlbumWrapperProps> = ({ album, colour, children }) 
             <ContentWrapper contentRef={contentRef}>
                 {/* Heading container */}
                 <div
-                    className="h-fit w-[full] pb-4 md:h-[300px]"
+                    className="h-fit w-[full] pb-4 md:h-[280px]"
                     style={{
                         backgroundColor: `rgb(${colour})`,
                         backgroundImage: 'linear-gradient(transparent 0, rgba(0, 0, 0, .5) 100%)',
@@ -121,25 +121,31 @@ const AlbumWrapper: React.FC<AlbumWrapperProps> = ({ album, colour, children }) 
                                 <div
                                     className="
                                         flex
+                                        flex-col
                                         flex-wrap
                                         text-sm
                                         font-normal
+                                        md:flex-row
                                     "
                                 >
-                                    {album.artists.map((artist, index) => (
-                                        <React.Fragment key={index}>
-                                            <Link
-                                                to={`/${artist.type}/${artist.id}`}
-                                                className="font-bold hover:underline"
-                                            >
-                                                {artist.name}
-                                            </Link>
-                                            {index < album.artists.length - 1 && <span className="mx-1">&bull;</span>}
-                                        </React.Fragment>
-                                    ))}
-                                    <span className="mx-1">&bull;</span>
+                                    <div className="flex flex-wrap">
+                                        {album.artists.map((artist, index) => (
+                                            <React.Fragment key={index}>
+                                                <Link
+                                                    to={`/${artist.type}/${artist.id}`}
+                                                    className="font-bold hover:underline"
+                                                >
+                                                    {artist.name}
+                                                </Link>
+                                                {index < album.artists.length - 1 && (
+                                                    <span className="mx-1">&bull;</span>
+                                                )}
+                                            </React.Fragment>
+                                        ))}
+                                    </div>
+                                    <span className="mx-1 hidden md:block">&bull;</span>
                                     <span>{album.release_date.substring(0, 4)}</span>
-                                    <span className="mx-1">&bull;</span>
+                                    <span className="mx-1 hidden md:block">&bull;</span>
                                     <span>
                                         {album.total_tracks} songs, {totalListeningLength}
                                     </span>
