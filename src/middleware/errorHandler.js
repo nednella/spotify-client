@@ -9,9 +9,7 @@ const errorHandler = (err, req, res, next) => {
     console.error(err)
 
     if (err.body.error) {
-        res.status(err.body?.error.status || 500).end(
-            err.body?.error.message || 'Internal server error.'
-        )
+        res.status(err.body?.error.status || 500).end(err.body?.error.message || 'Internal server error.')
     } else {
         res.status(err.status).end(err.body)
     }

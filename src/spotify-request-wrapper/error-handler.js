@@ -35,8 +35,7 @@ export class ApiError extends NamedError {
 export class AuthError extends ApiError {
     constructor(headers, status, body) {
         console.error('Authentication error.')
-        const message =
-            "An authentication error occurred whilst communicating with Spotify's Web API."
+        const message = "An authentication error occurred whilst communicating with Spotify's Web API."
 
         // Convert Spotify's auth error to same object structure as web api error
         body = {

@@ -55,10 +55,7 @@ class Request {
 
         let URI = this.scheme + '://' + this.host
 
-        if (
-            (this.scheme === 'http' && this.port !== 80) ||
-            (this.scheme === 'https' && this.port !== 443)
-        ) {
+        if ((this.scheme === 'http' && this.port !== 80) || (this.scheme === 'https' && this.port !== 443)) {
             URI += ':' + this.port
         }
 
