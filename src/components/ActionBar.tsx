@@ -141,7 +141,7 @@ const ActionBar: React.FC<ActionBarProps> = ({ libraryData, contentType, content
                                 target="_blank"
                             >
                                 <img
-                                    src="../../public/spotify-icon.svg"
+                                    src="/spotify-icon.svg"
                                     className="h-5 w-5"
                                 />
                             </a>
