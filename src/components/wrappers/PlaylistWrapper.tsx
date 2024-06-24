@@ -1,8 +1,11 @@
 import React, { useRef } from 'react'
 
-// import { PlaylistSimplified } from '../../types/Playlist'
+import { PlaylistSimplified } from '../../types/Playlist'
+import { Track } from '../../types/Track'
 
 import useScrollOpacity from '../../hooks/useScrollOpacity'
+
+import { convertAlbumDuration } from '../../common/convertAlbumDuration'
 
 import Header from '../Header'
 import ContentWrapper from './ContentScrollWrapper'
@@ -10,14 +13,22 @@ import HeaderSpacer from '../HeaderSpacer'
 import BackgroundGradient from '../BackgroundGradient'
 
 interface PlaylistWrapperProps {
-    // playlist: PlaylistSimplified
+    playlist: PlaylistSimplified
+    tracks: Track[]
     colour?: string
     children: React.ReactNode
 }
 
-const PlaylistWrapper: React.FC<PlaylistWrapperProps> = ({ colour, children }) => {
+const PlaylistWrapper: React.FC<PlaylistWrapperProps> = ({ playlist, tracks, colour, children }) => {
     const { opacity } = useScrollOpacity()
     const contentRef = useRef(null)
+
+    const followers = playlist.followers.total.toLocaleString('en', { notation: 'standard' }) // Thousands separator
+    const songs = tracks.length.toLocaleString('en', { notation: 'standard' }) // Thousands separator
+
+    const totalListeningLength = convertAlbumDuration(
+        tracks.reduce((n, { duration_ms }) => n + duration_ms, 0).toString()
+    )
 
     return (
         <>
@@ -38,93 +49,104 @@ const PlaylistWrapper: React.FC<PlaylistWrapperProps> = ({ colour, children }) =
                     {/* Heading content */}
                     <section
                         className="
-                        mx-auto
-                        flex
-                        h-full
-                        max-w-[1400px]
-                        flex-col
-                        px-4
-                        md:flex-row
-                    "
+                            mx-auto
+                            flex
+                            h-full
+                            max-w-[1400px]
+                            flex-col
+                            px-4
+                            md:flex-row
+                        "
                     >
                         {/* Image container */}
                         <div
                             className="
-                            mb-4
-                            max-h-[288px]
-                            min-h-[128px]
-                            w-[40vw]
-                            min-w-[128px]
-                            max-w-[288px]
-                            self-center
-                            md:mb-0
-                            md:mr-4
-                            md:max-h-[128px]
-                            md:max-w-[128px]
-                            md:self-end
-                        "
+                                mb-4
+                                max-h-[288px]
+                                min-h-[128px]
+                                w-[40vw]
+                                min-w-[128px]
+                                max-w-[288px]
+                                self-center
+                                md:mb-0
+                                md:mr-4
+                                md:max-h-[128px]
+                                md:max-w-[128px]
+                                md:self-end
+                            "
                         >
                             {/* Image */}
                             <img
                                 className="
-                                aspect-square
-                                rounded-md
-                                object-cover
-                            "
-                                // src={
-                                //     playlist.images && playlist.images[0]
-                                //         ? playlist.images[0].url
-                                //         : '../src/assets/images/liked.png'
-                                // }
-                                src={'../src/assets/images/liked.png'}
+                                    aspect-square
+                                    rounded-md
+                                    object-cover
+                                "
+                                src={
+                                    playlist.images && playlist.images[0]
+                                        ? playlist.images[0].url
+                                        : '../src/assets/images/liked.png'
+                                }
                             />
                         </div>
                         {/* Details container */}
                         <div
                             className="
-                            flex
-                            flex-col
-                            gap-y-2
-                            overflow-hidden
-                            md:self-end
-                        "
+                                flex
+                                flex-col
+                                gap-y-2
+                                overflow-hidden
+                                md:self-end
+                            "
                         >
                             {/* Details */}
                             <p className="hidden md:block">Playlist</p>
                             <p
                                 className="
-                                text-3xl
-                                font-bold
-                                md:text-5xl
-                                md:font-extrabold
-                            "
+                                    text-3xl
+                                    font-bold
+                                    md:text-5xl
+                                    md:font-extrabold
+                                "
                             >
-                                Playlist Name
+                                {playlist.name}
                             </p>
                             <p
                                 className="
-                                text-sm
-                                font-normal
-                                text-neutral-400
-                            "
+                                    text-sm
+                                    font-medium
+                                    text-neutral-400
+                                "
                             >
-                                Playlist description
+                                {playlist.description}
                             </p>
                             <div
                                 className="
-                                flex
-                                flex-col
-                                gap-x-2
-                                gap-y-2
-                                text-sm
-                                font-normal
-                                md:flex-row
+                                    flex
+                                    flex-col
+                                    flex-wrap
+                                    text-sm
+                                    font-normal
+                                    md:flex-row
                             "
                             >
-                                <p>Creation user </p>
-                                <p>No. of likes</p>
-                                <p className="hidden md:block">song count </p>
-                                <p className="hidden md:block">approx. listening length</p>
+                                {/* TODO: Change to <Link> if implementing /user/ page */}
+                                <span>
+                                    By{' '}
+                                    <a
+                                        href={playlist.owner.external_urls.spotify}
+                                        target="_blank"
+                                        className="font-bold hover:underline"
+                                    >
+                                        {playlist.owner.display_name}
+                                    </a>
+                                </span>
+                                <span className="mx-1">&bull;</span>
+                                <span>{followers} Followers</span>
+                                <span className="mx-1">&bull;</span>
+                                <span>
+                                    {songs} songs, {totalListeningLength}
+                                </span>
                             </div>
                         </div>
                     </section>
