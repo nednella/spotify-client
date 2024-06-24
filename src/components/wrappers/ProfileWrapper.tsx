@@ -28,7 +28,7 @@ const ProfileWrapper: React.FC<ProfileWrapperProps> = ({ user, colour, children 
             <ContentWrapper contentRef={contentRef}>
                 {/* Heading container */}
                 <div
-                    className="h-fit w-[full] pb-4 md:h-[300px]"
+                    className="h-fit w-[full] pb-4 md:h-[280px]"
                     style={{
                         backgroundColor: `rgb(${colour})`,
                         backgroundImage: 'linear-gradient(transparent 0, rgba(0, 0, 0, .5) 100%)',
