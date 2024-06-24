@@ -1,15 +1,16 @@
 import React, { useRef } from 'react'
+import { Link } from 'react-router-dom'
 
 import { Album } from '../../types/Album'
 
 import useScrollOpacity from '../../hooks/useScrollOpacity'
 
+import { convertAlbumDuration } from '../../common/convertAlbumDuration'
+
 import Header from '../Header'
 import ContentWrapper from './ContentScrollWrapper'
 import HeaderSpacer from '../HeaderSpacer'
 import BackgroundGradient from '../BackgroundGradient'
-import { Link } from 'react-router-dom'
-import { convertAlbumDuration } from '../../common/convertAlbumDuration'
 
 interface AlbumWrapperProps {
     album: Album
@@ -44,39 +45,39 @@ const AlbumWrapper: React.FC<AlbumWrapperProps> = ({ album, colour, children }) 
                     {/* Heading content */}
                     <section
                         className="
-                        mx-auto
-                        flex
-                        h-full
-                        max-w-[1400px]
-                        flex-col
-                        px-4
-                        md:flex-row
-                    "
+                            mx-auto
+                            flex
+                            h-full
+                            max-w-[1400px]
+                            flex-col
+                            px-4
+                            md:flex-row
+                        "
                     >
                         {/* Image container */}
                         <div
                             className="
-                            mb-4
-                            max-h-[288px]
-                            min-h-[128px]
-                            w-[40vw]
-                            min-w-[128px]
-                            max-w-[288px]
-                            self-center
-                            md:mb-0
-                            md:mr-4
-                            md:max-h-[128px]
-                            md:max-w-[128px]
-                            md:self-end
-                        "
+                                mb-4
+                                max-h-[288px]
+                                min-h-[128px]
+                                w-[40vw]
+                                min-w-[128px]
+                                max-w-[288px]
+                                self-center
+                                md:mb-0
+                                md:mr-4
+                                md:max-h-[128px]
+                                md:max-w-[128px]
+                                md:self-end
+                            "
                         >
                             {/* Image */}
                             <img
                                 className="
-                                aspect-square
-                                rounded-md
-                                object-cover
-                            "
+                                    aspect-square
+                                    rounded-md
+                                    object-cover
+                                "
                                 src={
                                     album.images && album.images[0]
                                         ? album.images[0].url
@@ -87,43 +88,43 @@ const AlbumWrapper: React.FC<AlbumWrapperProps> = ({ album, colour, children }) 
                         {/* Details container */}
                         <div
                             className="
-                            flex
-                            flex-col
-                            gap-y-2
-                            overflow-hidden
-                            md:self-end
-                        "
+                                flex
+                                flex-col
+                                gap-y-2
+                                overflow-hidden
+                                md:self-end
+                            "
                         >
                             {/* Details */}
                             <p className="hidden md:block">Album</p>
                             <p
                                 className="
-                                text-3xl
-                                font-bold
-                                md:text-5xl
-                                md:font-extrabold
-                            "
+                                    text-3xl
+                                    font-bold
+                                    md:text-5xl
+                                    md:font-extrabold
+                                "
                             >
                                 {album.name}
                             </p>
                             <div
                                 className="
-                                flex
-                                flex-col
-                                gap-x-2
-                                gap-y-2
-                                text-sm
-                                font-normal
-                                md:flex-row
+                                    flex
+                                    flex-col
+                                    gap-x-2
+                                    gap-y-2
+                                    text-sm
+                                    font-normal
+                                    md:flex-row
                                 "
                             >
                                 <div
                                     className="
-                                    flex
-                                    flex-wrap
-                                    text-sm
-                                    font-normal
-                                "
+                                        flex
+                                        flex-wrap
+                                        text-sm
+                                        font-normal
+                                    "
                                 >
                                     {album.artists.map((artist, index) => (
                                         <React.Fragment key={index}>
