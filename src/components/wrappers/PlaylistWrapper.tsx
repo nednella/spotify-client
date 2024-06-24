@@ -39,7 +39,7 @@ const PlaylistWrapper: React.FC<PlaylistWrapperProps> = ({ playlist, tracks, col
             <ContentWrapper contentRef={contentRef}>
                 {/* Heading container */}
                 <div
-                    className="h-fit w-[full] pb-4 md:h-[300px]"
+                    className="h-fit w-[full] pb-4 md:h-[280px]"
                     style={{
                         backgroundColor: `rgb(${colour})`,
                         backgroundImage: 'linear-gradient(transparent 0, rgba(0, 0, 0, .5) 100%)',
@@ -141,11 +141,11 @@ const PlaylistWrapper: React.FC<PlaylistWrapperProps> = ({ playlist, tracks, col
                                         {playlist.owner.display_name}
                                     </a>
                                 </span>
-                                <span className="mx-1">&bull;</span>
+                                <span className="mx-1 hidden md:block">&bull;</span>
                                 <span>{followers} Followers</span>
-                                <span className="mx-1">&bull;</span>
+                                <span className="mx-1 hidden md:block">&bull;</span>
                                 <span>
-                                    {songs} songs, {totalListeningLength}
+                                    {songs} {songs === '1' ? 'song' : 'songs'}, {totalListeningLength}
                                 </span>
                             </div>
                         </div>
