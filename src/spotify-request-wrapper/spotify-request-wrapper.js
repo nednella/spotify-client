@@ -61,10 +61,7 @@ export default class spotifyAPI {
             .setHeaders({
                 'content-Type': 'application/x-www-form-urlencoded',
                 Authorization:
-                    'Basic ' +
-                    new Buffer.from(this.getClientId() + ':' + this.getClientSecret()).toString(
-                        'base64'
-                    ),
+                    'Basic ' + new Buffer.from(this.getClientId() + ':' + this.getClientSecret()).toString('base64'),
             })
             .setBodyParams({
                 grant_type: 'authorization_code',
@@ -89,10 +86,7 @@ export default class spotifyAPI {
             .setHeaders({
                 'Content-Type': 'application/x-www-form-urlencoded',
                 Authorization:
-                    'Basic ' +
-                    new Buffer.from(this.getClientId() + ':' + this.getClientSecret()).toString(
-                        'base64'
-                    ),
+                    'Basic ' + new Buffer.from(this.getClientId() + ':' + this.getClientSecret()).toString('base64'),
             })
             .setBodyParams({
                 grant_type: 'refresh_token',
@@ -234,11 +228,7 @@ export default class spotifyAPI {
      * @returns {Promise} - A promise that if successful, resolves into an object containing the requested information.
      */
     getArtist = (access_token, id) => {
-        return new ApiRequest(access_token)
-            .setMethod('GET')
-            .setPath(`/v1/artists/${id}`)
-            .build()
-            .execute()
+        return new ApiRequest(access_token).setMethod('GET').setPath(`/v1/artists/${id}`).build().execute()
     }
 
     /**
@@ -249,11 +239,7 @@ export default class spotifyAPI {
      * @returns {Promise} - A promise that if successful, resolves into an object containing the requested information.
      */
     getArtistTopTracks = (access_token, id) => {
-        return new ApiRequest(access_token)
-            .setMethod('GET')
-            .setPath(`/v1/artists/${id}/top-tracks`)
-            .build()
-            .execute()
+        return new ApiRequest(access_token).setMethod('GET').setPath(`/v1/artists/${id}/top-tracks`).build().execute()
     }
 
     /**
@@ -304,9 +290,37 @@ export default class spotifyAPI {
      * @returns - A promise that if successful, resolves into an object containing the requested information.
      */
     getAlbum = (access_token, id) => {
+        return new ApiRequest(access_token).setMethod('GET').setPath(`/v1/albums/${id}`).build().execute()
+    }
+
+    /**
+     * Get a playlist owned by a Spotify user.
+     * Docs URL: https://developer.spotify.com/documentation/web-api/reference/get-playlist
+     * @param {string} access_token - Authenticated user's access token.
+     * @param {string} id - Unique album Spotify ID.
+     * @returns - A promise that if successful, resolves into an object containing the requested information.
+     */
+    getPlaylist = (access_token, id) => {
+        return new ApiRequest(access_token).setMethod('GET').setPath(`/v1/playlists/${id}`).build().execute()
+    }
+
+    /**
+     * Get full details of the items of a playlist owned by a Spotify user.
+     * Docs URL: https://developer.spotify.com/documentation/web-api/reference/get-playlists-tracks
+     * @param {string} access_token - Authenticated user's access token.
+     * @param {string} id - Unique album Spotify ID.
+     * @param {number} limit - Spotify API pagination page limit.
+     * @param {number} offset - Spotify API pagination page offset.
+     * @returns - A promise that if successful, resolves into an object containing the requested information.
+     */
+    getPlaylistTracks = (access_token, id, limit, offset) => {
         return new ApiRequest(access_token)
             .setMethod('GET')
-            .setPath(`/v1/albums/${id}`)
+            .setPath(`/v1/playlists/${id}/tracks`)
+            .setQueryParams({
+                limit: limit || 20,
+                offset: offset || 0,
+            })
             .build()
             .execute()
     }

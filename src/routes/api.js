@@ -8,6 +8,7 @@ import asyncHandler from '../middleware/asyncHandler.js'
 
 import fetchPaginatedItems, {
     processData,
+    processPlaylistData,
     processAlbumData,
     processArtistData,
 } from '../common/helpers/fetchItems.js'
@@ -48,10 +49,10 @@ router.get(
         }
 
         const [allTracks, allPlaylists, allAlbums, allArtists] = await Promise.all([
-            fetchPaginatedItems(getTracks, access_token, limit, [], processData),
-            fetchPaginatedItems(getPlaylists, access_token, limit, [], processData),
-            fetchPaginatedItems(getAlbums, access_token, limit, [], processAlbumData),
-            fetchPaginatedItems(getArtists, access_token, limit, [], processArtistData),
+            fetchPaginatedItems(getTracks, access_token, limit, undefined, [], processData),
+            fetchPaginatedItems(getPlaylists, access_token, limit, undefined, [], processData),
+            fetchPaginatedItems(getAlbums, access_token, limit, undefined, [], processAlbumData),
+            fetchPaginatedItems(getArtists, access_token, limit, undefined, [], processArtistData),
         ])
 
         res.status(200).json({
@@ -70,13 +71,7 @@ router.get(
         const limit = SPOTIFY_API_PAGINATION_LIMIT
 
         const getUserTopItems = async (access_token, limit, offset, type, time_range) => {
-            const response = await spotifyAPI.getMeTopItems(
-                access_token,
-                limit,
-                offset,
-                type,
-                time_range
-            )
+            const response = await spotifyAPI.getMeTopItems(access_token, limit, offset, type, time_range)
             return response.data.items
         }
 
@@ -111,13 +106,7 @@ router.get(
         }
 
         const getAlbums = async (access_token, limit, offset, id, include_groups) => {
-            const response = await spotifyAPI.getArtistAlbums(
-                access_token,
-                id,
-                limit,
-                offset,
-                include_groups
-            )
+            const response = await spotifyAPI.getArtistAlbums(access_token, id, limit, offset, include_groups)
             return response.data
         }
 
@@ -129,7 +118,7 @@ router.get(
         const [artist, top_tracks, albums, related_artists] = await Promise.all([
             getArtist(access_token, id),
             getTopTracks(access_token, id),
-            fetchPaginatedItems(getAlbums, access_token, limit, [id, data_types], processData),
+            fetchPaginatedItems(getAlbums, access_token, limit, undefined, [id, data_types], processData),
             getRelated(access_token, id),
         ])
 
@@ -147,8 +136,9 @@ router.get(
     asyncHandler(async (req, res) => {
         const { access_token } = req.session.user
         const { id } = req.params
-        const limit = SPOTIFY_API_PAGINATION_LIMIT
 
+        // NOTE: default getAlbum retrieves 50 items. Should not need to create getAlbumTracks request method,
+        // as the vast majority of albums do not contain more than 50 tracks.
         const getAlbum = async (access_token, id) => {
             const response = await spotifyAPI.getAlbum(access_token, id)
             return response.data
@@ -157,6 +147,32 @@ router.get(
         const [album] = await Promise.all([getAlbum(access_token, id)])
 
         res.status(200).json({ album })
+    })
+)
+
+router.get(
+    '/playlist/:id',
+    asyncHandler(async (req, res) => {
+        const { access_token } = req.session.user
+        const { id } = req.params
+        const limit = SPOTIFY_API_PAGINATION_LIMIT
+
+        const getPlaylist = async (access_token, id) => {
+            const response = await spotifyAPI.getPlaylist(access_token, id)
+            return response.data
+        }
+
+        const getPlaylistTracks = async (access_token, limit, offset, id) => {
+            const response = await spotifyAPI.getPlaylistTracks(access_token, id, limit, offset)
+            return response.data
+        }
+
+        const [playlist, tracks] = await Promise.all([
+            getPlaylist(access_token, id),
+            fetchPaginatedItems(getPlaylistTracks, access_token, limit, 250, [id], processPlaylistData),
+        ])
+
+        res.status(200).json({ playlist, tracks })
     })
 )
 
