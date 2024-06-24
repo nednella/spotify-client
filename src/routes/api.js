@@ -11,7 +11,7 @@ import fetchPaginatedItems, {
     processPlaylistData,
     processAlbumData,
     processArtistData,
-} from '../common/helpers/fetchItems.js'
+} from '../common/helpers/fetchPaginatedItems.js'
 
 import { SPOTIFY_API_PAGINATION_LIMIT } from '../common/constants/variables.js'
 
