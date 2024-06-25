@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react'
 
-import HomeWrapper from '../../components/content/HomeWrapper'
+import HomeWrapper from '../../components/wrappers/HomeWrapper'
 
-import RecentCard from '../../components/homepage/RecentCard'
-import RecentCardLoading from '../../components/homepage/RecentCardLoading'
-import ContentSection from '../../components/homepage/ContentSection'
-import ContentSectionLoading from '../../components/homepage/ContentSectionLoading'
+import RecentCard from '../../components/content/RecentCard'
+import RecentCardLoading from '../../components/content/RecentCardLoading'
+import ContentSection from '../../components/content/ContentSection'
+import ContentSectionLoading from '../../components/content/ContentSectionLoading'
 
 const Home = () => {
     const [colour, setColour] = useState<string | undefined>(undefined) // accepts 'r/g/b' format

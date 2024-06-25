@@ -1,8 +1,9 @@
 import React from 'react'
-import { RiPlayLargeFill } from 'react-icons/ri'
 
 import { useAuth } from '../../hooks/useAuth'
 import useLoginModal from '../../hooks/useLoginModal'
+
+import PlayButton from '../PlayButton'
 
 interface RecentCardProps {
     image: string
@@ -13,6 +14,8 @@ interface RecentCardProps {
 const RecentCard: React.FC<RecentCardProps> = ({ image, title, href }) => {
     const { user } = useAuth()
     const loginModal = useLoginModal()
+
+    // TODO: integrate playing state/socket
 
     const onClick = () => {
         if (!user) {
@@ -26,7 +29,7 @@ const RecentCard: React.FC<RecentCardProps> = ({ image, title, href }) => {
     }
 
     return (
-        <button
+        <div
             onClick={onClick}
             className="
                 group
@@ -76,29 +79,20 @@ const RecentCard: React.FC<RecentCardProps> = ({ image, title, href }) => {
                 >
                     {title}
                 </p>
-                <div
+                <PlayButton
+                    isPlaying={false}
+                    size={20}
                     className="
-                    mr-2
-                    flex
-                    scale-95
-                    items-center
-                    justify-center
-                    rounded-full
-                    bg-green-500
-                    p-2
-                    opacity-0
-                    transition
-                    hover:scale-100
-                    group-hover:opacity-100
-                "
-                >
-                    <RiPlayLargeFill
-                        className="text-black"
-                        size={20}
-                    />
-                </div>
+                        mr-2
+                        scale-95
+                        justify-center
+                        p-2
+                        opacity-0
+                        group-hover:opacity-100
+                    "
+                />
             </div>
-        </button>
+        </div>
     )
 }
 

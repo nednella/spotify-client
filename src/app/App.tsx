@@ -32,12 +32,12 @@ const App = () => {
         },
         {
             label: 'Playlist',
-            path: '/playlist/*',
+            path: '/playlist/:id',
             element: user ? <Playlist /> : <Navigate to={'/'} />,
         },
         {
             label: 'Album',
-            path: '/album/*',
+            path: '/album/:id',
             element: user ? <Album /> : <Navigate to={'/'} />,
         },
         {
