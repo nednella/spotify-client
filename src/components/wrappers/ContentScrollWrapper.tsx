@@ -1,20 +1,16 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { useScroll } from 'framer-motion'
 
-import Header from '../Header'
 import ScrollArea from '../ScrollArea'
+import useScrollOpacity from '../../hooks/useScrollOpacity'
 
 interface ContentWrapperProps {
     children: React.ReactNode
     contentRef?: React.RefObject<HTMLElement>
-    colour?: string
 }
 
-const ContentWrapper: React.FC<ContentWrapperProps> = ({ colour, contentRef, children }) => {
-    const [opacity, setOpacity] = useState('0')
-
-    // TODO: restrict functionality to authenticated user state to prevent warning
-    // Scroll header opacity functionality
+const ContentWrapper: React.FC<ContentWrapperProps> = ({ contentRef, children }) => {
+    const { setOpacity } = useScrollOpacity()
     const scrollAreaRef = useRef(null)
 
     const { scrollYProgress } = useScroll({
@@ -24,14 +20,14 @@ const ContentWrapper: React.FC<ContentWrapperProps> = ({ colour, contentRef, chi
         container: scrollAreaRef,
         offset: ['start 64px', 'start 0px'],
     })
-    scrollYProgress.on('change', (value) => setOpacity(value.toString()))
+
+    useEffect(() => {
+        const unsubscribe = scrollYProgress.on('change', (value) => setOpacity(value))
+        return () => unsubscribe()
+    })
 
     return (
         <>
-            <Header
-                colour={colour}
-                opacity={opacity}
-            />
             <ScrollArea
                 ref={scrollAreaRef}
                 className="relative"

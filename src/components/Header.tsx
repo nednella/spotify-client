@@ -15,12 +15,11 @@ import AccountMenu from './menus/AccountMenu'
 
 interface HeaderProps {
     className?: string
-    style?: React.CSSProperties
+    opacity?: number
     colour?: string
-    opacity?: string
 }
 
-const Header: React.FC<HeaderProps> = ({ className, colour, opacity }) => {
+const Header: React.FC<HeaderProps> = ({ className, opacity, colour }) => {
     const { user } = useAuth()
     const navigate = useNavigate()
     const location = useLocation()
@@ -30,6 +29,7 @@ const Header: React.FC<HeaderProps> = ({ className, colour, opacity }) => {
             <BackgroundColour
                 colour={colour}
                 opacity={opacity}
+                gradient={true}
             />
             {/* Header container */}
             <div className="mx-auto h-[32px] max-w-[1400px]">

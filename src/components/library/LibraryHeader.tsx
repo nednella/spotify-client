@@ -1,6 +1,9 @@
+import React from 'react'
+
 import { TbPlaylist } from 'react-icons/tb'
 import { AiOutlinePlus } from 'react-icons/ai'
-import React from 'react'
+
+import Tooltip from '../Tooltip'
 
 interface LibraryHeaderProps {
     fns: (() => void)[]
@@ -29,11 +32,13 @@ const LibraryHeader: React.FC<LibraryHeaderProps> = ({ fns: [createPlaylist] }) 
                     />
                     <p className="text-md font-medium text-neutral-400">My Library</p>
                 </div>
-                <AiOutlinePlus
-                    onClick={createPlaylist}
-                    size={20}
-                    className="cursor-pointer text-neutral-400 hover:text-white"
-                />
+                <Tooltip message="Create a Playlist">
+                    <AiOutlinePlus
+                        onClick={createPlaylist}
+                        size={20}
+                        className="cursor-pointer text-neutral-400 hover:text-white"
+                    />
+                </Tooltip>
             </div>
         </>
     )
