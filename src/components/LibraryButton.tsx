@@ -3,38 +3,10 @@ import { twMerge } from 'tailwind-merge'
 
 import { GrFormCheckmark } from 'react-icons/gr'
 import { MdAdd } from 'react-icons/md'
+
 import Tooltip from './Tooltip'
 
-interface ContainerProps {
-    children: React.ReactNode
-    className?: string
-}
-
-const Container: React.FC<ContainerProps> = ({ children, className }) => {
-    return (
-        <div
-            className={twMerge(
-                `
-                    group
-                    flex
-                    items-center
-                    rounded-full
-                    border-2
-                    border-green-500
-                    bg-green-500
-                    drop-shadow-md
-                    transition
-                    hover:scale-105
-                `,
-                className
-            )}
-        >
-            {children}
-        </div>
-    )
-}
-
-interface LibraryButtonProps {
+interface LibraryButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     inLibrary: boolean
     size: number
     className?: string
@@ -67,5 +39,40 @@ const LibraryButton: React.FC<LibraryButtonProps> = ({ inLibrary, size, classNam
         </Tooltip>
     )
 }
+
+interface ContainerProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+    className?: string
+    children: React.ReactNode
+}
+
+const Container = React.forwardRef<HTMLButtonElement, ContainerProps>(
+    ({ className, children, ...props }, forwardedRef) => {
+        return (
+            <button
+                className={twMerge(
+                    `
+                        group
+                        flex
+                        items-center
+                        rounded-full
+                        border-2
+                        border-green-500
+                        bg-green-500
+                        shadow-lg
+                        shadow-black/50
+                        drop-shadow-md
+                        transition
+                        hover:scale-105
+                    `,
+                    className
+                )}
+                ref={forwardedRef} // forwarded ref for Tooltip.
+                {...props}
+            >
+                {children}
+            </button>
+        )
+    }
+)
 
 export default LibraryButton
