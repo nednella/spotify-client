@@ -1,16 +1,21 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 import { RiPlayLargeFill } from 'react-icons/ri'
 import { IoIosPause } from 'react-icons/io'
 
 interface PlayButtonProps {
-    isPlaying: boolean
+    contentId: string
     size: number
     className?: string
 }
 
-const PlayButton: React.FC<PlayButtonProps> = ({ isPlaying, size, className }) => {
+const PlayButton: React.FC<PlayButtonProps> = ({ size, className }) => {
+    const [isPlaying] = useState(false)
+
+    // TODO: integrate usePlayer and current_track id vs loaded content ID
+    // to determine playing states
+
     return (
         <button
             className={twMerge(
