@@ -19,6 +19,7 @@ const LikedSongs: React.FC<LikedSongsProps> = ({ active, href }) => {
                 flex
                 w-full
                 flex-1
+                select-none
                 items-center
                 justify-between
                 px-3
