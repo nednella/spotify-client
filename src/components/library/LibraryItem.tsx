@@ -1,6 +1,8 @@
 import { useNavigate } from 'react-router-dom'
 import { twMerge } from 'tailwind-merge'
 
+import { toTitleCase } from '../../common/toTitleCase'
+
 interface LibraryItemProps {
     image: string
     title: string
@@ -12,12 +14,6 @@ interface LibraryItemProps {
 
 const LibraryItem: React.FC<LibraryItemProps> = ({ image, title, type, author, active, href }) => {
     const navigate = useNavigate()
-
-    function toTitleCase(str: string) {
-        return str.replace(/\w\S*/g, function (txt) {
-            return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
-        })
-    }
 
     return (
         <div
