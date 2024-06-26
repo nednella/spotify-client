@@ -67,6 +67,7 @@ export const AccordionTrigger: React.FC<AccordionTriggerProps> = React.forwardRe
                         group
                         flex
                         flex-1
+                        select-none
                         items-center
                         justify-between
                         px-3

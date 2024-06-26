@@ -4,7 +4,7 @@ import { useAuth } from '../../hooks/useAuth'
 import useScrollOpacity from '../../hooks/useScrollOpacity'
 
 import Header from '../Header'
-import ContentWrapper from './ContentScrollWrapper'
+import ScrollWrapper from './ScrollWrapper'
 import HeaderSpacer from '../HeaderSpacer'
 import BackgroundGradient from '../BackgroundGradient'
 // import BackgroundColour from '../BackgroundColour'
@@ -25,7 +25,7 @@ const HomeWrapper: React.FC<HomeWrapperProps> = ({ colour, children }) => {
                 opacity={opacity}
                 colour={colour}
             />
-            <ContentWrapper contentRef={contentRef}>
+            <ScrollWrapper contentRef={contentRef}>
                 {user ? (
                     <>
                         {/* Background gradient */}
@@ -66,7 +66,7 @@ const HomeWrapper: React.FC<HomeWrapperProps> = ({ colour, children }) => {
                         </div>
                     </>
                 )}
-            </ContentWrapper>
+            </ScrollWrapper>
         </>
     )
 }

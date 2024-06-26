@@ -6,9 +6,11 @@ import { Album } from '../../types/Album'
 import useScrollOpacity from '../../hooks/useScrollOpacity'
 
 import { convertAlbumDuration } from '../../common/convertAlbumDuration'
+import { toTitleCase } from '../../common/toTitleCase'
 
 import Header from '../Header'
-import ContentWrapper from './ContentScrollWrapper'
+import PlayButton from '../PlayButton'
+import ScrollWrapper from './ScrollWrapper'
 import HeaderSpacer from '../HeaderSpacer'
 import BackgroundGradient from '../BackgroundGradient'
 
@@ -26,13 +28,22 @@ const AlbumWrapper: React.FC<AlbumWrapperProps> = ({ album, colour, children }) 
         album.tracks.items.reduce((n, { duration_ms }) => n + duration_ms, 0).toString()
     )
 
+    console.log(album)
+
     return (
         <>
             <Header
                 opacity={opacity}
                 colour={colour}
-            />
-            <ContentWrapper contentRef={contentRef}>
+            >
+                <PlayButton
+                    contentId={album.id}
+                    size={24}
+                    className="absolute"
+                />
+                <span className="truncate pl-14 text-2xl font-bold">{album.name}</span>
+            </Header>
+            <ScrollWrapper contentRef={contentRef}>
                 {/* Heading container */}
                 <div
                     className="h-fit w-[full] pb-4 md:h-[280px]"
@@ -49,6 +60,7 @@ const AlbumWrapper: React.FC<AlbumWrapperProps> = ({ album, colour, children }) 
                             flex
                             h-full
                             max-w-[1400px]
+                            select-none
                             flex-col
                             px-4
                             md:flex-row
@@ -96,7 +108,7 @@ const AlbumWrapper: React.FC<AlbumWrapperProps> = ({ album, colour, children }) 
                             "
                         >
                             {/* Details */}
-                            <p className="hidden md:block">Album</p>
+                            <p className="hidden md:block">{toTitleCase(album.album_type)}</p>
                             <p
                                 className="
                                     text-3xl
@@ -169,7 +181,7 @@ const AlbumWrapper: React.FC<AlbumWrapperProps> = ({ album, colour, children }) 
                         {children}
                     </section>
                 </div>
-            </ContentWrapper>
+            </ScrollWrapper>
         </>
     )
 }

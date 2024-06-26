@@ -4,8 +4,11 @@ import { Artist } from '../../types/Artist'
 
 import useScrollOpacity from '../../hooks/useScrollOpacity'
 
+import { toTitleCase } from '../../common/toTitleCase'
+
 import Header from '../Header'
-import ContentWrapper from './ContentScrollWrapper'
+import PlayButton from '../PlayButton'
+import ScrollWrapper from './ScrollWrapper'
 import HeaderSpacer from '../HeaderSpacer'
 import BackgroundGradient from '../BackgroundGradient'
 
@@ -25,8 +28,15 @@ const ArtistWrapper: React.FC<ArtistWrapperProps> = ({ artist, colour, children 
             <Header
                 opacity={opacity}
                 colour={colour}
-            />
-            <ContentWrapper contentRef={contentRef}>
+            >
+                <PlayButton
+                    contentId={artist.id}
+                    size={24}
+                    className="absolute"
+                />
+                <span className="truncate pl-14 text-2xl font-bold">{artist.name}</span>
+            </Header>
+            <ScrollWrapper contentRef={contentRef}>
                 {/* Heading container */}
                 <div
                     className="h-fit w-[full] pb-4 md:h-[280px]"
@@ -43,6 +53,7 @@ const ArtistWrapper: React.FC<ArtistWrapperProps> = ({ artist, colour, children 
                             flex
                             h-full
                             max-w-[1400px]
+                            select-none
                             flex-col
                             px-4
                             md:flex-row
@@ -90,7 +101,7 @@ const ArtistWrapper: React.FC<ArtistWrapperProps> = ({ artist, colour, children 
                             "
                         >
                             {/* Details */}
-                            <p className="hidden md:block">Artist</p>
+                            <p className="hidden md:block">{toTitleCase(artist.type)}</p>
                             <p
                                 className="
                                     text-3xl
@@ -120,7 +131,7 @@ const ArtistWrapper: React.FC<ArtistWrapperProps> = ({ artist, colour, children 
                         {children}
                     </section>
                 </div>
-            </ContentWrapper>
+            </ScrollWrapper>
         </>
     )
 }
