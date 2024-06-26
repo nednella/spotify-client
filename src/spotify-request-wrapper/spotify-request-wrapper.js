@@ -112,7 +112,7 @@ export default class spotifyAPI {
     }
 
     /**
-     * Get the current user's topa rtists or tracks based on calculated affinity, over a 1y, 6mo or 4 week duration.
+     * Get the current user's top artists or tracks based on calculated affinity, over a 1y, 6mo or 4 week duration.
      * Docs URL: https://developer.spotify.com/documentation/web-api/reference/get-users-top-artists-and-tracks
      * @param {*} access_token - Authenticated user's access token.
      * @param {number} limit - Spotify API pagination page limit.
@@ -210,6 +210,148 @@ export default class spotifyAPI {
                 type: 'artist',
                 limit: limit || 20,
                 after: after || null,
+            })
+            .build()
+            .execute()
+    }
+
+    /**
+     * Save one or more tracks to the current user's 'Your Music' library.
+     * Docs URL: https://developer.spotify.com/documentation/web-api/reference/save-tracks-user
+     * @param {string} access_token - Authenticated user's access token.
+     * @param {string} ids - A comma separated list of Spotify ID's for the tracks, maximum of 20.
+     * @returns {Promise} - A promise that if successful, resolves into an empty response.
+     */
+    putMeTracks = (access_token, ids) => {
+        return new ApiRequest(access_token)
+            .setMethod('PUT')
+            .setPath('/v1/me/tracks')
+            .setQueryParams({
+                ids: ids,
+            })
+            .build()
+            .execute()
+    }
+
+    /**
+     * Save one or more albums to the current user's 'Your Music' library.
+     * Docs URL: https://developer.spotify.com/documentation/web-api/reference/save-albums-user
+     * @param {string} access_token - Authenticated user's access token.
+     * @param {string} ids - A comma separated list of Spotify ID's for the albums, maximum of 20.
+     * @returns {Promise} - A promise that if successful, resolves into an empty response.
+     */
+    putMeAlbums = (access_token, ids) => {
+        return new ApiRequest(access_token)
+            .setMethod('PUT')
+            .setPath('/v1/me/albums')
+            .setQueryParams({
+                ids: ids,
+            })
+            .build()
+            .execute()
+    }
+
+    /**
+     * Add the current user as a follower of a playlist.
+     * Docs URL: https://developer.spotify.com/documentation/web-api/reference/follow-playlist
+     * @param {string} access_token - Authenticated user's access token.
+     * @param {string} playlist_id - The Spotify ID of the playlist.
+     * @returns {Promise} - A promise that if successful, resolves into an empty response.
+     */
+    putMePlaylists = (access_token, playlist_id) => {
+        return new ApiRequest(access_token)
+            .setMethod('PUT')
+            .setPath(`/v1/playlists/${playlist_id}/followers`)
+            .build()
+            .execute()
+    }
+
+    /**
+     * Add the current user as a follower of one or more artists or other Spotify users.
+     * Docs URL: https://developer.spotify.com/documentation/web-api/reference/follow-artists-users
+     * @param {string} access_token - Authenticated user's access token.
+     * @param {string} type - The Spotify ID type. Allowed values: 'artist', 'user'.
+     * @param {string} ids - A comma separated list of Spotify ID's for the artists and/or users, maximum of 50.
+     * @returns {Promise} - A promise that if successful, resolves into an empty response.
+     */
+    putMeFollowing = (access_token, type, ids) => {
+        return new ApiRequest(access_token)
+            .setMethod('PUT')
+            .setPath('/v1/me/following')
+            .setQueryParams({
+                type: type,
+                ids: ids,
+            })
+            .build()
+            .execute()
+    }
+
+    /**
+     * Remove one or more tracks to the current user's 'Your Music' library.
+     * Docs URL: https://developer.spotify.com/documentation/web-api/reference/remove-tracks-user
+     * @param {string} access_token - Authenticated user's access token.
+     * @param {string} ids - A comma separated list of Spotify ID's for the tracks, maximum of 20.
+     * @returns {Promise} - A promise that if successful, resolves into an empty response.
+     */
+    deleteMeTracks = (access_token, ids) => {
+        return new ApiRequest(access_token)
+            .setMethod('DELETE')
+            .setPath('/v1/me/tracks')
+            .setQueryParams({
+                ids: ids,
+            })
+            .build()
+            .execute()
+    }
+
+    /**
+     * Remove one or more albums to the current user's 'Your Music' library.
+     * Docs URL: https://developer.spotify.com/documentation/web-api/reference/remove-albums-user
+     * @param {string} access_token - Authenticated user's access token.
+     * @param {string} ids - A comma separated list of Spotify ID's for the albums, maximum of 20.
+     * @returns {Promise} - A promise that if successful, resolves into an empty response.
+     */
+    deleteMeAlbums = (access_token, ids) => {
+        return new ApiRequest(access_token)
+            .setMethod('DELETE')
+            .setPath('/v1/me/albums')
+            .setQueryParams({
+                ids: ids,
+            })
+            .build()
+            .execute()
+    }
+
+    /**
+     * Remove the current user as a follower of a playlist.
+     * Docs URL: https://developer.spotify.com/documentation/web-api/reference/unfollow-playlist
+     * @param {string} access_token - Authenticated user's access token.
+     * @param {string} playlist_id - The Spotify ID of the playlist.
+     * @returns {Promise} - A promise that if successful, resolves into an empty response.
+     */
+    deleteMePlaylists = (access_token, playlist_id) => {
+        return new ApiRequest(access_token)
+            .setMethod('DELETE')
+            .setPath(`/v1/playlists/${playlist_id}/followers`)
+            .build()
+            .execute()
+    }
+
+    /**
+     * Remove the current user as a follower of one or more artists or other Spotify users.
+     * Docs URL: https://developer.spotify.com/documentation/web-api/reference/unfollow-artists-users
+     * @param {string} access_token - Authenticated user's access token.
+     * @param {string} type - The Spotify ID type. Allowed values: 'artist', 'user'.
+     * @param {string} ids - A comma separated list of Spotify ID's for the artists and/or users, maximum of 50.
+     * @returns {Promise} - A promise that if successful, resolves into an empty response.
+     */
+    deleteMeFollowing = (access_token, type, ids) => {
+        return new ApiRequest(access_token)
+            .setMethod('DELETE')
+            .setPath('/v1/me/following')
+            .setQueryParams({
+                type: type,
+                ids: ids,
             })
             .build()
             .execute()

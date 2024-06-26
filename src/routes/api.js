@@ -49,7 +49,7 @@ router.get(
         }
 
         const [allTracks, allPlaylists, allAlbums, allArtists] = await Promise.all([
-            fetchPaginatedItems(getTracks, access_token, limit, undefined, [], processData),
+            fetchPaginatedItems(getTracks, access_token, limit, undefined, [], processPlaylistData),
             fetchPaginatedItems(getPlaylists, access_token, limit, undefined, [], processData),
             fetchPaginatedItems(getAlbums, access_token, limit, undefined, [], processAlbumData),
             fetchPaginatedItems(getArtists, access_token, limit, undefined, [], processArtistData),
@@ -61,6 +61,56 @@ router.get(
             albums: allAlbums,
             artists: allArtists,
         })
+    })
+)
+
+router.put(
+    '/user/library',
+    asyncHandler(async (req, res) => {
+        const { access_token } = req.session.user
+        const { type, id } = req.query
+
+        switch (type) {
+            case 'track':
+                await spotifyAPI.putMeTracks(access_token, id)
+                break
+            case 'album':
+                await spotifyAPI.putMeAlbums(access_token, id)
+                break
+            case 'artist':
+                await spotifyAPI.putMeFollowing(access_token, 'artist', id)
+                break
+            case 'playlist':
+                await spotifyAPI.putMePlaylists(access_token, id)
+                break
+        }
+
+        res.status(200).end('Added to Your Library.')
+    })
+)
+
+router.delete(
+    '/user/library',
+    asyncHandler(async (req, res) => {
+        const { access_token } = req.session.user
+        const { type, id } = req.query
+
+        switch (type) {
+            case 'track':
+                await spotifyAPI.deleteMeTracks(access_token, id)
+                break
+            case 'album':
+                await spotifyAPI.deleteMeAlbums(access_token, id)
+                break
+            case 'artist':
+                await spotifyAPI.deleteMeFollowing(access_token, 'artist', id)
+                break
+            case 'playlist':
+                await spotifyAPI.deleteMePlaylists(access_token, id)
+                break
+        }
+
+        res.status(200).end('Removed from Your Library.')
     })
 )
 

@@ -44,7 +44,7 @@ export const spotifyAPI = new SpotifyApi(credentials, scope)
 
 const cors_config = {
     origin: `http://localhost:${CLIENT_PORT}`,
-    methods: ['POST', 'GET'],
+    methods: ['GET', 'PUT', 'DELETE'],
     credentials: true,
 }
 
