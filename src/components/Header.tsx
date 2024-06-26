@@ -17,9 +17,10 @@ interface HeaderProps {
     className?: string
     opacity?: number
     colour?: string
+    children?: React.ReactNode
 }
 
-const Header: React.FC<HeaderProps> = ({ className, opacity, colour }) => {
+const Header: React.FC<HeaderProps> = ({ className, opacity, colour, children }) => {
     const { user } = useAuth()
     const navigate = useNavigate()
     const location = useLocation()
@@ -32,11 +33,11 @@ const Header: React.FC<HeaderProps> = ({ className, opacity, colour }) => {
                 gradient={true}
             />
             {/* Header container */}
-            <div className="mx-auto h-[32px] max-w-[1400px]">
+            <div className="mx-auto h-fit max-w-[1400px]">
                 {/* Header content */}
-                <header className="m-4 flex select-none items-center justify-between">
-                    {/* {Router Buttons} */}
-                    <div className="hidden h-full gap-x-2 md:flex">
+                <header className="m-4 flex select-none flex-nowrap items-center justify-between gap-x-2">
+                    {/* {Router buttons} */}
+                    <div className="hidden shrink-0 gap-x-2 md:flex">
                         <Button
                             onClick={() => navigate(-1)}
                             disabled={location.key === 'default'}
@@ -52,8 +53,8 @@ const Header: React.FC<HeaderProps> = ({ className, opacity, colour }) => {
                             <RxCaretRight size={32} />
                         </Button>
                     </div>
-                    {/* {Mobile Buttons} */}
-                    <div className="flex gap-x-4 md:hidden">
+                    {/* {Mobile buttons} */}
+                    <div className="flex shrink-0 gap-x-2 md:hidden">
                         <Button
                             onClick={() => navigate('/')}
                             className="bg-white p-2"
@@ -67,8 +68,17 @@ const Header: React.FC<HeaderProps> = ({ className, opacity, colour }) => {
                             <HiSearch size={20} />
                         </Button>
                     </div>
-                    {/* {Account Buttons} */}
-                    <div className="flex h-full items-center gap-x-2">
+                    {/* Content information */}
+                    <div
+                        className={twMerge(
+                            'pointer-events-none flex w-full items-center gap-x-2 overflow-hidden opacity-0 transition duration-700',
+                            opacity === 1 && 'opacity-1 pointer-events-auto'
+                        )}
+                    >
+                        {children}
+                    </div>
+                    {/* {Account buttons} */}
+                    <div className="flex shrink-0 items-center gap-x-2">
                         {user ? (
                             <>
                                 <Button

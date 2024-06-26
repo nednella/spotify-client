@@ -6,9 +6,11 @@ import { Track } from '../../types/Track'
 import useScrollOpacity from '../../hooks/useScrollOpacity'
 
 import { convertAlbumDuration } from '../../common/convertAlbumDuration'
+import { toTitleCase } from '../../common/toTitleCase'
 
 import Header from '../Header'
-import ContentWrapper from './ContentScrollWrapper'
+import PlayButton from '../PlayButton'
+import ScrollWrapper from './ScrollWrapper'
 import HeaderSpacer from '../HeaderSpacer'
 import BackgroundGradient from '../BackgroundGradient'
 
@@ -35,8 +37,15 @@ const PlaylistWrapper: React.FC<PlaylistWrapperProps> = ({ playlist, tracks, col
             <Header
                 opacity={opacity}
                 colour={colour}
-            />
-            <ContentWrapper contentRef={contentRef}>
+            >
+                <PlayButton
+                    contentId={playlist.id}
+                    size={24}
+                    className="absolute"
+                />
+                <span className="truncate pl-14 text-2xl font-bold">{playlist.name}</span>
+            </Header>
+            <ScrollWrapper contentRef={contentRef}>
                 {/* Heading container */}
                 <div
                     className="h-fit w-[full] pb-4 md:h-[280px]"
@@ -53,6 +62,7 @@ const PlaylistWrapper: React.FC<PlaylistWrapperProps> = ({ playlist, tracks, col
                             flex
                             h-full
                             max-w-[1400px]
+                            select-none
                             flex-col
                             px-4
                             md:flex-row
@@ -100,7 +110,7 @@ const PlaylistWrapper: React.FC<PlaylistWrapperProps> = ({ playlist, tracks, col
                             "
                         >
                             {/* Details */}
-                            <p className="hidden md:block">Playlist</p>
+                            <p className="hidden md:block">{toTitleCase(playlist.type)}</p>
                             <p
                                 className="
                                     text-3xl
@@ -142,7 +152,7 @@ const PlaylistWrapper: React.FC<PlaylistWrapperProps> = ({ playlist, tracks, col
                                     </a>
                                 </span>
                                 <span className="mx-1 hidden md:block">&bull;</span>
-                                <span>{followers} Followers</span>
+                                <span>{followers} saves</span>
                                 <span className="mx-1 hidden md:block">&bull;</span>
                                 <span>
                                     {songs} {songs === '1' ? 'song' : 'songs'}, {totalListeningLength}
@@ -166,7 +176,7 @@ const PlaylistWrapper: React.FC<PlaylistWrapperProps> = ({ playlist, tracks, col
                         {children}
                     </section>
                 </div>
-            </ContentWrapper>
+            </ScrollWrapper>
         </>
     )
 }

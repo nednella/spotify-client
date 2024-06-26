@@ -5,7 +5,7 @@ import { User } from '../../types/User'
 import useScrollOpacity from '../../hooks/useScrollOpacity'
 
 import Header from '../Header'
-import ContentWrapper from './ContentScrollWrapper'
+import ScrollWrapper from './ScrollWrapper'
 import HeaderSpacer from '../HeaderSpacer'
 import BackgroundGradient from '../BackgroundGradient'
 
@@ -24,8 +24,10 @@ const ProfileWrapper: React.FC<ProfileWrapperProps> = ({ user, colour, children 
             <Header
                 opacity={opacity}
                 colour={colour}
-            />
-            <ContentWrapper contentRef={contentRef}>
+            >
+                <span className="truncate text-2xl font-bold">{user.display_name}</span>
+            </Header>
+            <ScrollWrapper contentRef={contentRef}>
                 {/* Heading container */}
                 <div
                     className="h-fit w-[full] pb-4 md:h-[280px]"
@@ -42,6 +44,7 @@ const ProfileWrapper: React.FC<ProfileWrapperProps> = ({ user, colour, children 
                             flex
                             h-full
                             max-w-[1400px]
+                            select-none
                             flex-col
                             px-4
                             md:flex-row
@@ -119,7 +122,7 @@ const ProfileWrapper: React.FC<ProfileWrapperProps> = ({ user, colour, children 
                         {children}
                     </section>
                 </div>
-            </ContentWrapper>
+            </ScrollWrapper>
         </>
     )
 }
