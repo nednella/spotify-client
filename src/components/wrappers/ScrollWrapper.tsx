@@ -4,12 +4,12 @@ import { useScroll } from 'framer-motion'
 import ScrollArea from '../ScrollArea'
 import useScrollOpacity from '../../hooks/useScrollOpacity'
 
-interface ContentWrapperProps {
+interface ScrollWrapperProps {
     children: React.ReactNode
     contentRef?: React.RefObject<HTMLElement>
 }
 
-const ContentWrapper: React.FC<ContentWrapperProps> = ({ contentRef, children }) => {
+const ScrollWrapper: React.FC<ScrollWrapperProps> = ({ contentRef, children }) => {
     const { setOpacity } = useScrollOpacity()
     const scrollAreaRef = useRef(null)
 
@@ -22,9 +22,15 @@ const ContentWrapper: React.FC<ContentWrapperProps> = ({ contentRef, children })
     })
 
     useEffect(() => {
+        // Set opacity to initial scrollYProgress on mount
+        setOpacity(scrollYProgress.get())
+
+        // Subscribe to scrollYProgress changes
         const unsubscribe = scrollYProgress.on('change', (value) => setOpacity(value))
+
+        // Cleanup on unmount
         return () => unsubscribe()
-    })
+    }, [scrollYProgress, setOpacity])
 
     return (
         <>
@@ -38,4 +44,4 @@ const ContentWrapper: React.FC<ContentWrapperProps> = ({ contentRef, children })
     )
 }
 
-export default ContentWrapper
+export default ScrollWrapper
