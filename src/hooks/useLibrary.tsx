@@ -17,7 +17,7 @@ export const LibraryContextProvider = ({ ...props }) => {
     const { user } = useAuth()
 
     const { data, isLoading, isError } = useQuery({
-        queryKey: ['user', 'playlists'],
+        queryKey: ['library'],
         queryFn: async () => {
             const response = await userLibrary()
             return response.data

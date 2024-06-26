@@ -7,6 +7,7 @@ import { Track } from '../../types/Track'
 import { convertTrackDuration } from '../../common/convertTrackDuration'
 import Tooltip from '../Tooltip'
 import LibraryButton from '../LibraryButton'
+// import LibraryButton from '../LibraryButton'
 
 interface TrackListItem {
     index: number
@@ -63,16 +64,18 @@ const TrackListItem: React.FC<TrackListItem> = ({ index, song, album, selected, 
                 "
                 style={{ direction: 'rtl' }}
             >
-                <Tooltip
-                    message={`Play ${song.name} by ${song.artists[0].name}`}
-                    className="
+                <Tooltip message={`Play ${song.name} by ${song.artists[0].name}`}>
+                    <button
+                        onClick={(e) => onPlayClick(e)}
+                        className="
                             hidden 
                             text-white
                             group-hover:block
                             group-data-[selected=true]:block
                         "
-                >
-                    <RiPlayLargeFill onClick={(e) => onPlayClick(e)} />
+                    >
+                        <RiPlayLargeFill />
+                    </button>
                 </Tooltip>
                 <p
                     className="

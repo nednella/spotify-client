@@ -4,19 +4,13 @@ import * as RTooltip from '@radix-ui/react-tooltip'
 interface TooltipProps {
     message: string
     children: React.ReactNode
-    className?: string
 }
 
-const Tooltip: React.FC<TooltipProps> = ({ message, children, className, ...props }) => {
+const Tooltip: React.FC<TooltipProps> = ({ message, children }) => {
     return (
-        <RTooltip.Provider delayDuration={250}>
+        <RTooltip.Provider delayDuration={300}>
             <RTooltip.Root>
-                <RTooltip.Trigger
-                    className={className}
-                    {...props}
-                >
-                    {children}
-                </RTooltip.Trigger>
+                <RTooltip.Trigger asChild>{children}</RTooltip.Trigger>
                 <RTooltip.Portal>
                     <RTooltip.Content
                         className="
@@ -39,11 +33,11 @@ const Tooltip: React.FC<TooltipProps> = ({ message, children, className, ...prop
                             transition
                             will-change-[transform,opacity]
                         "
-                        sideOffset={10}
+                        sideOffset={15}
                     >
                         {message}
                         <RTooltip.Arrow
-                            height={8}
+                            height={5}
                             width={12}
                             className="fill-neutral-800"
                         />

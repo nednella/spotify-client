@@ -1,152 +1,121 @@
 import React, { useEffect, useState } from 'react'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import toast from 'react-hot-toast'
+import { debounce } from 'lodash'
 import { twMerge } from 'tailwind-merge'
-import { FiExternalLink } from 'react-icons/fi'
 
+import { VscEllipsis } from 'react-icons/vsc'
+
+import updateLibrary from '../api/user/UserLibraryUpdate'
+
+import { User } from '../types/User'
 import { PlaylistSimplified } from '../types/Playlist'
 import { Album } from '../types/Album'
 import { Artist } from '../types/Artist'
 
-import Button from './Button'
 import PlayButton from './PlayButton'
+import FollowButton from './FollowButton'
 import LibraryButton from './LibraryButton'
+import OptionsMenu from './menus/OptionsMenu'
+import Tooltip from './Tooltip'
 
 interface ActionBarProps {
-    libraryData: PlaylistSimplified[] | Album[] | Artist[]
-    contentType: 'playlist' | 'album' | 'artist'
-    contentId: string
-    contentHref: string
+    user: User
+    library: Album[] | Artist[] | PlaylistSimplified[]
+    content: Album | Artist | PlaylistSimplified
     className?: string
 }
 
-const ActionBar: React.FC<ActionBarProps> = ({ libraryData, contentType, contentId, contentHref, className }) => {
-    const [isPlaying] = useState(false)
+const ActionBar: React.FC<ActionBarProps> = ({ user, library, content, className }) => {
+    const [userOwned, setUserOwned] = useState(false)
     const [inLibrary, setInLibrary] = useState(false)
+    const queryClient = useQueryClient()
 
-    // TODO: isPlaying functionality
-    // TODO: web socket to catch playing state
+    const updateUserLibrary = useMutation({
+        mutationFn: async () => updateLibrary(inLibrary, content.type, content.id),
+        onSuccess: () => {
+            if (inLibrary) {
+                setInLibrary(false)
+                toast.success('Removed from Your Library')
+                queryClient.refetchQueries({ queryKey: ['library'], type: 'active' })
+            } else {
+                setInLibrary(true)
+                toast.success('Added to Your Library')
+                queryClient.refetchQueries({ queryKey: ['library'], type: 'active' })
+            }
+        },
+        onError: () => {
+            toast.error('Something went wrong')
+        },
+    })
+
+    const debounceUpdateUserLibrary = debounce(() => updateUserLibrary.mutate(), 100)
 
     useEffect(() => {
-        if (libraryData.some((item) => item.id === contentId)) {
-            setInLibrary(true)
+        // Check if the content is a playlist and owner by the authenticated user.
+        if (content.type === 'playlist') {
+            const playlist = library.find((item): item is PlaylistSimplified => item.id === content.id)
+            if (playlist && playlist.owner.id === user.id) {
+                setUserOwned(true)
+            } else setUserOwned(false)
         }
-    }, [libraryData, contentId])
-
-    const addToLibrary = () => {
-        if (inLibrary) {
-            // TODO: PUT request to Spotify API
-            // TODO: Toaster 'Added to library' on success
-            // on return of success, setInLibrary(false)
-            setInLibrary(false)
-        } else {
-            // TODO: PUT request to Spotify API
-            // TODO: Toaster 'Removed from library' on success
-            // on return of success, setInLibrary(true)
-            setInLibrary(true)
-        }
-    }
-
-    // TODO: LibraryButton onClick
+        // Check if the content is in the authenticated user's library.
+        if (library.some((item) => item.id === content.id)) {
+            return setInLibrary(true)
+        } else return setInLibrary(false)
+    }, [user, library, content])
 
     return (
         <>
             <div className={twMerge('flex h-20 items-center justify-between py-4', className)}>
                 <div className="flex items-center">
-                    {/* Play/pause button */}
-                    <span className="mr-6">
-                        {isPlaying ? (
-                            <PlayButton
-                                size={24}
-                                isPlaying={true}
-                                className="shadow-black/30"
+                    <PlayButton
+                        contentId={''}
+                        size={24}
+                        className="mr-6 shadow-md shadow-black/30"
+                    />
+                    {!userOwned &&
+                        (content.type === 'artist' ? (
+                            <FollowButton
+                                onClick={debounceUpdateUserLibrary}
+                                disabled={updateUserLibrary.isPending}
+                                inLibrary={inLibrary}
+                                className="mr-6"
                             />
                         ) : (
-                            <PlayButton
+                            <LibraryButton
+                                inLibrary={inLibrary}
+                                onClick={debounceUpdateUserLibrary}
+                                disabled={updateUserLibrary.isPending}
+                                className="mr-6 shadow-md shadow-black/30 disabled:opacity-50"
                                 size={24}
-                                isPlaying={false}
-                                className="shadow-black/30"
                             />
-                        )}
-                    </span>
+                        ))}
 
-                    {/* Add/remove from library */}
-                    {contentType === 'artist' ? (
-                        <Button
-                            className="
-                            mr-6
-                            w-fit
-                            border
-                            border-neutral-500
-                            bg-transparent
-                            px-5
-                            py-1
-                            text-white
-                            hover:border-white
-                            hover:opacity-100
-                        "
-                            onClick={addToLibrary}
-                        >
-                            {inLibrary ? <p className="font-bold">Following</p> : <p>Follow</p>}
-                        </Button>
-                    ) : inLibrary ? (
-                        <LibraryButton
-                            inLibrary={true}
-                            size={24}
-                        />
-                    ) : (
-                        <LibraryButton
-                            inLibrary={false}
-                            size={24}
-                        />
-                    )}
-                </div>
-
-                {/* External links */}
-                <div
-                    className="
-                        flex
-                        h-8
-                        w-fit
-                        rounded-md
-                        border-2
-                        border-neutral-800/50
-                    "
-                >
-                    <div
-                        className="
-                            flex
-                            h-full
-                            w-8
-                            items-center
-                            justify-center
-                            bg-neutral-800/50
-                        "
+                    {/* TODO: replace with ellipsis popup menu and include external link on the menu */}
+                    {/* TODO: Add user-owned playlist options (rename, edit, delete, etc.) */}
+                    <OptionsMenu
+                        userOwned={userOwned}
+                        url={content.external_urls.spotify}
+                        uri={content.uri}
                     >
-                        <FiExternalLink
-                            className="text-neutral-400"
-                            size={20}
-                        />
-                    </div>
-                    <div
-                        className="
-                            flex
-                            h-full
-                            w-fit
-                            rounded-r-md
-                            bg-neutral-700/50
-                        "
-                    >
-                        <span className="flex w-8 items-center justify-center">
-                            <a
-                                href={contentHref}
-                                target="_blank"
-                            >
-                                <img
-                                    src="/spotify-icon.svg"
-                                    className="h-5 w-5"
-                                />
-                            </a>
-                        </span>
-                    </div>
+                        <button>
+                            <Tooltip message={`More options for ${content.name}`}>
+                                <span>
+                                    <VscEllipsis
+                                        size={30}
+                                        className="
+                                            cursor-pointer
+                                            text-neutral-400
+                                            transition
+                                            hover:scale-105
+                                            hover:text-white
+                                        "
+                                    />
+                                </span>
+                            </Tooltip>
+                        </button>
+                    </OptionsMenu>
                 </div>
             </div>
         </>

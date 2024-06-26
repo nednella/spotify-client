@@ -33,11 +33,12 @@ const LibraryHeader: React.FC<LibraryHeaderProps> = ({ fns: [createPlaylist] }) 
                     <p className="text-md font-medium text-neutral-400">My Library</p>
                 </div>
                 <Tooltip message="Create a Playlist">
-                    <AiOutlinePlus
-                        onClick={createPlaylist}
-                        size={20}
-                        className="cursor-pointer text-neutral-400 hover:text-white"
-                    />
+                    <button className="cursor-pointer text-neutral-400 transition hover:text-white">
+                        <AiOutlinePlus
+                            onClick={createPlaylist}
+                            size={20}
+                        />
+                    </button>
                 </Tooltip>
             </div>
         </>

@@ -38,7 +38,7 @@ const Artist = () => {
         queryKey: ['artist', artistId],
         queryFn: async () => getArtist(artistId),
         enabled: user !== null && artistId !== null,
-        staleTime: 300000, // 1000 * 300 seconds
+        staleTime: 600000, // 1000 * 60 * 10 minutes
     })
 
     useEffect(() => {
@@ -106,10 +106,9 @@ const Artist = () => {
                         value="tab-1"
                     >
                         <ActionBar
-                            libraryData={libraryData.artists}
-                            contentType="artist"
-                            contentId={artistData.artist.id}
-                            contentHref={artistData.artist.external_urls.spotify}
+                            user={user}
+                            library={libraryData.artists}
+                            content={artistData.artist}
                         />
                         <TrackList
                             title="Popular"

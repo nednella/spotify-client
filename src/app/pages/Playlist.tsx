@@ -28,7 +28,7 @@ const Playlist = () => {
         queryKey: ['playlist', playlistId],
         queryFn: async () => getPlaylist(playlistId),
         enabled: user !== null && playlistId !== null,
-        staleTime: 600000, // 1000 * 600 seconds
+        staleTime: 600000, // 1000 * 60 * 10 minutes
     })
 
     useEffect(() => {
@@ -54,10 +54,9 @@ const Playlist = () => {
                 colour={colour}
             >
                 <ActionBar
-                    libraryData={libraryData.playlists}
-                    contentType="album"
-                    contentId={playlistData.playlist.id}
-                    contentHref={playlistData.playlist.external_urls.spotify}
+                    user={user}
+                    library={libraryData.playlists}
+                    content={playlistData.playlist}
                 />
                 <TrackList
                     songs={playlistData.tracks}
