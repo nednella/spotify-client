@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 
+import useColour from '../../../hooks/useColour.tsx'
 import { useAuth } from '../../../hooks/useAuth.tsx'
 import { useLibrary } from '../../../hooks/useLibrary.tsx'
 
@@ -14,7 +15,6 @@ import PlaylistWrapper from './components/PlaylistWrapper.tsx'
 import ActionBar from '../../../components/ActionBar.tsx'
 import TrackList from '../../../components/songs/TrackList.tsx'
 import Footer from '../../../components/Footer.tsx'
-import useColour from '../../../hooks/useColour.tsx'
 
 const Playlist = () => {
     const { setColour } = useColour()
