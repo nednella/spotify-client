@@ -20,7 +20,6 @@ interface TrackListProps {
 
 const TrackList: React.FC<TrackListProps> = ({ title, songs, header, sticky, album, shallow }) => {
     const [selectedIndex, setSelectedIndex] = useState<number | null>(null)
-    const { opacity } = useScrollOpacity()
 
     // TODO: handle click outside of TrackList --> remove selected
     // TODO: expand/reduce button to change state of displayed items from 5 -> 10 when 'shallow' is enabled
@@ -37,20 +36,9 @@ const TrackList: React.FC<TrackListProps> = ({ title, songs, header, sticky, alb
             {title && <p className="mb-4 mt-2 select-none text-2xl font-bold">{title}</p>}
             <TrackListHeader
                 display={header}
+                sticky={sticky}
                 album={album}
-                className={twMerge('', sticky && 'sticky top-[64px]', opacity === 1 && 'mx-[-16px] px-8')}
-            >
-                <BackgroundColour
-                    opacity={opacity}
-                    gradient={true}
-                />
-                <p className="justify-self-end text-base">#</p>
-                <p>Title</p>
-                {album && <p className="hidden md:block">Album</p>}
-                <p className="justify-self-end pr-2">
-                    <FaRegClock size={16} />
-                </p>
-            </TrackListHeader>
+            />
             <div className="mb-4 rounded-md border border-transparent">
                 {shallow
                     ? songs.slice(0, 5).map((song, index) => (
@@ -82,12 +70,13 @@ export default TrackList
 
 interface TrackListHeader {
     display: boolean
+    sticky?: boolean
     album: boolean
-    className?: string
-    children: React.ReactNode
 }
 
-const TrackListHeader: React.FC<TrackListHeader> = ({ display, album, className, children }) => {
+const TrackListHeader: React.FC<TrackListHeader> = ({ display, sticky, album }) => {
+    const { opacity } = useScrollOpacity()
+
     return display ? (
         <div
             data-display-album={album}
@@ -109,10 +98,20 @@ const TrackListHeader: React.FC<TrackListHeader> = ({ display, album, className,
                     md:grid
                     md:data-[display-album=true]:grid-cols-[16px_minmax(120px,6fr)_minmax(120px,5fr)_80px]
                 `,
-                className
+                sticky && 'sticky top-[64px]',
+                opacity === 1 && 'mx-[-16px] px-8'
             )}
         >
-            {children}
+            <BackgroundColour
+                opacity={opacity}
+                gradient={true}
+            />
+            <p className="justify-self-end text-base">#</p>
+            <p>Title</p>
+            {album && <p className="hidden md:block">Album</p>}
+            <p className="justify-self-end pr-2">
+                <FaRegClock size={16} />
+            </p>
         </div>
     ) : null
 }
