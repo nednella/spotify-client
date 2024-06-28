@@ -2,18 +2,18 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 
-import { useAuth } from '../../hooks/useAuth.tsx'
-import { useLibrary } from '../../hooks/useLibrary.tsx'
+import { useAuth } from '../../../hooks/useAuth.tsx'
+import { useLibrary } from '../../../hooks/useLibrary.tsx'
 
-import getPlaylist from '../../api/playlist/getPlaylist.ts'
+import getPlaylist from '../../../api/playlist/getPlaylist.ts'
 
-import Loading from './Loading'
-import NotFound from './NotFound'
+import Loading from '../Loading.tsx'
+import NotFound from '../NotFound.tsx'
 
-import PlaylistWrapper from '../../components/wrappers/PlaylistWrapper'
-import ActionBar from '../../components/ActionBar.tsx'
-import TrackList from '../../components/songs/TrackList.tsx'
-import Footer from '../../components/Footer.tsx'
+import PlaylistWrapper from './components/PlaylistWrapper.tsx'
+import ActionBar from '../../../components/ActionBar.tsx'
+import TrackList from '../../../components/songs/TrackList.tsx'
+import Footer from '../../../components/Footer.tsx'
 
 const Playlist = () => {
     const [colour, setColour] = useState<string | undefined>(undefined) // accepts 'r/g/b' format
