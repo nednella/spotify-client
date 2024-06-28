@@ -1,24 +1,24 @@
 import { useEffect, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 
-import useScrollOpacity from '../../hooks/useScrollOpacity'
-import { useAuth } from '../../hooks/useAuth'
-import { useLibrary } from '../../hooks/useLibrary'
+import useScrollOpacity from '../../../hooks/useScrollOpacity'
+import { useAuth } from '../../../hooks/useAuth'
+import { useLibrary } from '../../../hooks/useLibrary'
 
-import getUserTopItems from '../../api/user/UserTopItems'
+import getUserTopItems from '../../../api/user/UserTopItems'
 
-import { Artist } from '../../types/Artist'
+import { Artist } from '../../../types/Artist'
 
-import Loading from './Loading'
-import NotFound from './NotFound'
+import Loading from '../Loading'
+import NotFound from '../NotFound'
 
-import ProfileWrapper from '../../components/wrappers/ProfileWrapper'
-import { TabContent, TabItems, TabMenu, TabTrigger } from '../../components/TabMenu'
-import BackgroundColour from '../../components/BackgroundColour'
-import TrackList from '../../components/songs/TrackList'
-import { Carousel, CarouselContainer, CarouselSlide } from '../../components/carousel/Carousel'
-import ContentCard from '../../components/content/ContentCard'
-import Footer from '../../components/Footer'
+import ProfileWrapper from './components/ProfileWrapper'
+import { TabContent, TabItems, TabMenu, TabTrigger } from '../../../components/TabMenu'
+import BackgroundColour from '../../../components/BackgroundColour'
+import TrackList from '../../../components/songs/TrackList'
+import { Carousel, CarouselContainer, CarouselSlide } from '../../../components/carousel/Carousel'
+import ContentCard from '../../../components/content/ContentCard'
+import Footer from '../../../components/Footer'
 
 const Profile = () => {
     const [colour, setColour] = useState<string | undefined>(undefined) // accepts 'r/g/b' format
