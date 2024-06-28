@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
+import useColour from '../../../../hooks/useColour'
 import { Album } from '../../../../types/Album'
 import { toTitleCase } from '../../../../common/toTitleCase'
 import { convertAlbumDuration } from '../../../../common/convertAlbumDuration'
@@ -8,10 +9,11 @@ import HeaderSpacer from '../../../../components/HeaderSpacer'
 
 interface AlbumHeaderProps {
     album: Album
-    colour?: string
 }
 
-const AlbumHeader: React.FC<AlbumHeaderProps> = ({ album, colour }) => {
+const AlbumHeader: React.FC<AlbumHeaderProps> = ({ album }) => {
+    const { colour } = useColour()
+
     const totalListeningLength = convertAlbumDuration(
         album.tracks.items.reduce((n, { duration_ms }) => n + duration_ms, 0).toString()
     )

@@ -10,16 +10,15 @@ import BackgroundGradient from '../../../../components/BackgroundGradient'
 
 interface ArtistWrapperProps {
     artist: Artist
-    colour?: string
     children: React.ReactNode
 }
 
-const ArtistWrapper: React.FC<ArtistWrapperProps> = ({ artist, colour, children }) => {
+const ArtistWrapper: React.FC<ArtistWrapperProps> = ({ artist, children }) => {
     const contentRef = useRef(null)
 
     return (
         <>
-            <Header colour={colour}>
+            <Header>
                 <PlayButton
                     contentId={artist.id}
                     size={24}
@@ -28,14 +27,10 @@ const ArtistWrapper: React.FC<ArtistWrapperProps> = ({ artist, colour, children 
                 <span className="truncate pl-14 text-2xl font-bold">{artist.name}</span>
             </Header>
             <ScrollWrapper contentRef={contentRef}>
-                <ArtistHeader
-                    artist={artist}
-                    colour={colour}
-                />
+                <ArtistHeader artist={artist} />
                 {/* Content container */}
                 <div className="relative z-[1] h-fit w-full">
                     <BackgroundGradient
-                        colour={colour}
                         className="z-[-1]"
                         size="large"
                     />

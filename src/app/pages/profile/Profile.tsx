@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useQuery } from '@tanstack/react-query'
 
 import useScrollOpacity from '../../../hooks/useScrollOpacity'
@@ -19,9 +19,10 @@ import TrackList from '../../../components/songs/TrackList'
 import { Carousel, CarouselContainer, CarouselSlide } from '../../../components/carousel/Carousel'
 import ContentCard from '../../../components/content/ContentCard'
 import Footer from '../../../components/Footer'
+import useColour from '../../../hooks/useColour'
 
 const Profile = () => {
-    const [colour, setColour] = useState<string | undefined>(undefined) // accepts 'r/g/b' format
+    const { setColour } = useColour()
     const { opacity } = useScrollOpacity()
     const { user } = useAuth()
     const { data: libraryData, isLoading: libraryLoading, isError: libraryError } = useLibrary()
@@ -37,8 +38,8 @@ const Profile = () => {
     })
 
     useEffect(() => {
-        setColour('16, 88, 184')
-    }, [])
+        setColour(['16', '88', '184'])
+    }, [setColour])
 
     const isLoading = libraryLoading || userLoading
     const isError = libraryError || userError
@@ -56,13 +57,14 @@ const Profile = () => {
         user &&
         userData &&
         playlists && (
-            <ProfileWrapper
-                user={user}
-                colour={colour}
-            >
+            <ProfileWrapper user={user}>
                 <TabMenu>
                     <TabItems className="sticky top-[64px] z-50">
-                        <BackgroundColour opacity={opacity} />
+                        <BackgroundColour
+                            defaultClr={true}
+                            opacity={opacity}
+                            gradient={true}
+                        />
                         <div className="mx-auto max-w-[1400px]">
                             <TabTrigger
                                 value="tab-1"

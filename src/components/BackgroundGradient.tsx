@@ -1,13 +1,16 @@
 import React from 'react'
 import { twMerge } from 'tailwind-merge'
 
+import useColour from '../hooks/useColour'
+
 interface BackgroundGradientProps {
-    colour?: string
+    size?: 'large' | 'medium' | 'small'
     className?: string
-    size?: string
 }
 
-const BackgroundGradient: React.FC<BackgroundGradientProps> = ({ colour, className, size }) => {
+const BackgroundGradient: React.FC<BackgroundGradientProps> = ({ size, className }) => {
+    const { colour } = useColour()
+
     return (
         <div
             className={twMerge(

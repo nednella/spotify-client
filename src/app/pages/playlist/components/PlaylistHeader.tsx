@@ -1,5 +1,6 @@
 import React from 'react'
 
+import useColour from '../../../../hooks/useColour'
 import { PlaylistSimplified } from '../../../../types/Playlist'
 import { Track } from '../../../../types/Track'
 import { convertAlbumDuration } from '../../../../common/convertAlbumDuration'
@@ -9,10 +10,11 @@ import HeaderSpacer from '../../../../components/HeaderSpacer'
 interface PlaylistHeaderProps {
     playlist: PlaylistSimplified
     tracks: Track[]
-    colour?: string
 }
 
-const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({ playlist, tracks, colour }) => {
+const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({ playlist, tracks }) => {
+    const { colour } = useColour()
+
     const followers = playlist.followers.total.toLocaleString('en', { notation: 'standard' }) // Thousands separator
     const songs = tracks.length.toLocaleString('en', { notation: 'standard' }) // Thousands separator
     const totalListeningLength = convertAlbumDuration(

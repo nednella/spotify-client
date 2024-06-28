@@ -1,14 +1,13 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 
 import HomeWrapper from '../../components/wrappers/HomeWrapper'
-
 import RecentCard from '../../components/content/RecentCard'
 import RecentCardLoading from '../../components/content/RecentCardLoading'
-import ContentSection from '../../components/content/ContentSection'
 import ContentSectionLoading from '../../components/content/ContentSectionLoading'
+import useColour from '../../hooks/useColour'
 
 const Home = () => {
-    const [colour, setColour] = useState<string | undefined>(undefined) // accepts 'r/g/b' format
+    const { setColour } = useColour()
 
     // TODO: pull headerColour from random list, or from item, idk
 
@@ -17,12 +16,12 @@ const Home = () => {
         // setColour('150, 23, 23')
         // setColour('240, 144, 184')
         // setColour('16, 88, 184')
-        setColour('29, 185, 84')
-    }, [])
+        setColour(['29', '185', '84'])
+    }, [setColour])
 
     return (
         <>
-            <HomeWrapper colour={colour}>
+            <HomeWrapper>
                 {/* Recently played */}
                 <section
                     className="
@@ -68,7 +67,6 @@ const Home = () => {
                     <RecentCardLoading />
                 </section>
 
-                <ContentSection title={'Content Title'} />
                 <ContentSectionLoading />
                 <ContentSectionLoading />
                 <ContentSectionLoading />

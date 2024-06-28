@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 
+import useColour from '../../../hooks/useColour'
 import useScrollOpacity from '../../../hooks/useScrollOpacity'
 import { useAuth } from '../../../hooks/useAuth'
 import { useLibrary } from '../../../hooks/useLibrary'
@@ -25,7 +26,7 @@ import ContentSection from '../../../components/content/ContentSection'
 import Footer from '../../../components/Footer'
 
 const Artist = () => {
-    const [colour, setColour] = useState<string | undefined>(undefined) // accepts 'r/g/b' format
+    const { setColour } = useColour()
     const { id: artistId } = useParams()
     const { opacity } = useScrollOpacity()
     const { user } = useAuth()
@@ -42,8 +43,8 @@ const Artist = () => {
     })
 
     useEffect(() => {
-        setColour('56, 144, 176')
-    }, [artistData])
+        setColour(['56', '144', '176'])
+    }, [setColour])
 
     const isLoading = libraryLoading || artistLoading
     const isError = libraryError || artistError
@@ -73,13 +74,14 @@ const Artist = () => {
         user &&
         libraryData &&
         artistData && (
-            <ArtistWrapper
-                artist={artistData.artist}
-                colour={colour}
-            >
+            <ArtistWrapper artist={artistData.artist}>
                 <TabMenu>
                     <TabItems className="sticky top-[64px] z-50">
-                        <BackgroundColour opacity={opacity} />
+                        <BackgroundColour
+                            defaultClr={true}
+                            opacity={opacity}
+                            gradient={true}
+                        />
                         <div className="mx-auto max-w-[1400px]">
                             <TabTrigger
                                 value="tab-1"

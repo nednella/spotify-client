@@ -2,13 +2,15 @@ import React from 'react'
 
 import HeaderSpacer from '../../../../components/HeaderSpacer'
 import { User } from '../../../../types/User'
+import useColour from '../../../../hooks/useColour'
 
 interface ProfileHeaderProps {
     user: User
-    colour?: string
 }
 
-const ProfileHeader: React.FC<ProfileHeaderProps> = ({ user, colour }) => {
+const ProfileHeader: React.FC<ProfileHeaderProps> = ({ user }) => {
+    const { colour } = useColour()
+
     return (
         <div
             className="h-fit w-[full] pb-4 md:h-[280px]"

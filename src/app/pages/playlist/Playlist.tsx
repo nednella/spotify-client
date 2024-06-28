@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 
@@ -14,9 +14,10 @@ import PlaylistWrapper from './components/PlaylistWrapper.tsx'
 import ActionBar from '../../../components/ActionBar.tsx'
 import TrackList from '../../../components/songs/TrackList.tsx'
 import Footer from '../../../components/Footer.tsx'
+import useColour from '../../../hooks/useColour.tsx'
 
 const Playlist = () => {
-    const [colour, setColour] = useState<string | undefined>(undefined) // accepts 'r/g/b' format
+    const { setColour } = useColour()
     const { id: playlistId } = useParams()
     const { user } = useAuth()
     const { data: libraryData, isLoading: libraryLoading, isError: libraryError } = useLibrary()
@@ -32,8 +33,8 @@ const Playlist = () => {
     })
 
     useEffect(() => {
-        setColour('86, 58, 204')
-    }, [])
+        setColour(['86', '58', '204'])
+    }, [setColour])
 
     const isLoading = libraryLoading || playlistLoading
     const isError = libraryError || playlistError
@@ -51,7 +52,6 @@ const Playlist = () => {
             <PlaylistWrapper
                 playlist={playlistData.playlist}
                 tracks={playlistData.tracks}
-                colour={colour}
             >
                 <ActionBar
                     user={user}
