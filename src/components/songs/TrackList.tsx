@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 import { FaRegClock } from 'react-icons/fa'
 
@@ -8,6 +8,7 @@ import { Track } from '../../types/Track'
 
 import BackgroundColour from '../BackgroundColour'
 import TrackListItem from './TrackListItem'
+import { useClickOutside } from '../../hooks/useClickOutside'
 
 interface TrackListProps {
     title?: string
@@ -20,8 +21,10 @@ interface TrackListProps {
 
 const TrackList: React.FC<TrackListProps> = ({ title, songs, header, sticky, album, shallow }) => {
     const [selectedIndex, setSelectedIndex] = useState<number | null>(null)
+    const containerRef = useRef(null)
+    useClickOutside(containerRef, () => setSelectedIndex(null))
 
-    // TODO: handle click outside of TrackList --> remove selected
+    // TODO: only render components in view
     // TODO: expand/reduce button to change state of displayed items from 5 -> 10 when 'shallow' is enabled
 
     const handleSelect = (index: number) => {
@@ -40,7 +43,10 @@ const TrackList: React.FC<TrackListProps> = ({ title, songs, header, sticky, alb
                 sticky={sticky}
                 album={album}
             />
-            <div className="mb-4 rounded-md border border-transparent">
+            <div
+                ref={containerRef}
+                className="mb-4 rounded-md border border-transparent"
+            >
                 {shallow
                     ? songs.slice(0, 5).map((song, index) => (
                           <TrackListItem
