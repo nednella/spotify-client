@@ -2,27 +2,27 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 
-import useScrollOpacity from '../../hooks/useScrollOpacity'
-import { useAuth } from '../../hooks/useAuth'
-import { useLibrary } from '../../hooks/useLibrary'
+import useScrollOpacity from '../../../hooks/useScrollOpacity'
+import { useAuth } from '../../../hooks/useAuth'
+import { useLibrary } from '../../../hooks/useLibrary'
 
-import getArtist from '../../api/artist/getArtist'
+import getArtist from '../../../api/artist/getArtist'
 
-import { Artist as ArtistType } from '../../types/Artist'
-import { AlbumSimplified } from '../../types/Album'
+import { Artist as ArtistType } from '../../../types/Artist'
+import { AlbumSimplified } from '../../../types/Album'
 
-import Loading from './Loading'
-import NotFound from './NotFound'
+import Loading from '../Loading'
+import NotFound from '../NotFound'
 
-import ArtistWrapper from '../../components/wrappers/ArtistWrapper'
-import { TabMenu, TabItems, TabTrigger, TabContent } from '../../components/TabMenu'
-import BackgroundColour from '../../components/BackgroundColour'
-import ActionBar from '../../components/ActionBar'
-import TrackList from '../../components/songs/TrackList'
-import { Carousel, CarouselContainer, CarouselSlide } from '../../components/carousel/Carousel'
-import ContentCard from '../../components/content/ContentCard'
-import ContentSection from '../../components/content/ContentSection'
-import Footer from '../../components/Footer'
+import ArtistWrapper from './components/ArtistWrapper'
+import { TabMenu, TabItems, TabTrigger, TabContent } from '../../../components/TabMenu'
+import BackgroundColour from '../../../components/BackgroundColour'
+import ActionBar from '../../../components/ActionBar'
+import TrackList from '../../../components/songs/TrackList'
+import { Carousel, CarouselContainer, CarouselSlide } from '../../../components/carousel/Carousel'
+import ContentCard from '../../../components/content/ContentCard'
+import ContentSection from '../../../components/content/ContentSection'
+import Footer from '../../../components/Footer'
 
 const Artist = () => {
     const [colour, setColour] = useState<string | undefined>(undefined) // accepts 'r/g/b' format
@@ -43,12 +43,6 @@ const Artist = () => {
 
     useEffect(() => {
         setColour('56, 144, 176')
-        // setColour('16, 88, 114')
-        // setColour('6, 95, 70')
-        // setColour('150, 23, 23')
-        // setColour('240, 144, 184')
-        // setColour('250,230,250')
-        // setColour('29, 185, 84')
     }, [artistData])
 
     const isLoading = libraryLoading || artistLoading
