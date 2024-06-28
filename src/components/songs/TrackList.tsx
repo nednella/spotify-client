@@ -31,9 +31,10 @@ const TrackList: React.FC<TrackListProps> = ({ title, songs, header, sticky, alb
         }
         setSelectedIndex(index)
     }
+
     return (
         <>
-            {title && <p className="mb-4 mt-2 select-none text-2xl font-bold">{title}</p>}
+            {title && <span className="mb-4 mt-2 select-none text-2xl font-bold">{title}</span>}
             <TrackListHeader
                 display={header}
                 sticky={sticky}
@@ -86,7 +87,7 @@ const TrackListHeader: React.FC<TrackListHeader> = ({ display, sticky, album }) 
                     hidden
                     h-[35px]
                     select-none
-                    grid-cols-[16px_minmax(120px,6fr)_80px]
+                    grid-cols-[16px_minmax(120px,6fr)_120px]
                     items-center
                     gap-x-4
                     border-b
@@ -96,7 +97,7 @@ const TrackListHeader: React.FC<TrackListHeader> = ({ display, sticky, album }) 
                     font-normal
                     text-neutral-400
                     md:grid
-                    md:data-[display-album=true]:grid-cols-[16px_minmax(120px,6fr)_minmax(120px,5fr)_80px]
+                    md:data-[display-album=true]:grid-cols-[16px_minmax(120px,6fr)_minmax(120px,5fr)_120px]
                 `,
                 sticky && 'sticky top-[64px]',
                 opacity === 1 && 'mx-[-16px] px-8'
