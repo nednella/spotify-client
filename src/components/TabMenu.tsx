@@ -58,7 +58,7 @@ export const TabTrigger: React.FC<TabTriggerProps> = ({ value, title }) => (
     <Tabs.Trigger
         value={value}
         className="
-            h-11
+            h-[35px]
             flex-1
             cursor-pointer
             select-none
@@ -67,6 +67,7 @@ export const TabTrigger: React.FC<TabTriggerProps> = ({ value, title }) => (
             border-b-2
             border-transparent
             px-5
+            text-sm
             font-medium
             text-neutral-400
             outline-none
