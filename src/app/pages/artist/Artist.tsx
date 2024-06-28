@@ -2,10 +2,9 @@ import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 
-import useColour from '../../../hooks/useColour'
-import useScrollOpacity from '../../../hooks/useScrollOpacity'
 import { useAuth } from '../../../hooks/useAuth'
 import { useLibrary } from '../../../hooks/useLibrary'
+import useColour from '../../../hooks/useColour'
 
 import getArtist from '../../../api/artist/getArtist'
 
@@ -28,7 +27,6 @@ import Footer from '../../../components/Footer'
 const Artist = () => {
     const { setColour } = useColour()
     const { id: artistId } = useParams()
-    const { opacity } = useScrollOpacity()
     const { user } = useAuth()
     const { data: libraryData, isLoading: libraryLoading, isError: libraryError } = useLibrary()
     const {
@@ -79,7 +77,6 @@ const Artist = () => {
                     <TabItems className="sticky top-[64px] z-50">
                         <BackgroundColour
                             defaultClr={true}
-                            opacity={opacity}
                             gradient={true}
                         />
                         <div className="mx-auto max-w-[1400px]">

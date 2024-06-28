@@ -27,10 +27,7 @@ const Header: React.FC<HeaderProps> = ({ className, children }) => {
 
     return (
         <div className={twMerge('absolute top-0 z-50 h-[64px] w-full', className)}>
-            <BackgroundColour
-                opacity={opacity}
-                gradient={true}
-            />
+            <BackgroundColour gradient={true} />
             {/* Header container */}
             <div className="mx-auto h-fit max-w-[1400px]">
                 {/* Header content */}
