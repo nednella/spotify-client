@@ -5,8 +5,8 @@ import ScrollArea from '../ScrollArea'
 import useScrollOpacity from '../../hooks/useScrollOpacity'
 
 interface ScrollWrapperProps {
+    contentRef: React.RefObject<HTMLElement>
     children: React.ReactNode
-    contentRef?: React.RefObject<HTMLElement>
 }
 
 const ScrollWrapper: React.FC<ScrollWrapperProps> = ({ contentRef, children }) => {
