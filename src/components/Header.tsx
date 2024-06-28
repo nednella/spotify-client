@@ -12,16 +12,17 @@ import { useAuth } from '../hooks/useAuth'
 import BackgroundColour from './BackgroundColour'
 import Button from './Button'
 import AccountMenu from './menus/AccountMenu'
+import useScrollOpacity from '../hooks/useScrollOpacity'
 
 interface HeaderProps {
     className?: string
-    opacity?: number
     colour?: string
     children?: React.ReactNode
 }
 
-const Header: React.FC<HeaderProps> = ({ className, opacity, colour, children }) => {
+const Header: React.FC<HeaderProps> = ({ className, colour, children }) => {
     const { user } = useAuth()
+    const { opacity } = useScrollOpacity()
     const navigate = useNavigate()
     const location = useLocation()
 
