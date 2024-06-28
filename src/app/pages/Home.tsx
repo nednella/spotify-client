@@ -1,10 +1,11 @@
 import { useEffect } from 'react'
 
+import useColour from '../../hooks/useColour'
+
 import HomeWrapper from '../../components/wrappers/HomeWrapper'
 import RecentCard from '../../components/content/RecentCard'
 import RecentCardLoading from '../../components/content/RecentCardLoading'
 import ContentSectionLoading from '../../components/content/ContentSectionLoading'
-import useColour from '../../hooks/useColour'
 
 const Home = () => {
     const { setColour } = useColour()
