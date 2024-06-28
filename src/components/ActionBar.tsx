@@ -37,12 +37,12 @@ const ActionBar: React.FC<ActionBarProps> = ({ user, library, content, className
             if (inLibrary) {
                 setInLibrary(false)
                 toast.success('Removed from Your Library')
-                queryClient.refetchQueries({ queryKey: ['library'], type: 'active' })
             } else {
                 setInLibrary(true)
                 toast.success('Added to Your Library')
-                queryClient.refetchQueries({ queryKey: ['library'], type: 'active' })
             }
+
+            queryClient.refetchQueries({ queryKey: ['library'], type: 'active' })
         },
         onError: () => {
             toast.error('Something went wrong')
