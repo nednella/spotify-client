@@ -9,27 +9,22 @@ import BackgroundGradient from '../../../../components/BackgroundGradient'
 
 interface ProfileWrapperProps {
     user: User
-    colour?: string
     children: React.ReactNode
 }
 
-const ProfileWrapper: React.FC<ProfileWrapperProps> = ({ user, colour, children }) => {
+const ProfileWrapper: React.FC<ProfileWrapperProps> = ({ user, children }) => {
     const contentRef = useRef(null)
 
     return (
         <>
-            <Header colour={colour}>
+            <Header>
                 <span className="truncate text-2xl font-bold">{user.display_name}</span>
             </Header>
             <ScrollWrapper contentRef={contentRef}>
-                <ProfileHeader
-                    user={user}
-                    colour={colour}
-                />
+                <ProfileHeader user={user} />
                 {/* Content container */}
                 <div className="relative z-[1] h-fit w-full">
                     <BackgroundGradient
-                        colour={colour}
                         className="z-[-1]"
                         size="large"
                     />

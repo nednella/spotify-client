@@ -103,6 +103,7 @@ const TrackListHeader: React.FC<TrackListHeader> = ({ display, sticky, album }) 
             )}
         >
             <BackgroundColour
+                defaultClr={true}
                 opacity={opacity}
                 gradient={true}
             />

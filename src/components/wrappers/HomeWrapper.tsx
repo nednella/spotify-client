@@ -1,7 +1,6 @@
 import React, { useRef } from 'react'
 
 import { useAuth } from '../../hooks/useAuth'
-import useScrollOpacity from '../../hooks/useScrollOpacity'
 
 import Header from '../Header'
 import ScrollWrapper from './ScrollWrapper'
@@ -10,29 +9,21 @@ import BackgroundGradient from '../BackgroundGradient'
 // import BackgroundColour from '../BackgroundColour'
 
 interface HomeWrapperProps {
-    colour?: string
     children: React.ReactNode
 }
 
-const HomeWrapper: React.FC<HomeWrapperProps> = ({ colour, children }) => {
+const HomeWrapper: React.FC<HomeWrapperProps> = ({ children }) => {
     const { user } = useAuth()
-    const { opacity } = useScrollOpacity()
     const contentRef = useRef(null)
 
     return (
         <>
-            <Header
-                opacity={opacity}
-                colour={colour}
-            />
+            <Header />
             <ScrollWrapper contentRef={contentRef}>
                 {user ? (
                     <>
                         {/* Background gradient */}
-                        <BackgroundGradient
-                            colour={colour}
-                            size="large"
-                        />
+                        <BackgroundGradient size="large" />
 
                         {/* Header spacer */}
                         <HeaderSpacer />

@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 
+import useColour from '../../../hooks/useColour.tsx'
 import { useAuth } from '../../../hooks/useAuth.tsx'
 import { useLibrary } from '../../../hooks/useLibrary.tsx'
 
@@ -16,7 +17,7 @@ import TrackList from '../../../components/songs/TrackList.tsx'
 import Footer from '../../../components/Footer.tsx'
 
 const Album = () => {
-    const [colour, setColour] = useState<string | undefined>(undefined) // accepts 'r/g/b' format
+    const { setColour } = useColour()
     const { id: albumId } = useParams()
     const { user } = useAuth()
     const { data: libraryData, isLoading: libraryLoading, isError: libraryError } = useLibrary()
@@ -32,8 +33,8 @@ const Album = () => {
     })
 
     useEffect(() => {
-        setColour('86, 58, 204')
-    }, [])
+        setColour(['86', '58', '204'])
+    }, [setColour])
 
     const isLoading = libraryLoading || albumLoading
     const isError = libraryError || albumError
@@ -48,10 +49,7 @@ const Album = () => {
         user &&
         libraryData &&
         albumData && (
-            <AlbumWrapper
-                album={albumData.album}
-                colour={colour}
-            >
+            <AlbumWrapper album={albumData.album}>
                 <ActionBar
                     user={user}
                     library={libraryData.albums}

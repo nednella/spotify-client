@@ -12,16 +12,15 @@ import BackgroundGradient from '../../../../components/BackgroundGradient'
 interface PlaylistWrapperProps {
     playlist: PlaylistSimplified
     tracks: Track[]
-    colour?: string
     children: React.ReactNode
 }
 
-const PlaylistWrapper: React.FC<PlaylistWrapperProps> = ({ playlist, tracks, colour, children }) => {
+const PlaylistWrapper: React.FC<PlaylistWrapperProps> = ({ playlist, tracks, children }) => {
     const contentRef = useRef(null)
 
     return (
         <>
-            <Header colour={colour}>
+            <Header>
                 <PlayButton
                     contentId={playlist.id}
                     size={24}
@@ -33,12 +32,10 @@ const PlaylistWrapper: React.FC<PlaylistWrapperProps> = ({ playlist, tracks, col
                 <PlaylistHeader
                     playlist={playlist}
                     tracks={tracks}
-                    colour={colour}
                 />
                 {/* Content container */}
                 <div className="relative z-[1] h-fit w-full">
                     <BackgroundGradient
-                        colour={colour}
                         className="z-[-1]"
                         size="large"
                     />

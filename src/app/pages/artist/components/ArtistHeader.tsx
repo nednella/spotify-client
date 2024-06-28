@@ -1,14 +1,15 @@
 import React from 'react'
 
+import useColour from '../../../../hooks/useColour'
 import { Artist } from '../../../../types/Artist'
 import { toTitleCase } from '../../../../common/toTitleCase'
 import HeaderSpacer from '../../../../components/HeaderSpacer'
 
 interface ArtistHeaderProps {
     artist: Artist
-    colour?: string
 }
-const ArtistHeader: React.FC<ArtistHeaderProps> = ({ artist, colour }) => {
+const ArtistHeader: React.FC<ArtistHeaderProps> = ({ artist }) => {
+    const { colour } = useColour()
     const followers = artist.followers.total.toLocaleString('en', { notation: 'standard' }) // Thousands separator
 
     return (
