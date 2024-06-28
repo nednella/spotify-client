@@ -16,7 +16,7 @@ import { Artist } from '../types/Artist'
 import PlayButton from './PlayButton'
 import FollowButton from './FollowButton'
 import LibraryButton from './LibraryButton'
-import OptionsMenu from './menus/OptionsMenu'
+import OptionsMenu from './menus/ContentOptionsMenu'
 import Tooltip from './Tooltip'
 
 interface ActionBarProps {

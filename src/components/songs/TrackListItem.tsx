@@ -1,13 +1,21 @@
-import React, { CSSProperties } from 'react'
+import React, { CSSProperties, useEffect, useState } from 'react'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import toast from 'react-hot-toast'
+import { debounce } from 'lodash'
 import { Link } from 'react-router-dom'
 import { twMerge } from 'tailwind-merge'
-import { RiPlayLargeFill } from 'react-icons/ri'
 
+import { RiPlayLargeFill } from 'react-icons/ri'
+import { VscEllipsis } from 'react-icons/vsc'
+
+import updateLibrary from '../../api/user/UserLibraryUpdate'
+import { useLibrary } from '../../hooks/useLibrary'
 import { Track } from '../../types/Track'
 import { convertTrackDuration } from '../../common/convertTrackDuration'
+
 import Tooltip from '../Tooltip'
 import LibraryButton from '../LibraryButton'
-// import LibraryButton from '../LibraryButton'
+import OptionsMenu from '../menus/SongOptionsMenu'
 
 interface TrackListItem {
     index: number
@@ -18,6 +26,29 @@ interface TrackListItem {
 }
 
 const TrackListItem: React.FC<TrackListItem> = ({ index, song, album, selected, onSelect }) => {
+    const [inLibrary, setInLibrary] = useState(false)
+    const queryClient = useQueryClient()
+    const { data: library } = useLibrary()
+
+    const updateUserLibrary = useMutation({
+        mutationFn: async () => updateLibrary(inLibrary, song.type, song.id),
+        onSuccess: () => {
+            queryClient.refetchQueries({ queryKey: ['library'], type: 'active' })
+            if (inLibrary) {
+                setInLibrary(false)
+                toast.success('Removed from Your Library')
+            } else {
+                setInLibrary(true)
+                toast.success('Added to Your Library')
+            }
+        },
+        onError: () => {
+            toast.error('Something went wrong')
+        },
+    })
+
+    const debounceUpdateUserLibrary = debounce(() => updateUserLibrary.mutate(), 100)
+
     const duration = convertTrackDuration(song.duration_ms)
 
     const onPlayClick = (e: React.MouseEvent) => {
@@ -27,7 +58,12 @@ const TrackListItem: React.FC<TrackListItem> = ({ index, song, album, selected, 
         // TODO: SOCKET OnPlay --> Track # & Track title --> text-green-500
     }
 
-    // TODO: LibraryButton onClick
+    useEffect(() => {
+        // Check if the song exists in the authenticated user's library.
+        if (library.tracks.some((item) => item.id === song.id)) {
+            setInLibrary(true)
+        } else setInLibrary(false)
+    }, [library, song])
 
     return (
         <div
@@ -40,7 +76,7 @@ const TrackListItem: React.FC<TrackListItem> = ({ index, song, album, selected, 
                 grid
                 h-14
                 select-none
-                grid-cols-[16px_minmax(120px,6fr)_80px]
+                grid-cols-[16px_minmax(120px,6fr)_120px]
                 items-center
                 gap-x-4
                 rounded-md
@@ -51,7 +87,7 @@ const TrackListItem: React.FC<TrackListItem> = ({ index, song, album, selected, 
                 hover:bg-neutral-700/50
                 data-[selected=true]:bg-neutral-500/50
                 data-[selected=true]:hover:bg-neutral-500/50
-                md:data-[display-album=true]:grid-cols-[16px_minmax(120px,6fr)_minmax(120px,5fr)_80px]
+                md:data-[display-album=true]:grid-cols-[16px_minmax(120px,6fr)_minmax(120px,5fr)_120px]
              "
         >
             {/* Track index */}
@@ -166,26 +202,63 @@ const TrackListItem: React.FC<TrackListItem> = ({ index, song, album, selected, 
                 </ItemContainer>
             )}
 
-            {/* Track duration */}
+            {/* Track duration and buttons */}
             <ItemContainer
                 data-column={4}
                 className="
                     flex
-                    justify-between
+                    items-center
+                    justify-end
                     overflow-hidden
                     truncate
                 "
             >
                 <LibraryButton
-                    inLibrary={false}
-                    size={0}
-                    className="
+                    inLibrary={inLibrary}
+                    onClick={debounceUpdateUserLibrary}
+                    size={14}
+                    className={twMerge(
+                        `
                         hidden
+                        justify-self-start
+                        shadow-none
                         group-hover:block
                         group-data-[selected=true]:block
-                    "
+                    `,
+                        inLibrary && 'block'
+                    )}
                 />
-                <p className="justify-self-end">{duration}</p>
+                <span
+                    className="
+                        ml-4
+                        w-[5ch]
+                        text-right
+                    "
+                >
+                    {duration}
+                </span>
+                <OptionsMenu
+                    userOwned={false}
+                    url={song.external_urls.spotify}
+                    uri={song.uri}
+                >
+                    <button className="ml-4">
+                        <Tooltip message={`More options for ${song.name} by ${song.artists[0].name}`}>
+                            <span>
+                                <VscEllipsis
+                                    size={20}
+                                    className="
+                                        cursor-pointer
+                                        text-neutral-400
+                                        transition
+                                        hover:scale-105
+                                        hover:text-white
+                                    "
+                                />
+                            </span>
+                        </Tooltip>
+                    </button>
+                </OptionsMenu>
             </ItemContainer>
         </div>
     )
