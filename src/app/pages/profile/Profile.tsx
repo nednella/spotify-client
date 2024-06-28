@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useQuery } from '@tanstack/react-query'
 
-import useScrollOpacity from '../../../hooks/useScrollOpacity'
+import useColour from '../../../hooks/useColour'
 import { useAuth } from '../../../hooks/useAuth'
 import { useLibrary } from '../../../hooks/useLibrary'
 
@@ -19,11 +19,9 @@ import TrackList from '../../../components/songs/TrackList'
 import { Carousel, CarouselContainer, CarouselSlide } from '../../../components/carousel/Carousel'
 import ContentCard from '../../../components/content/ContentCard'
 import Footer from '../../../components/Footer'
-import useColour from '../../../hooks/useColour'
 
 const Profile = () => {
     const { setColour } = useColour()
-    const { opacity } = useScrollOpacity()
     const { user } = useAuth()
     const { data: libraryData, isLoading: libraryLoading, isError: libraryError } = useLibrary()
     const {
@@ -62,7 +60,6 @@ const Profile = () => {
                     <TabItems className="sticky top-[64px] z-50">
                         <BackgroundColour
                             defaultClr={true}
-                            opacity={opacity}
                             gradient={true}
                         />
                         <div className="mx-auto max-w-[1400px]">

@@ -1,15 +1,16 @@
 import React from 'react'
 import useColour from '../hooks/useColour'
+import useScrollOpacity from '../hooks/useScrollOpacity'
 
 interface BackgroundColourProps {
     defaultClr?: boolean
-    opacity?: number
     gradient?: boolean
 }
 
 // Renders behind an element and provides responsive fade-in/out colour
 // Parent element must be relatively/absolutely positioned
-const BackgroundColour: React.FC<BackgroundColourProps> = ({ defaultClr, opacity, gradient }) => {
+const BackgroundColour: React.FC<BackgroundColourProps> = ({ defaultClr, gradient }) => {
+    const { opacity } = useScrollOpacity()
     const { colour, defaultColour } = useColour()
 
     return (
