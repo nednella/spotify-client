@@ -24,8 +24,8 @@ const TrackList: React.FC<TrackListProps> = ({ title, songs, header, sticky, alb
     const containerRef = useRef(null)
     useClickOutside(containerRef, () => setSelectedIndex(null))
 
-    // TODO: only render components in view
-    // TODO: expand/reduce button to change state of displayed items from 5 -> 10 when 'shallow' is enabled
+    // TODO: infinite scrolling/pagination w/ API
+    // Only render components in view, or cap total no. of rendered components for performance
 
     const handleSelect = (index: number) => {
         if (selectedIndex === index) {
@@ -46,6 +46,7 @@ const TrackList: React.FC<TrackListProps> = ({ title, songs, header, sticky, alb
             <div
                 ref={containerRef}
                 className="mb-4 rounded-md border border-transparent"
+                // style={{ height: `${total * 56}px` }}
             >
                 {shallow
                     ? songs.slice(0, 5).map((song, index) => (
@@ -116,7 +117,7 @@ const TrackListHeader: React.FC<TrackListHeader> = ({ display, sticky, album }) 
             <p className="justify-self-end text-base">#</p>
             <p>Title</p>
             {album && <p className="hidden md:block">Album</p>}
-            <p className="justify-self-end pr-2">
+            <p className="justify-self-center pl-4">
                 <FaRegClock size={16} />
             </p>
         </div>
