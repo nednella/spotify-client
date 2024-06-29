@@ -8,23 +8,37 @@
  * @param {function} processData - Function to process the data returned from fetchFn.
  * @returns An array of the requested data.
  */
-const fetchPaginatedItems = async (fetchFn, access_token, limit, itemCap = Infinity, options, processData) => {
+const fetchPaginatedItems = async (
+    fetchFn,
+    access_token,
+    limit,
+    itemCap = Infinity,
+    options,
+    paginationType,
+    processData
+) => {
     let items = [],
         total = 1,
         offset = 0,
         after = ''
 
     while (items.length < total && items.length < itemCap) {
-        const data = await fetchFn(access_token, limit, offset, ...options)
+        const data =
+            paginationType === 'offset'
+                ? await fetchFn(access_token, limit, offset, ...options)
+                : await fetchFn(access_token, limit, after, ...options)
+
         if (!data) break
 
         const fetchedItems = processData(data)
-        if (fetchedItems.items.length === 0) break // Total value often does not update and/or is incorrect. This break mitigates the infinite loop.
+        if (fetchedItems.items.length === 0) break
 
         items = items.concat(fetchedItems.items)
         total = fetchedItems.total
         offset += fetchedItems.limit
-        after = fetchedItems.after || '' // Only relevant for getArtists.
+        after = fetchedItems.after // Only relevant for getArtists.
+
+        if (after === null) break // Total value often does not update and/or is incorrect. This break mitigates the duplication with the getArtists endpoint.
     }
 
     return items

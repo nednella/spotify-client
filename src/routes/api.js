@@ -49,10 +49,10 @@ router.get(
         }
 
         const [allTracks, allPlaylists, allAlbums, allArtists] = await Promise.all([
-            fetchPaginatedItems(getTracks, access_token, limit, undefined, [], processPlaylistData),
-            fetchPaginatedItems(getPlaylists, access_token, limit, undefined, [], processData),
-            fetchPaginatedItems(getAlbums, access_token, limit, undefined, [], processAlbumData),
-            fetchPaginatedItems(getArtists, access_token, limit, undefined, [], processArtistData),
+            fetchPaginatedItems(getTracks, access_token, limit, undefined, [], 'offset', processPlaylistData),
+            fetchPaginatedItems(getPlaylists, access_token, limit, undefined, [], 'offset', processData),
+            fetchPaginatedItems(getAlbums, access_token, limit, undefined, [], 'offset', processAlbumData),
+            fetchPaginatedItems(getArtists, access_token, limit, undefined, [], 'after', processArtistData),
         ])
 
         res.status(200).json({
@@ -168,7 +168,7 @@ router.get(
         const [artist, top_tracks, albums, related_artists] = await Promise.all([
             getArtist(access_token, id),
             getTopTracks(access_token, id),
-            fetchPaginatedItems(getAlbums, access_token, limit, undefined, [id, data_types], processData),
+            fetchPaginatedItems(getAlbums, access_token, limit, undefined, [id, data_types], 'offset', processData),
             getRelated(access_token, id),
         ])
 
@@ -187,8 +187,8 @@ router.get(
         const { access_token } = req.session.user
         const { id } = req.params
 
-        // NOTE: default getAlbum retrieves 50 items. Should not need to create getAlbumTracks request method,
-        // as the vast majority of albums do not contain more than 50 tracks.
+        // NOTE: default getAlbum retrieves the first 50 album tracks by default. These tracks are also the same type as the getAlbumTracks endpoint.
+        // May implement getAlbumTracks in the future, but this is fine for now.
         const getAlbum = async (access_token, id) => {
             const response = await spotifyAPI.getAlbum(access_token, id)
             return response.data
@@ -219,7 +219,7 @@ router.get(
 
         const [playlist, tracks] = await Promise.all([
             getPlaylist(access_token, id),
-            fetchPaginatedItems(getPlaylistTracks, access_token, limit, 250, [id], processPlaylistData),
+            fetchPaginatedItems(getPlaylistTracks, access_token, limit, 250, [id], 'offset', processPlaylistData),
         ])
 
         res.status(200).json({ playlist, tracks })
