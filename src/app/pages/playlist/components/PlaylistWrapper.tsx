@@ -1,6 +1,6 @@
 import React, { useRef } from 'react'
 
-import { PlaylistSimplified } from '../../../../types/Playlist'
+import { SimplifiedPlaylist } from '../../../../types/Playlist'
 import { Track } from '../../../../types/Track'
 
 import PlaylistHeader from './PlaylistHeader'
@@ -10,7 +10,7 @@ import ScrollWrapper from '../../../../components/wrappers/ScrollWrapper'
 import BackgroundGradient from '../../../../components/BackgroundGradient'
 
 interface PlaylistWrapperProps {
-    playlist: PlaylistSimplified
+    playlist: SimplifiedPlaylist
     tracks: Track[]
     children: React.ReactNode
 }

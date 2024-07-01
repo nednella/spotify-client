@@ -14,7 +14,7 @@ export interface Artist {
     uri: string
 }
 
-export interface ArtistSimplified {
+export interface SimplifiedArtist {
     external_urls: ExternalUrls
     href: string
     id: string

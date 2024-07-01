@@ -9,7 +9,7 @@ import useColour from '../../../hooks/useColour'
 import getArtist from '../../../api/artist/getArtist'
 
 import { Artist as ArtistType } from '../../../types/Artist'
-import { AlbumSimplified } from '../../../types/Album'
+import { SimplifiedAlbum } from '../../../types/Album'
 
 import Loading from '../Loading'
 import NotFound from '../NotFound'
@@ -55,13 +55,13 @@ const Artist = () => {
         most_recent = artistData.albums.slice(0, 20)
         // Sort oldest to newest (newest -> oldest separates albums from singles in the sort)
         most_recent = most_recent.sort(
-            (a: AlbumSimplified, b: AlbumSimplified) =>
+            (a: SimplifiedAlbum, b: SimplifiedAlbum) =>
                 Number(a.release_date.substring(0, 4)) - Number(b.release_date.substring(0, 4))
         )
         // Sort newest to oldest
         most_recent = most_recent.reverse()
-        albums = artistData.albums.filter((album: AlbumSimplified) => album.album_type === 'album')
-        singles = artistData.albums.filter((album: AlbumSimplified) => album.album_type === 'single')
+        albums = artistData.albums.filter((album: SimplifiedAlbum) => album.album_type === 'album')
+        singles = artistData.albums.filter((album: SimplifiedAlbum) => album.album_type === 'single')
     }
 
     return isLoading ? (
@@ -105,13 +105,13 @@ const Artist = () => {
                         />
                         <TrackList
                             title="Popular"
-                            songs={artistData.top_tracks}
+                            tracks={artistData.top_tracks}
                             header={false}
-                            album={false}
+                            shallow={true}
                         />
                         <Carousel title={'Most recent releases'}>
                             <CarouselContainer>
-                                {most_recent.map((album: AlbumSimplified) => (
+                                {most_recent.map((album: SimplifiedAlbum) => (
                                     <CarouselSlide key={album.id}>
                                         <ContentCard
                                             image={
@@ -158,7 +158,7 @@ const Artist = () => {
                         {albums.length > 0 ? (
                             <>
                                 <ContentSection>
-                                    {albums.map((album: AlbumSimplified) => (
+                                    {albums.map((album: SimplifiedAlbum) => (
                                         <ContentCard
                                             key={album.id}
                                             image={
@@ -187,7 +187,7 @@ const Artist = () => {
                         {singles.length > 0 ? (
                             <>
                                 <ContentSection>
-                                    {singles.map((album: AlbumSimplified) => (
+                                    {singles.map((album: SimplifiedAlbum) => (
                                         <ContentCard
                                             key={album.id}
                                             image={

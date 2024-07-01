@@ -1,11 +1,11 @@
 import { Album } from './Album'
 import { Artist } from './Artist'
-import { PlaylistSimplified } from './Playlist'
-import { Track } from './Track'
+import { SimplifiedPlaylist } from './Playlist'
+import { SavedTrack } from './Track'
 
 export interface Library {
-    tracks: Track[]
-    playlists: PlaylistSimplified[]
+    tracks: SavedTrack[]
+    playlists: SimplifiedPlaylist[]
     albums: Album[]
     artists: Artist[]
 }
