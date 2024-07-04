@@ -79,7 +79,7 @@ const Profile = () => {
                     >
                         <TrackList
                             title="Top tracks this month"
-                            songs={userData.top_tracks}
+                            tracks={userData.top_tracks}
                             header={false}
                             album={true}
                             shallow={true}
@@ -127,7 +127,7 @@ const Profile = () => {
                         value="tab-2"
                     >
                         <TrackList
-                            songs={userData.top_tracks}
+                            tracks={userData.top_tracks}
                             header={false}
                             album={true}
                         />
