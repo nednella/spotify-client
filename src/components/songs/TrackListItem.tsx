@@ -10,25 +10,29 @@ import { VscEllipsis } from 'react-icons/vsc'
 
 import updateLibrary from '../../api/user/UserLibraryUpdate'
 import { useLibrary } from '../../hooks/useLibrary'
-import { Track } from '../../types/Track'
+import { PlaylistTrack, Track, SimplifiedTrack, SavedTrack } from '../../types/Track'
 import { convertTrackDuration } from '../../common/convertTrackDuration'
 
 import Tooltip from '../Tooltip'
 import LibraryButton from '../LibraryButton'
 import OptionsMenu from '../menus/SongOptionsMenu'
+import { normaliseTrackObj } from '../../common/normaliseTrackObject'
 
 interface TrackListItem {
     index: number
-    song: Track
-    album: boolean
+    track: PlaylistTrack | SimplifiedTrack | Track | SavedTrack
+    album?: boolean
+    added?: boolean
     selected: boolean
     onSelect: (value: number) => void
 }
 
-const TrackListItem: React.FC<TrackListItem> = ({ index, song, album, selected, onSelect }) => {
+const TrackListItem: React.FC<TrackListItem> = ({ index, track, album, added, selected, onSelect }) => {
     const [inLibrary, setInLibrary] = useState(false)
     const queryClient = useQueryClient()
     const { data: library } = useLibrary()
+
+    const song = normaliseTrackObj(track)
 
     const updateUserLibrary = useMutation({
         mutationFn: async () => updateLibrary(inLibrary, song.type, song.id),
@@ -60,7 +64,7 @@ const TrackListItem: React.FC<TrackListItem> = ({ index, song, album, selected, 
 
     useEffect(() => {
         // Check if the song exists in the authenticated user's library.
-        if (library.tracks.some((item) => item.id === song.id)) {
+        if (library.tracks.some((item) => item.track.id === song.id)) {
             setInLibrary(true)
         } else setInLibrary(false)
     }, [library, song])
@@ -68,6 +72,7 @@ const TrackListItem: React.FC<TrackListItem> = ({ index, song, album, selected, 
     return (
         <div
             data-display-album={album}
+            data-display-added={added}
             data-index={index}
             data-selected={selected}
             onClick={() => onSelect(index)}
@@ -88,6 +93,7 @@ const TrackListItem: React.FC<TrackListItem> = ({ index, song, album, selected, 
                 data-[selected=true]:bg-neutral-500/50
                 data-[selected=true]:hover:bg-neutral-500/50
                 md:data-[display-album=true]:grid-cols-[16px_minmax(120px,6fr)_minmax(120px,5fr)_120px]
+                xl:data-[display-added=true]:grid-cols-[16px_minmax(120px,6fr)_minmax(120px,4fr)_minmax(120px,3fr)_120px]
              "
         >
             {/* Track index */}
@@ -180,7 +186,7 @@ const TrackListItem: React.FC<TrackListItem> = ({ index, song, album, selected, 
             </ItemContainer>
 
             {/* Track album */}
-            {album && (
+            {album && song.album && (
                 <ItemContainer
                     data-column={3}
                     className="
@@ -202,9 +208,22 @@ const TrackListItem: React.FC<TrackListItem> = ({ index, song, album, selected, 
                 </ItemContainer>
             )}
 
+            {/* Track date added */}
+            {added && song.added_at && (
+                <ItemContainer
+                    data-column={4}
+                    className="
+                        overflow-hidden
+                        truncate
+                    "
+                >
+                    <span>{song.added_at}</span>
+                </ItemContainer>
+            )}
+
             {/* Track duration and buttons */}
             <ItemContainer
-                data-column={4}
+                data-column={5}
                 className="
                     flex
                     items-center
@@ -276,7 +295,9 @@ const ItemContainer: React.FC<ItemContainerProps> = ({ children, className, styl
             className={twMerge(
                 `
                     data-[column="3"]:hidden
+                    data-[column="4"]:hidden
                     md:data-[column="3"]:block
+                    xl:data-[column="4"]:block
                 `,
                 className
             )}
