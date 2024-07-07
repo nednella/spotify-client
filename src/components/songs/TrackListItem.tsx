@@ -11,6 +11,7 @@ import { VscEllipsis } from 'react-icons/vsc'
 import updateLibrary from '../../api/user/UserLibraryUpdate'
 import { useLibrary } from '../../hooks/useLibrary'
 import { PlaylistTrack, Track, SimplifiedTrack, SavedTrack } from '../../types/Track'
+import { convertTrackDateAdded } from '../../common/convertTrackDateAdded'
 import { convertTrackDuration } from '../../common/convertTrackDuration'
 
 import Tooltip from '../Tooltip'
@@ -52,8 +53,6 @@ const TrackListItem: React.FC<TrackListItem> = ({ index, track, album, added, se
     })
 
     const debounceUpdateUserLibrary = debounce(() => updateUserLibrary.mutate(), 100)
-
-    const duration = convertTrackDuration(song.duration_ms)
 
     const onPlayClick = (e: React.MouseEvent) => {
         e.stopPropagation()
@@ -217,7 +216,7 @@ const TrackListItem: React.FC<TrackListItem> = ({ index, track, album, added, se
                         truncate
                     "
                 >
-                    <span>{song.added_at}</span>
+                    <span>{convertTrackDateAdded(song.added_at)}</span>
                 </ItemContainer>
             )}
 
@@ -254,7 +253,7 @@ const TrackListItem: React.FC<TrackListItem> = ({ index, track, album, added, se
                         text-right
                     "
                 >
-                    {duration}
+                    {convertTrackDuration(song.duration_ms)}
                 </span>
                 <OptionsMenu
                     userOwned={false}
