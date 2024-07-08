@@ -1,15 +1,15 @@
 import React from 'react'
 
 import useColour from '../../../../hooks/useColour'
-import { PlaylistSimplified } from '../../../../types/Playlist'
-import { Track } from '../../../../types/Track'
+import { SimplifiedPlaylist } from '../../../../types/Playlist'
+import { PlaylistTrack } from '../../../../types/Track'
 import { convertAlbumDuration } from '../../../../common/convertAlbumDuration'
 import { toTitleCase } from '../../../../common/toTitleCase'
 import HeaderSpacer from '../../../../components/HeaderSpacer'
 
 interface PlaylistHeaderProps {
-    playlist: PlaylistSimplified
-    tracks: Track[]
+    playlist: SimplifiedPlaylist
+    tracks: PlaylistTrack[]
 }
 
 const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({ playlist, tracks }) => {
@@ -18,7 +18,7 @@ const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({ playlist, tracks }) => 
     const followers = playlist.followers.total.toLocaleString('en', { notation: 'standard' }) // Thousands separator
     const songs = tracks.length.toLocaleString('en', { notation: 'standard' }) // Thousands separator
     const totalListeningLength = convertAlbumDuration(
-        tracks.reduce((n, { duration_ms }) => n + duration_ms, 0).toString()
+        tracks.reduce((n, { track }) => n + track.duration_ms, 0).toString()
     )
 
     return (

@@ -59,10 +59,11 @@ const Playlist = () => {
                     content={playlistData.playlist}
                 />
                 <TrackList
-                    songs={playlistData.tracks}
+                    tracks={playlistData.tracks}
                     header={true}
                     sticky={true}
                     album={true}
+                    added={true}
                 />
                 <Footer />
             </PlaylistWrapper>

@@ -1,12 +1,13 @@
-import { AlbumSimplified } from './Album'
-import { ArtistSimplified } from './Artist'
+import { SimplifiedAlbum } from './Album'
+import { SimplifiedArtist } from './Artist'
 import { ExternalIds, ExternalUrls } from './Misc'
+import { PublicUserSimplified } from './User'
 
 export interface Track {
-    album: AlbumSimplified
-    artists: ArtistSimplified[]
+    album: SimplifiedAlbum
+    artists: SimplifiedArtist[]
     available_markets: string[]
-    disc_number: string
+    disc_number: number
     duration_ms: number
     explicit: boolean
     external_ids: ExternalIds
@@ -22,8 +23,8 @@ export interface Track {
     uri: string
 }
 
-export interface TrackSimplified {
-    artists: ArtistSimplified[]
+export interface SimplifiedTrack {
+    artists: SimplifiedArtist[]
     available_markets: string[]
     disc_number: number
     duration_ms: number
@@ -33,6 +34,40 @@ export interface TrackSimplified {
     id: string
     is_local: boolean
     name: string
+    preview_url: string
+    track_number: number
+    type: string
+    uri: string
+}
+
+export interface SavedTrack {
+    added_at: string
+    track: Track
+}
+
+export interface PlaylistTrack {
+    added_at: string
+    added_by: PublicUserSimplified
+    is_local: boolean
+    track: Track
+}
+
+export interface NormalisedTrack {
+    added_at?: string
+    added_by?: PublicUserSimplified
+    album?: SimplifiedAlbum
+    artists: SimplifiedArtist[]
+    available_markets: string[]
+    disc_number: number
+    duration_ms: number
+    explicit: boolean
+    external_ids?: ExternalIds
+    external_urls: ExternalUrls
+    href: string
+    id: string
+    is_local: boolean
+    name: string
+    popularity?: number
     preview_url: string
     track_number: number
     type: string
