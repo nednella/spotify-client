@@ -56,10 +56,9 @@ const Album = () => {
                     content={albumData.album}
                 />
                 <TrackList
-                    songs={albumData.album.tracks.items}
+                    tracks={albumData.album.tracks.items}
                     header={true}
                     sticky={true}
-                    album={false}
                 />
                 <Footer />
             </AlbumWrapper>
