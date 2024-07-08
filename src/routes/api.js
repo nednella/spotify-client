@@ -6,14 +6,8 @@ import sessionAuth from '../middleware/sessionAuth.js'
 import tokenExpiry from '../middleware/tokenExpiry.js'
 import asyncHandler from '../middleware/asyncHandler.js'
 
-import fetchPaginatedItems, {
-    processData,
-    processPlaylistData,
-    processAlbumData,
-    processArtistData,
-} from '../common/helpers/fetchPaginatedItems.js'
-
-import { SPOTIFY_API_PAGINATION_LIMIT } from '../common/constants/variables.js'
+import fetchPaginatedItems, { processData, processAlbumData } from '../common/helpers/fetchPaginatedItems.js'
+import { SPOTIFY_API_PAGINATION_ITEM_CAP, SPOTIFY_API_PAGINATION_LIMIT } from '../common/constants/variables.js'
 
 const router = express.Router()
 
@@ -27,6 +21,7 @@ router.get(
     asyncHandler(async (req, res) => {
         const { access_token } = req.session.user
         const limit = SPOTIFY_API_PAGINATION_LIMIT
+        const cap = SPOTIFY_API_PAGINATION_ITEM_CAP
 
         const getTracks = async (access_token, limit, offset) => {
             const response = await spotifyAPI.getMeTracks(access_token, limit, offset)
@@ -45,15 +40,17 @@ router.get(
 
         const getArtists = async (access_token, limit, after) => {
             const response = await spotifyAPI.getMeArtists(access_token, limit, after)
-            return response.data
+            return response.data.artists.items
         }
 
         const [allTracks, allPlaylists, allAlbums, allArtists] = await Promise.all([
-            fetchPaginatedItems(getTracks, access_token, limit, undefined, [], 'offset', processPlaylistData),
-            fetchPaginatedItems(getPlaylists, access_token, limit, undefined, [], 'offset', processData),
-            fetchPaginatedItems(getAlbums, access_token, limit, undefined, [], 'offset', processAlbumData),
-            fetchPaginatedItems(getArtists, access_token, limit, undefined, [], 'after', processArtistData),
+            fetchPaginatedItems(getTracks, access_token, limit, cap, [], processData),
+            fetchPaginatedItems(getPlaylists, access_token, limit, cap, [], processData),
+            fetchPaginatedItems(getAlbums, access_token, limit, cap, [], processAlbumData),
+            getArtists(access_token, limit, null),
         ])
+
+        // TODO: normalise tracks
 
         res.status(200).json({
             tracks: allTracks,
@@ -143,6 +140,7 @@ router.get(
         const { access_token } = req.session.user
         const { id } = req.params
         const limit = SPOTIFY_API_PAGINATION_LIMIT
+        const cap = SPOTIFY_API_PAGINATION_ITEM_CAP
         const data_types = 'single,album'
 
         const getArtist = async (access_token, id) => {
@@ -168,7 +166,7 @@ router.get(
         const [artist, top_tracks, albums, related_artists] = await Promise.all([
             getArtist(access_token, id),
             getTopTracks(access_token, id),
-            fetchPaginatedItems(getAlbums, access_token, limit, undefined, [id, data_types], 'offset', processData),
+            fetchPaginatedItems(getAlbums, access_token, limit, cap, [id, data_types], processData),
             getRelated(access_token, id),
         ])
 
@@ -206,6 +204,7 @@ router.get(
         const { access_token } = req.session.user
         const { id } = req.params
         const limit = SPOTIFY_API_PAGINATION_LIMIT
+        const cap = SPOTIFY_API_PAGINATION_ITEM_CAP
 
         const getPlaylist = async (access_token, id) => {
             const response = await spotifyAPI.getPlaylist(access_token, id)
@@ -219,7 +218,7 @@ router.get(
 
         const [playlist, tracks] = await Promise.all([
             getPlaylist(access_token, id),
-            fetchPaginatedItems(getPlaylistTracks, access_token, limit, 250, [id], 'offset', processPlaylistData),
+            fetchPaginatedItems(getPlaylistTracks, access_token, limit, cap, [id], processData),
         ])
 
         res.status(200).json({ playlist, tracks })
