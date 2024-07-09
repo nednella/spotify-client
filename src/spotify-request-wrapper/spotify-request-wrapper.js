@@ -108,7 +108,7 @@ export default class spotifyAPI {
      * @returns {Promise} - A promise that if successful, resolves into an object containing the requested information.
      */
     getMe = (access_token) => {
-        return new ApiRequest(access_token).setMethod('GET').setPath('/v1/me').build().execute()
+        return new ApiRequest(access_token).setMethod('GET').setPath('/me').build().execute()
     }
 
     /**
@@ -124,7 +124,7 @@ export default class spotifyAPI {
     getMeTopItems = (access_token, limit, offset, type, time_range) => {
         return new ApiRequest(access_token)
             .setMethod('GET')
-            .setPath(`/v1/me/top/${type}`)
+            .setPath(`/me/top/${type}`)
             .setQueryParams({
                 limit: limit || 20,
                 offset: offset || 0,
@@ -145,7 +145,7 @@ export default class spotifyAPI {
     getMeTracks = (access_token, limit, offset) => {
         return new ApiRequest(access_token)
             .setMethod('GET')
-            .setPath('/v1/me/tracks')
+            .setPath('/me/tracks')
             .setQueryParams({
                 limit: limit || 20,
                 offset: offset || 0,
@@ -165,7 +165,7 @@ export default class spotifyAPI {
     getMePlaylists = (access_token, limit, offset) => {
         return new ApiRequest(access_token)
             .setMethod('GET')
-            .setPath('/v1/me/playlists')
+            .setPath('/me/playlists')
             .setQueryParams({
                 limit: limit || 20,
                 offset: offset || 0,
@@ -185,7 +185,7 @@ export default class spotifyAPI {
     getMeAlbums = (access_token, limit, offset) => {
         return new ApiRequest(access_token)
             .setMethod('GET')
-            .setPath('/v1/me/albums')
+            .setPath('/me/albums')
             .setQueryParams({
                 limit: limit || 20,
                 offset: offset || 0,
@@ -205,7 +205,7 @@ export default class spotifyAPI {
     getMeArtists = (access_token, limit, after) => {
         return new ApiRequest(access_token)
             .setMethod('GET')
-            .setPath('/v1/me/following')
+            .setPath('/me/following')
             .setQueryParams({
                 type: 'artist',
                 limit: limit || 20,
@@ -225,7 +225,7 @@ export default class spotifyAPI {
     checkMePlaylists = (access_token, playlist_id) => {
         return new ApiRequest(access_token)
             .setMethod('GET')
-            .setPath(`/v1/playlists/${playlist_id}/followers/contains`)
+            .setPath(`/playlists/${playlist_id}/followers/contains`)
             .build()
             .execute()
     }
@@ -240,7 +240,7 @@ export default class spotifyAPI {
     checkMeAlbums = (access_token, album_ids) => {
         return new ApiRequest(access_token)
             .setMethod('GET')
-            .setPath('/v1/me/albums/contains')
+            .setPath('/me/albums/contains')
             .setQueryParams({
                 ids: album_ids,
             })
@@ -258,7 +258,7 @@ export default class spotifyAPI {
     checkMeArtists = (access_token, artist_ids) => {
         return new ApiRequest(access_token)
             .setMethod('GET')
-            .setPath('/v1/me/following/contains')
+            .setPath('/me/following/contains')
             .setQueryParams({
                 type: 'artist',
                 ids: artist_ids,
@@ -277,7 +277,7 @@ export default class spotifyAPI {
     putMeTracks = (access_token, track_ids) => {
         return new ApiRequest(access_token)
             .setMethod('PUT')
-            .setPath('/v1/me/tracks')
+            .setPath('/me/tracks')
             .setQueryParams({
                 ids: track_ids,
             })
@@ -295,7 +295,7 @@ export default class spotifyAPI {
     putMeAlbums = (access_token, album_ids) => {
         return new ApiRequest(access_token)
             .setMethod('PUT')
-            .setPath('/v1/me/albums')
+            .setPath('/me/albums')
             .setQueryParams({
                 ids: album_ids,
             })
@@ -313,7 +313,7 @@ export default class spotifyAPI {
     putMePlaylists = (access_token, playlist_id) => {
         return new ApiRequest(access_token)
             .setMethod('PUT')
-            .setPath(`/v1/playlists/${playlist_id}/followers`)
+            .setPath(`/playlists/${playlist_id}/followers`)
             .build()
             .execute()
     }
@@ -329,7 +329,7 @@ export default class spotifyAPI {
     putMeFollowing = (access_token, type, ids) => {
         return new ApiRequest(access_token)
             .setMethod('PUT')
-            .setPath('/v1/me/following')
+            .setPath('/me/following')
             .setQueryParams({
                 type: type,
                 ids: ids,
@@ -348,7 +348,7 @@ export default class spotifyAPI {
     deleteMeTracks = (access_token, track_ids) => {
         return new ApiRequest(access_token)
             .setMethod('DELETE')
-            .setPath('/v1/me/tracks')
+            .setPath('/me/tracks')
             .setQueryParams({
                 ids: track_ids,
             })
@@ -366,7 +366,7 @@ export default class spotifyAPI {
     deleteMeAlbums = (access_token, album_ids) => {
         return new ApiRequest(access_token)
             .setMethod('DELETE')
-            .setPath('/v1/me/albums')
+            .setPath('/me/albums')
             .setQueryParams({
                 ids: album_ids,
             })
@@ -384,7 +384,7 @@ export default class spotifyAPI {
     deleteMePlaylists = (access_token, playlist_id) => {
         return new ApiRequest(access_token)
             .setMethod('DELETE')
-            .setPath(`/v1/playlists/${playlist_id}/followers`)
+            .setPath(`/playlists/${playlist_id}/followers`)
             .build()
             .execute()
     }
@@ -400,7 +400,7 @@ export default class spotifyAPI {
     deleteMeFollowing = (access_token, type, ids) => {
         return new ApiRequest(access_token)
             .setMethod('DELETE')
-            .setPath('/v1/me/following')
+            .setPath('/me/following')
             .setQueryParams({
                 type: type,
                 ids: ids,
@@ -420,7 +420,7 @@ export default class spotifyAPI {
     createMePlaylist = (access_token, name, description) => {
         return new ApiRequest(access_token)
             .setMethod('POST')
-            .setPath(`/v1/me/playlists`)
+            .setPath(`/me/playlists`)
             .setBodyParams({
                 name: name,
                 description: description,
@@ -442,7 +442,7 @@ export default class spotifyAPI {
      * @returns {Promise} - A promise that if successful, resolves into an object containing the requested information.
      */
     getArtist = (access_token, artist_id) => {
-        return new ApiRequest(access_token).setMethod('GET').setPath(`/v1/artists/${artist_id}`).build().execute()
+        return new ApiRequest(access_token).setMethod('GET').setPath(`/artists/${artist_id}`).build().execute()
     }
 
     /**
@@ -455,7 +455,7 @@ export default class spotifyAPI {
     getArtistTopTracks = (access_token, artist_id) => {
         return new ApiRequest(access_token)
             .setMethod('GET')
-            .setPath(`/v1/artists/${artist_id}/top-tracks`)
+            .setPath(`/artists/${artist_id}/top-tracks`)
             .build()
             .execute()
     }
@@ -473,7 +473,7 @@ export default class spotifyAPI {
     getArtistAlbums = (access_token, artist_id, limit, offset, include_groups) => {
         return new ApiRequest(access_token)
             .setMethod('GET')
-            .setPath(`/v1/artists/${artist_id}/albums`)
+            .setPath(`/artists/${artist_id}/albums`)
             .setQueryParams({
                 limit: limit || 20,
                 offset: offset || 0,
@@ -493,7 +493,7 @@ export default class spotifyAPI {
     getArtistRelatedArtists = (access_token, artist_id) => {
         return new ApiRequest(access_token)
             .setMethod('GET')
-            .setPath(`/v1/artists/${artist_id}/related-artists`)
+            .setPath(`/artists/${artist_id}/related-artists`)
             .build()
             .execute()
     }
@@ -508,7 +508,7 @@ export default class spotifyAPI {
      * @returns - A promise that if successful, resolves into an object containing the requested information.
      */
     getAlbum = (access_token, album_id) => {
-        return new ApiRequest(access_token).setMethod('GET').setPath(`/v1/albums/${album_id}`).build().execute()
+        return new ApiRequest(access_token).setMethod('GET').setPath(`/albums/${album_id}`).build().execute()
     }
 
     /* PLAYLIST ENDPOINTS */
@@ -521,7 +521,7 @@ export default class spotifyAPI {
      * @returns - A promise that if successful, resolves into an object containing the requested information.
      */
     getPlaylist = (access_token, playlist_id) => {
-        return new ApiRequest(access_token).setMethod('GET').setPath(`/v1/playlists/${playlist_id}`).build().execute()
+        return new ApiRequest(access_token).setMethod('GET').setPath(`/playlists/${playlist_id}`).build().execute()
     }
 
     /**
@@ -536,7 +536,7 @@ export default class spotifyAPI {
     getPlaylistTracks = (access_token, playlist_id, limit, offset) => {
         return new ApiRequest(access_token)
             .setMethod('GET')
-            .setPath(`/v1/playlists/${playlist_id}/tracks`)
+            .setPath(`/playlists/${playlist_id}/tracks`)
             .setQueryParams({
                 limit: limit || 20,
                 offset: offset || 0,

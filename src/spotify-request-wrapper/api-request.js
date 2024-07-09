@@ -1,7 +1,7 @@
 import Request from './base-request.js'
 
 let DEFAULT_SCHEME = 'https',
-    DEFAULT_HOST = 'api.spotify.com',
+    DEFAULT_HOST = 'api.spotify.com/v1',
     DEFAULT_PORT = 443
 
 export default class ApiRequest extends Request {
