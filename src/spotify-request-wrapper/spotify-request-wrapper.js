@@ -219,15 +219,15 @@ export default class spotifyAPI {
      * Save one or more tracks to the current user's 'Your Music' library.
      * Docs URL: https://developer.spotify.com/documentation/web-api/reference/save-tracks-user
      * @param {string} access_token - Authenticated user's access token.
-     * @param {string} ids - A comma separated list of Spotify ID's for the tracks, maximum of 20.
+     * @param {string} track_ids - A comma separated list of Spotify ID's for the tracks, maximum of 20.
      * @returns {Promise} - A promise that if successful, resolves into an empty response.
      */
-    putMeTracks = (access_token, ids) => {
+    putMeTracks = (access_token, track_ids) => {
         return new ApiRequest(access_token)
             .setMethod('PUT')
             .setPath('/v1/me/tracks')
             .setQueryParams({
-                ids: ids,
+                ids: track_ids,
             })
             .build()
             .execute()
@@ -237,15 +237,15 @@ export default class spotifyAPI {
      * Save one or more albums to the current user's 'Your Music' library.
      * Docs URL: https://developer.spotify.com/documentation/web-api/reference/save-albums-user
      * @param {string} access_token - Authenticated user's access token.
-     * @param {string} ids - A comma separated list of Spotify ID's for the albums, maximum of 20.
+     * @param {string} album_ids - A comma separated list of Spotify ID's for the albums, maximum of 20.
      * @returns {Promise} - A promise that if successful, resolves into an empty response.
      */
-    putMeAlbums = (access_token, ids) => {
+    putMeAlbums = (access_token, album_ids) => {
         return new ApiRequest(access_token)
             .setMethod('PUT')
             .setPath('/v1/me/albums')
             .setQueryParams({
-                ids: ids,
+                ids: album_ids,
             })
             .build()
             .execute()
@@ -290,15 +290,15 @@ export default class spotifyAPI {
      * Remove one or more tracks to the current user's 'Your Music' library.
      * Docs URL: https://developer.spotify.com/documentation/web-api/reference/remove-tracks-user
      * @param {string} access_token - Authenticated user's access token.
-     * @param {string} ids - A comma separated list of Spotify ID's for the tracks, maximum of 20.
+     * @param {string} track_ids - A comma separated list of Spotify ID's for the tracks, maximum of 20.
      * @returns {Promise} - A promise that if successful, resolves into an empty response.
      */
-    deleteMeTracks = (access_token, ids) => {
+    deleteMeTracks = (access_token, track_ids) => {
         return new ApiRequest(access_token)
             .setMethod('DELETE')
             .setPath('/v1/me/tracks')
             .setQueryParams({
-                ids: ids,
+                ids: track_ids,
             })
             .build()
             .execute()
@@ -308,15 +308,15 @@ export default class spotifyAPI {
      * Remove one or more albums to the current user's 'Your Music' library.
      * Docs URL: https://developer.spotify.com/documentation/web-api/reference/remove-albums-user
      * @param {string} access_token - Authenticated user's access token.
-     * @param {string} ids - A comma separated list of Spotify ID's for the albums, maximum of 20.
+     * @param {string} album_ids - A comma separated list of Spotify ID's for the albums, maximum of 20.
      * @returns {Promise} - A promise that if successful, resolves into an empty response.
      */
-    deleteMeAlbums = (access_token, ids) => {
+    deleteMeAlbums = (access_token, album_ids) => {
         return new ApiRequest(access_token)
             .setMethod('DELETE')
             .setPath('/v1/me/albums')
             .setQueryParams({
-                ids: ids,
+                ids: album_ids,
             })
             .build()
             .execute()
@@ -360,8 +360,8 @@ export default class spotifyAPI {
     /**
      * Create a Spotify playlist for the current user.
      * @param {string} access_token - Authenticated user's access token.
-     * @param {*} name - The Spotify playlist name (required.)
-     * @param {*} description - The Spotify playlist description (not required.)
+     * @param {string} name - The Spotify playlist name (required.)
+     * @param {string} description - The Spotify playlist description (not required.)
      * @returns {Promise} - A promise that if successful, resolves into an object containing the created playlist.
      */
     createMePlaylist = (access_token, name, description) => {
@@ -385,38 +385,42 @@ export default class spotifyAPI {
      * Get Spotify catalog information for a single artist.
      * Docs URL: https://developer.spotify.com/documentation/web-api/reference/get-an-artist
      * @param {string} access_token - Authenticated user's access token.
-     * @param {string} id - Unique artist Spotify ID.
+     * @param {string} artist_id - Unique artist Spotify ID.
      * @returns {Promise} - A promise that if successful, resolves into an object containing the requested information.
      */
-    getArtist = (access_token, id) => {
-        return new ApiRequest(access_token).setMethod('GET').setPath(`/v1/artists/${id}`).build().execute()
+    getArtist = (access_token, artist_id) => {
+        return new ApiRequest(access_token).setMethod('GET').setPath(`/v1/artists/${artist_id}`).build().execute()
     }
 
     /**
      * Get Spotify catalog information about an artist's top tracks by country. [country not provided -- defaults to user's specified country]
      * Docs URL: https://developer.spotify.com/documentation/web-api/reference/get-an-artists-top-tracks
      * @param {string} access_token - Authenticated user's access token.
-     * @param {string} id - Unique artist Spotify ID.
+     * @param {string} artist_id - Unique artist Spotify ID.
      * @returns {Promise} - A promise that if successful, resolves into an object containing the requested information.
      */
-    getArtistTopTracks = (access_token, id) => {
-        return new ApiRequest(access_token).setMethod('GET').setPath(`/v1/artists/${id}/top-tracks`).build().execute()
+    getArtistTopTracks = (access_token, artist_id) => {
+        return new ApiRequest(access_token)
+            .setMethod('GET')
+            .setPath(`/v1/artists/${artist_id}/top-tracks`)
+            .build()
+            .execute()
     }
 
     /**
      * Get Spotify catalog information about an artist's albums.
      * Docs URL: https://developer.spotify.com/documentation/web-api/reference/get-an-artists-albums
      * @param {string} access_token - Authenticated user's access token.
-     * @param {string} id - Unique artist Spotify ID.
+     * @param {string} artist_id - Unique artist Spotify ID.
      * @param {*} include_groups - A comma-separated list of keywords used to filter the response. Valid values: album, single, appears_on, compilation
      * @param {number} limit - Spotify API pagination page limit.
      * @param {number} offset - Spotify API pagination page offset.
      * @returns {Promise} - A promise that if successful, resolves into an object containing the requested information.
      */
-    getArtistAlbums = (access_token, id, limit, offset, include_groups) => {
+    getArtistAlbums = (access_token, artist_id, limit, offset, include_groups) => {
         return new ApiRequest(access_token)
             .setMethod('GET')
-            .setPath(`/v1/artists/${id}/albums`)
+            .setPath(`/v1/artists/${artist_id}/albums`)
             .setQueryParams({
                 limit: limit || 20,
                 offset: offset || 0,
@@ -430,13 +434,13 @@ export default class spotifyAPI {
      * Get Spotify catalog information about artists similar to a given artist. Similarity based on analysis of Spotify community's listening history.
      * Docs URL: https://developer.spotify.com/documentation/web-api/reference/get-an-artists-related-artists
      * @param {string} access_token - Authenticated user's access token.
-     * @param {string} id - Unique artist Spotify ID.
+     * @param {string} artist_id - Unique artist Spotify ID.
      * @returns {Promise} - A promise that if successful, resolves into an object containing the requested information.
      */
-    getArtistRelatedArtists = (access_token, id) => {
+    getArtistRelatedArtists = (access_token, artist_id) => {
         return new ApiRequest(access_token)
             .setMethod('GET')
-            .setPath(`/v1/artists/${id}/related-artists`)
+            .setPath(`/v1/artists/${artist_id}/related-artists`)
             .build()
             .execute()
     }
@@ -447,37 +451,39 @@ export default class spotifyAPI {
      * Get Spotify catalog information for a single album.
      * Docs URL: https://developer.spotify.com/documentation/web-api/reference/get-an-album
      * @param {string} access_token - Authenticated user's access token.
-     * @param {string} id - Unique album Spotify ID.
+     * @param {string} album_id - Unique album Spotify ID.
      * @returns - A promise that if successful, resolves into an object containing the requested information.
      */
-    getAlbum = (access_token, id) => {
-        return new ApiRequest(access_token).setMethod('GET').setPath(`/v1/albums/${id}`).build().execute()
+    getAlbum = (access_token, album_id) => {
+        return new ApiRequest(access_token).setMethod('GET').setPath(`/v1/albums/${album_id}`).build().execute()
     }
+
+    /* PLAYLIST ENDPOINTS */
 
     /**
      * Get a playlist owned by a Spotify user.
      * Docs URL: https://developer.spotify.com/documentation/web-api/reference/get-playlist
      * @param {string} access_token - Authenticated user's access token.
-     * @param {string} id - Unique album Spotify ID.
+     * @param {string} playlist_id - Unique playlist Spotify ID.
      * @returns - A promise that if successful, resolves into an object containing the requested information.
      */
-    getPlaylist = (access_token, id) => {
-        return new ApiRequest(access_token).setMethod('GET').setPath(`/v1/playlists/${id}`).build().execute()
+    getPlaylist = (access_token, playlist_id) => {
+        return new ApiRequest(access_token).setMethod('GET').setPath(`/v1/playlists/${playlist_id}`).build().execute()
     }
 
     /**
      * Get full details of the items of a playlist owned by a Spotify user.
      * Docs URL: https://developer.spotify.com/documentation/web-api/reference/get-playlists-tracks
      * @param {string} access_token - Authenticated user's access token.
-     * @param {string} id - Unique album Spotify ID.
+     * @param {string} playlist_id - Unique playlist Spotify ID.
      * @param {number} limit - Spotify API pagination page limit.
      * @param {number} offset - Spotify API pagination page offset.
      * @returns - A promise that if successful, resolves into an object containing the requested information.
      */
-    getPlaylistTracks = (access_token, id, limit, offset) => {
+    getPlaylistTracks = (access_token, playlist_id, limit, offset) => {
         return new ApiRequest(access_token)
             .setMethod('GET')
-            .setPath(`/v1/playlists/${id}/tracks`)
+            .setPath(`/v1/playlists/${playlist_id}/tracks`)
             .setQueryParams({
                 limit: limit || 20,
                 offset: offset || 0,
