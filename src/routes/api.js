@@ -1,4 +1,4 @@
-import express from 'express'
+import express, { response } from 'express'
 
 import { spotifyAPI } from '../index.js'
 
@@ -222,6 +222,23 @@ router.get(
         ])
 
         res.status(200).json({ playlist, tracks })
+    })
+)
+
+router.post(
+    '/user/playlists',
+    asyncHandler(async (req, res) => {
+        const { access_token } = req.session.user
+        const { name, description } = req.query
+
+        const createPlaylist = async (access_token, name, description) => {
+            const response = await spotifyAPI.createMePlaylist(access_token, name, description)
+            return response.data
+        }
+
+        const [newPlaylist] = await Promise.all([createPlaylist(access_token, name, description)])
+
+        res.status(200).json(newPlaylist)
     })
 )
 

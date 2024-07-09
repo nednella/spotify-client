@@ -357,6 +357,25 @@ export default class spotifyAPI {
             .execute()
     }
 
+    /**
+     * Create a Spotify playlist for the current user.
+     * @param {string} access_token - Authenticated user's access token.
+     * @param {*} name - The Spotify playlist name (required.)
+     * @param {*} description - The Spotify playlist description (not required.)
+     * @returns {Promise} - A promise that if successful, resolves into an object containing the created playlist.
+     */
+    createMePlaylist = (access_token, name, description) => {
+        return new ApiRequest(access_token)
+            .setMethod('POST')
+            .setPath(`/v1/me/playlists`)
+            .setBodyParams({
+                name: name,
+                description: description,
+            })
+            .build()
+            .execute()
+    }
+
     /* MISC ENDPOINTS */
     // TODO: add check if user is following X among other misc calls
 
