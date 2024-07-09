@@ -7,7 +7,8 @@ import { BsFillPersonLinesFill } from 'react-icons/bs'
 
 import { User } from '../../types/User'
 import { Library } from '../../types/Library'
-import { PlaylistSimplified } from '../../types/Playlist'
+import { SavedTrack } from '../../types/Track'
+import { SimplifiedPlaylist } from '../../types/Playlist'
 import { Album } from '../../types/Album'
 import { Artist } from '../../types/Artist'
 
@@ -27,12 +28,12 @@ interface LibraryContentProps {
 const LibraryContent: React.FC<LibraryContentProps> = ({ user, data }) => {
     const location = useLocation()
 
-    const tracks = 'data.tracks'
-    const yourPlaylists: PlaylistSimplified[] = data.playlists.filter(
-        (playlist: PlaylistSimplified) => playlist.owner.display_name === user.display_name
+    const tracks: SavedTrack[] = data.tracks
+    const yourPlaylists: SimplifiedPlaylist[] = data.playlists.filter(
+        (playlist: SimplifiedPlaylist) => playlist.owner.id === user.id
     )
-    const followedPlaylists: PlaylistSimplified[] = data.playlists.filter(
-        (playlist: PlaylistSimplified) => playlist.owner.display_name !== user.display_name
+    const followedPlaylists: SimplifiedPlaylist[] = data.playlists.filter(
+        (playlist: SimplifiedPlaylist) => playlist.owner.id !== user.id
     )
     const albums: Album[] = data.albums
     const artists: Artist[] = data.artists
@@ -56,13 +57,13 @@ const LibraryContent: React.FC<LibraryContentProps> = ({ user, data }) => {
                         />
                         <AccordionContent>
                             {Array.isArray(yourPlaylists) && yourPlaylists.length > 0 ? (
-                                yourPlaylists.map((item: PlaylistSimplified) => (
+                                yourPlaylists.map((item: SimplifiedPlaylist) => (
                                     <LibraryItem
                                         key={item.id}
                                         image={
                                             item.images && item.images[0]
                                                 ? item.images[0].url
-                                                : './src/assets/images/placeholder.png'
+                                                : '../src/assets/images/placeholder.png'
                                         }
                                         title={item.name}
                                         author={item.owner.display_name}
@@ -86,13 +87,13 @@ const LibraryContent: React.FC<LibraryContentProps> = ({ user, data }) => {
                         />
                         <AccordionContent>
                             {Array.isArray(followedPlaylists) && followedPlaylists.length > 0 ? (
-                                followedPlaylists.map((item: PlaylistSimplified) => (
+                                followedPlaylists.map((item: SimplifiedPlaylist) => (
                                     <LibraryItem
                                         key={item.id}
                                         image={
                                             item.images && item.images[0]
                                                 ? item.images[0].url
-                                                : './src/assets/images/placeholder.png'
+                                                : '../src/assets/images/placeholder.png'
                                         }
                                         title={item.name}
                                         author={item.owner.display_name}
@@ -122,7 +123,7 @@ const LibraryContent: React.FC<LibraryContentProps> = ({ user, data }) => {
                                         image={
                                             item.images && item.images[0]
                                                 ? item.images[0].url
-                                                : './src/assets/images/placeholder.png'
+                                                : '../src/assets/images/placeholder.png'
                                         }
                                         title={item.name}
                                         author={item.artists[0].name}
@@ -152,7 +153,7 @@ const LibraryContent: React.FC<LibraryContentProps> = ({ user, data }) => {
                                         image={
                                             item.images && item.images[0]
                                                 ? item.images[0].url
-                                                : './src/assets/images/liked.png'
+                                                : '../src/assets/images/liked.png'
                                         }
                                         title={item.name}
                                         author={item.name}
