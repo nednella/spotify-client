@@ -50,11 +50,11 @@ export default class spotifyAPI {
     /**
      * Request an access and refresh token using the authorisation code flow provided by Spotify's API.
      * Docs URL: https://developer.spotify.com/documentation/web-api/tutorials/code-flow
-     * @param {string} authCode - A code that the authorisation code flow provides within the callback URL.
+     * @param {string} auth_code - A code that the authorisation code flow provides within the callback URL.
      * @returns {Promise | undefined} A promise that if successful, resolves into an object containing the
      * access token, refresh token, token type and time to expiration. If rejected, it contains an error object.
      */
-    authorisationCodeGrant = (authCode) => {
+    authorisationCodeGrant = (auth_code) => {
         return new AuthRequest()
             .setMethod('POST')
             .setPath('/api/token')
@@ -65,7 +65,7 @@ export default class spotifyAPI {
             })
             .setBodyParams({
                 grant_type: 'authorization_code',
-                code: authCode,
+                code: auth_code,
                 redirect_uri: this.getRedirectUri(),
             })
             .build()
@@ -75,11 +75,11 @@ export default class spotifyAPI {
     /**
      * Retrieve URL in which the user can sign in with their Spotify account and grant permissions.
      * Docs URL: https://developer.spotify.com/documentation/web-api/tutorials/refreshing-tokens
-     * @param {string} refreshToken - The token provided by Spotify's auth API to request new access tokens with.
+     * @param {string} refresh_token - The token provided by Spotify's auth API to request new access tokens with.
      * @returns {Promise | undefined} A promise that if successful, resolves into an object containing the
      * refreshed access token, token type and time to expiration. If rejected, it contains an error object.
      */
-    refreshAccessToken = (refreshToken) => {
+    refreshAccessToken = (refresh_token) => {
         return new AuthRequest()
             .setMethod('POST')
             .setPath('/api/token')
@@ -90,7 +90,7 @@ export default class spotifyAPI {
             })
             .setBodyParams({
                 grant_type: 'refresh_token',
-                refresh_token: refreshToken,
+                refresh_token: refresh_token,
                 client_id: this.getClientId(),
             })
             .build()
@@ -155,26 +155,6 @@ export default class spotifyAPI {
     }
 
     /**
-     * Get a list of the playlists owned or followed by the current Spotify user.
-     * Docs URL: https://developer.spotify.com/documentation/web-api/reference/get-a-list-of-current-users-playlists
-     * @param {string} access_token - Authenticated user's access token.
-     * @param {number} limit - Spotify API pagination page limit.
-     * @param {number} offset - Spotify API pagination page offset.
-     * @returns {Promise} - A promise that if successful, resolves into an object containing the requested information.
-     */
-    getMePlaylists = (access_token, limit, offset) => {
-        return new ApiRequest(access_token)
-            .setMethod('GET')
-            .setPath('/me/playlists')
-            .setQueryParams({
-                limit: limit || 20,
-                offset: offset || 0,
-            })
-            .build()
-            .execute()
-    }
-
-    /**
      * Get a list of the albums saved in the current Spotify user's 'Your Music' library.
      * Docs URL: https://developer.spotify.com/documentation/web-api/reference/get-users-saved-albums
      * @param {string} access_token - Authenticated user's access token.
@@ -186,6 +166,26 @@ export default class spotifyAPI {
         return new ApiRequest(access_token)
             .setMethod('GET')
             .setPath('/me/albums')
+            .setQueryParams({
+                limit: limit || 20,
+                offset: offset || 0,
+            })
+            .build()
+            .execute()
+    }
+
+    /**
+     * Get a list of the playlists owned or followed by the current Spotify user.
+     * Docs URL: https://developer.spotify.com/documentation/web-api/reference/get-a-list-of-current-users-playlists
+     * @param {string} access_token - Authenticated user's access token.
+     * @param {number} limit - Spotify API pagination page limit.
+     * @param {number} offset - Spotify API pagination page offset.
+     * @returns {Promise} - A promise that if successful, resolves into an object containing the requested information.
+     */
+    getMePlaylists = (access_token, limit, offset) => {
+        return new ApiRequest(access_token)
+            .setMethod('GET')
+            .setPath('/me/playlists')
             .setQueryParams({
                 limit: limit || 20,
                 offset: offset || 0,

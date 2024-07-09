@@ -43,7 +43,7 @@ router.get(
             return response.data.artists.items
         }
 
-        const [allTracks, allPlaylists, allAlbums, allArtists] = await Promise.all([
+        const [tracks, playlists, albums, artists] = await Promise.all([
             fetchPaginatedItems(getTracks, access_token, limit, cap, [], processData),
             fetchPaginatedItems(getPlaylists, access_token, limit, cap, [], processData),
             fetchPaginatedItems(getAlbums, access_token, limit, cap, [], processAlbumData),
@@ -53,10 +53,10 @@ router.get(
         // TODO: normalise tracks
 
         res.status(200).json({
-            tracks: allTracks,
-            playlists: allPlaylists,
-            albums: allAlbums,
-            artists: allArtists,
+            tracks,
+            playlists,
+            albums,
+            artists,
         })
     })
 )
@@ -135,6 +135,66 @@ router.get(
 )
 
 router.get(
+    '/album/:id',
+    asyncHandler(async (req, res) => {
+        const { access_token } = req.session.user
+        const { id } = req.params
+
+        // NOTE: default getAlbum retrieves the first 50 album tracks by default. These tracks are also the same type as the getAlbumTracks endpoint.
+        // May implement getAlbumTracks in the future, but this is fine for now.
+        const getAlbum = async (access_token, id) => {
+            const response = await spotifyAPI.getAlbum(access_token, id)
+            return response.data
+        }
+
+        const getIsUserFollowing = async (access_token, id) => {
+            const response = await spotifyAPI.checkMeAlbums(access_token, id)
+            return response.data[0]
+        }
+
+        const [album, is_user_following] = await Promise.all([
+            getAlbum(access_token, id),
+            getIsUserFollowing(access_token, id),
+        ])
+
+        res.status(200).json({ album, is_user_following })
+    })
+)
+
+router.get(
+    '/playlist/:id',
+    asyncHandler(async (req, res) => {
+        const { access_token } = req.session.user
+        const { id } = req.params
+        const limit = SPOTIFY_API_PAGINATION_LIMIT
+        const cap = SPOTIFY_API_PAGINATION_ITEM_CAP
+
+        const getPlaylist = async (access_token, id) => {
+            const response = await spotifyAPI.getPlaylist(access_token, id)
+            return response.data
+        }
+
+        const getPlaylistTracks = async (access_token, limit, offset, id) => {
+            const response = await spotifyAPI.getPlaylistTracks(access_token, id, limit, offset)
+            return response.data
+        }
+
+        const getIsUserFollowing = async (access_token, id) => {
+            const response = await spotifyAPI.checkMePlaylists(access_token, id)
+            return response.data[0]
+        }
+
+        const [playlist, tracks, is_user_following] = await Promise.all([
+            getPlaylist(access_token, id),
+            fetchPaginatedItems(getPlaylistTracks, access_token, limit, cap, [id], processData),
+            getIsUserFollowing(access_token, id),
+        ])
+
+        res.status(200).json({ playlist, tracks, is_user_following })
+    })
+)
+
+router.get(
     '/artist/:id',
     asyncHandler(async (req, res) => {
         const { access_token } = req.session.user
@@ -168,7 +228,7 @@ router.get(
             return response.data[0]
         }
 
-        const [artist, topTracks, albums, relatedArtists, isUserFollowing] = await Promise.all([
+        const [artist, top_tracks, albums, related_artists, is_user_following] = await Promise.all([
             getArtist(access_token, id),
             getTopTracks(access_token, id),
             fetchPaginatedItems(getAlbums, access_token, limit, cap, [id, data_types], processData),
@@ -177,72 +237,12 @@ router.get(
         ])
 
         res.status(200).json({
-            artist: artist,
-            top_tracks: topTracks,
-            albums: albums,
-            related_artists: relatedArtists,
-            is_user_following: isUserFollowing,
+            artist,
+            top_tracks,
+            albums,
+            related_artists,
+            is_user_following,
         })
-    })
-)
-
-router.get(
-    '/album/:id',
-    asyncHandler(async (req, res) => {
-        const { access_token } = req.session.user
-        const { id } = req.params
-
-        // NOTE: default getAlbum retrieves the first 50 album tracks by default. These tracks are also the same type as the getAlbumTracks endpoint.
-        // May implement getAlbumTracks in the future, but this is fine for now.
-        const getAlbum = async (access_token, id) => {
-            const response = await spotifyAPI.getAlbum(access_token, id)
-            return response.data
-        }
-
-        const getIsUserFollowing = async (access_token, id) => {
-            const response = await spotifyAPI.checkMeAlbums(access_token, id)
-            return response.data[0]
-        }
-
-        const [album, isUserFollowing] = await Promise.all([
-            getAlbum(access_token, id),
-            getIsUserFollowing(access_token, id),
-        ])
-
-        res.status(200).json({ album, is_user_following: isUserFollowing })
-    })
-)
-
-router.get(
-    '/playlist/:id',
-    asyncHandler(async (req, res) => {
-        const { access_token } = req.session.user
-        const { id } = req.params
-        const limit = SPOTIFY_API_PAGINATION_LIMIT
-        const cap = SPOTIFY_API_PAGINATION_ITEM_CAP
-
-        const getPlaylist = async (access_token, id) => {
-            const response = await spotifyAPI.getPlaylist(access_token, id)
-            return response.data
-        }
-
-        const getPlaylistTracks = async (access_token, limit, offset, id) => {
-            const response = await spotifyAPI.getPlaylistTracks(access_token, id, limit, offset)
-            return response.data
-        }
-
-        const getIsUserFollowing = async (access_token, id) => {
-            const response = await spotifyAPI.checkMePlaylists(access_token, id)
-            return response.data[0]
-        }
-
-        const [playlist, tracks, isUserFollowing] = await Promise.all([
-            getPlaylist(access_token, id),
-            fetchPaginatedItems(getPlaylistTracks, access_token, limit, cap, [id], processData),
-            getIsUserFollowing(access_token, id),
-        ])
-
-        res.status(200).json({ playlist, tracks, is_user_following: isUserFollowing })
     })
 )
 
@@ -257,9 +257,9 @@ router.post(
             return response.data
         }
 
-        const [newPlaylist] = await Promise.all([createPlaylist(access_token, name, description)])
+        const [new_playlist] = await Promise.all([createPlaylist(access_token, name, description)])
 
-        res.status(200).json(newPlaylist)
+        res.status(200).json(new_playlist)
     })
 )
 
