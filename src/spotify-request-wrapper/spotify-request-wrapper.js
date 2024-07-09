@@ -216,6 +216,58 @@ export default class spotifyAPI {
     }
 
     /**
+     * Check to see if the current user is following a specified playlist.
+     * Docs URL: https://developer.spotify.com/documentation/web-api/reference/check-if-user-follows-playlist
+     * @param {string} access_token - Authenticated user's access token.
+     * @param {string} playlist_id - The Spotify ID of the playlist.
+     * @returns {Promise} - A promise that if successful, resolves into an array of boolean, containing a single boolean.
+     */
+    checkMePlaylists = (access_token, playlist_id) => {
+        return new ApiRequest(access_token)
+            .setMethod('GET')
+            .setPath(`/v1/playlists/${playlist_id}/followers/contains`)
+            .build()
+            .execute()
+    }
+
+    /**
+     * Check if one or more albums is already saved in the current Spotify user's 'Your Music' Library.
+     * Docs URL: https://developer.spotify.com/documentation/web-api/reference/check-users-saved-albums
+     * @param {string} access_token - Authenticated user's access token.
+     * @param {string} album_ids - The Spotify IDs of the albums (maximum: 20).
+     * @returns {Promise} - A promise that if successful, resolves into an array of boolean, containing a single boolean.
+     */
+    checkMeAlbums = (access_token, album_ids) => {
+        return new ApiRequest(access_token)
+            .setMethod('GET')
+            .setPath('/v1/me/albums/contains')
+            .setQueryParams({
+                ids: album_ids,
+            })
+            .build()
+            .execute()
+    }
+
+    /**
+     * Check to see if the current user is following one or more artists.
+     * Docs URL: https://developer.spotify.com/documentation/web-api/reference/check-current-user-follows
+     * @param {string} access_token - Authenticated user's access token.
+     * @param {string} artist_ids - The Spotify IDs of the artists (maximum: 20).
+     * @returns {Promise} - A promise that if successful, resolves into an array of booleans.
+     */
+    checkMeArtists = (access_token, artist_ids) => {
+        return new ApiRequest(access_token)
+            .setMethod('GET')
+            .setPath('/v1/me/following/contains')
+            .setQueryParams({
+                type: 'artist',
+                ids: artist_ids,
+            })
+            .build()
+            .execute()
+    }
+
+    /**
      * Save one or more tracks to the current user's 'Your Music' library.
      * Docs URL: https://developer.spotify.com/documentation/web-api/reference/save-tracks-user
      * @param {string} access_token - Authenticated user's access token.
@@ -359,6 +411,7 @@ export default class spotifyAPI {
 
     /**
      * Create a Spotify playlist for the current user.
+     * Docs URL: https://developer.spotify.com/documentation/web-api/reference/create-playlist
      * @param {string} access_token - Authenticated user's access token.
      * @param {string} name - The Spotify playlist name (required.)
      * @param {string} description - The Spotify playlist description (not required.)

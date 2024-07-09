@@ -163,18 +163,25 @@ router.get(
             return response.data.artists
         }
 
-        const [artist, top_tracks, albums, related_artists] = await Promise.all([
+        const getIsUserFollowing = async (access_token, id) => {
+            const response = await spotifyAPI.checkMeArtists(access_token, id)
+            return response.data[0]
+        }
+
+        const [artist, topTracks, albums, relatedArtists, isUserFollowing] = await Promise.all([
             getArtist(access_token, id),
             getTopTracks(access_token, id),
             fetchPaginatedItems(getAlbums, access_token, limit, cap, [id, data_types], processData),
             getRelated(access_token, id),
+            getIsUserFollowing(access_token, id),
         ])
 
         res.status(200).json({
             artist: artist,
-            top_tracks: top_tracks,
+            top_tracks: topTracks,
             albums: albums,
-            related_artists: related_artists,
+            related_artists: relatedArtists,
+            is_user_following: isUserFollowing,
         })
     })
 )
@@ -192,9 +199,17 @@ router.get(
             return response.data
         }
 
-        const [album] = await Promise.all([getAlbum(access_token, id)])
+        const getIsUserFollowing = async (access_token, id) => {
+            const response = await spotifyAPI.checkMeAlbums(access_token, id)
+            return response.data[0]
+        }
 
-        res.status(200).json({ album })
+        const [album, isUserFollowing] = await Promise.all([
+            getAlbum(access_token, id),
+            getIsUserFollowing(access_token, id),
+        ])
+
+        res.status(200).json({ album, is_user_following: isUserFollowing })
     })
 )
 
@@ -216,12 +231,18 @@ router.get(
             return response.data
         }
 
-        const [playlist, tracks] = await Promise.all([
+        const getIsUserFollowing = async (access_token, id) => {
+            const response = await spotifyAPI.checkMePlaylists(access_token, id)
+            return response.data[0]
+        }
+
+        const [playlist, tracks, isUserFollowing] = await Promise.all([
             getPlaylist(access_token, id),
             fetchPaginatedItems(getPlaylistTracks, access_token, limit, cap, [id], processData),
+            getIsUserFollowing(access_token, id),
         ])
 
-        res.status(200).json({ playlist, tracks })
+        res.status(200).json({ playlist, tracks, is_user_following: isUserFollowing })
     })
 )
 
