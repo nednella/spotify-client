@@ -62,8 +62,8 @@ const Playlist = () => {
                     tracks={playlistData.tracks}
                     header={true}
                     sticky={true}
-                    album={true}
-                    added={true}
+                    displayAlbum={true}
+                    displayAdded={true}
                 />
                 <Footer />
             </PlaylistWrapper>
