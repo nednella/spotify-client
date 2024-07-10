@@ -1,5 +1,5 @@
 import React, { CSSProperties, useEffect, useState } from 'react'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useMutation } from '@tanstack/react-query'
 import toast from 'react-hot-toast'
 import { debounce } from 'lodash'
 import { Link } from 'react-router-dom'
@@ -29,21 +29,19 @@ interface TrackListItem {
 }
 
 const TrackListItem: React.FC<TrackListItem> = ({ index, track, album, added, selected, onSelect }) => {
-    const [inLibrary, setInLibrary] = useState(false)
-    const queryClient = useQueryClient()
+    const [isInLibrary, setIsInLibrary] = useState(false)
     const { data: library } = useLibrary()
 
     const song = normaliseTrackObj(track)
 
     const updateUserLibrary = useMutation({
-        mutationFn: async () => updateLibrary(inLibrary, song.type, song.id),
+        mutationFn: async () => updateLibrary(isInLibrary, song.type, song.id),
         onSuccess: () => {
-            queryClient.refetchQueries({ queryKey: ['library'], type: 'active' })
-            if (inLibrary) {
-                setInLibrary(false)
+            if (isInLibrary) {
+                setIsInLibrary(false)
                 toast.success('Removed from Your Library')
             } else {
-                setInLibrary(true)
+                setIsInLibrary(true)
                 toast.success('Added to Your Library')
             }
         },
@@ -52,20 +50,25 @@ const TrackListItem: React.FC<TrackListItem> = ({ index, track, album, added, se
         },
     })
 
-    const debounceUpdateUserLibrary = debounce(() => updateUserLibrary.mutate(), 100)
+    const debounceUpdateUserLibrary = debounce(() => updateUserLibrary.mutate(), 300)
 
     const onPlayClick = (e: React.MouseEvent) => {
         e.stopPropagation()
 
-        // TODO: Tooltip onClick --> Play Song
+        // TODO: Tooltip onClick --> Play track
         // TODO: SOCKET OnPlay --> Track # & Track title --> text-green-500
+    }
+
+    const onLibraryClick = (e: React.MouseEvent) => {
+        e.stopPropagation()
+        debounceUpdateUserLibrary()
     }
 
     useEffect(() => {
         // Check if the song exists in the authenticated user's library.
         if (library.tracks.some((item) => item.track.id === song.id)) {
-            setInLibrary(true)
-        } else setInLibrary(false)
+            setIsInLibrary(true)
+        } else setIsInLibrary(false)
     }, [library, song])
 
     return (
@@ -232,8 +235,8 @@ const TrackListItem: React.FC<TrackListItem> = ({ index, track, album, added, se
                 "
             >
                 <LibraryButton
-                    inLibrary={inLibrary}
-                    onClick={debounceUpdateUserLibrary}
+                    onClick={(e) => onLibraryClick(e)}
+                    isInLibrary={isInLibrary}
                     size={14}
                     className={twMerge(
                         `
@@ -243,7 +246,7 @@ const TrackListItem: React.FC<TrackListItem> = ({ index, track, album, added, se
                         group-hover:block
                         group-data-[selected=true]:block
                     `,
-                        inLibrary && 'block'
+                        isInLibrary && 'block'
                     )}
                 />
                 <span
