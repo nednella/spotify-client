@@ -32,7 +32,7 @@ const Profile = () => {
         queryKey: ['most-listened-to'],
         queryFn: async () => getUserTopItems(),
         enabled: user !== null,
-        staleTime: 300000, // 1000 * 300 seconds
+        staleTime: 600000, // 1000 * 600 seconds
     })
 
     useEffect(() => {
@@ -77,18 +77,21 @@ const Profile = () => {
                         className="mx-auto max-w-[1400px]"
                         value="tab-1"
                     >
+                        <div className="mb-4 mt-2 select-none">
+                            <span className="text-2xl font-bold">Top tracks this month</span>
+                        </div>
                         <TrackList
-                            title="Top tracks this month"
                             tracks={userData.top_tracks}
                             header={false}
-                            album={true}
-                            shallow={true}
+                            displayAlbum={true}
+                            shallowList={true}
                         />
                         <Carousel title={'Top artists this month'}>
                             <CarouselContainer>
                                 {userData.top_artists.map((artist: Artist) => (
                                     <CarouselSlide key={artist.id}>
                                         <ContentCard
+                                            id={artist.id}
                                             image={
                                                 artist.images && artist.images[0]
                                                     ? artist.images[0].url
@@ -107,10 +110,11 @@ const Profile = () => {
                                 {playlists.map((playlist) => (
                                     <CarouselSlide key={playlist.id}>
                                         <ContentCard
+                                            id={playlist.id}
                                             image={
                                                 playlist.images && playlist.images[0]
                                                     ? playlist.images[0].url
-                                                    : '../src/assets/images/liked.png'
+                                                    : '../src/assets/images/placeholder.png'
                                             }
                                             title={playlist.name}
                                             subtitle={`By ${playlist.owner.display_name}`}
@@ -129,7 +133,7 @@ const Profile = () => {
                         <TrackList
                             tracks={userData.top_tracks}
                             header={false}
-                            album={true}
+                            displayAlbum={true}
                         />
                         <Footer />
                     </TabContent>
