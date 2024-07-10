@@ -253,8 +253,10 @@ const TrackListItem: React.FC<TrackListItem> = ({ index, track, album, added, se
                 <span
                     className="
                         ml-4
+                        hidden
                         w-[5ch]
                         text-right
+                        xsm:block
                     "
                 >
                     {convertTrackDuration(track.duration_ms)}
