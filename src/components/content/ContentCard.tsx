@@ -5,13 +5,14 @@ import PlayButton from '../PlayButton'
 import { twMerge } from 'tailwind-merge'
 
 interface ContentCardProps {
-    image?: string
+    id: string
+    image: string
     title: string
     subtitle: string
     href: string
 }
 
-const ContentCard: React.FC<ContentCardProps> = ({ image, title, subtitle, href }) => {
+const ContentCard: React.FC<ContentCardProps> = ({ id, image, title, subtitle, href }) => {
     // TODO: rounded-full on image for artist content
     return (
         <Link
@@ -19,6 +20,7 @@ const ContentCard: React.FC<ContentCardProps> = ({ image, title, subtitle, href 
             className="
                 group
                 flex
+                min-w-0
                 max-w-[210px]
                 cursor-pointer
                 flex-col
@@ -39,11 +41,11 @@ const ContentCard: React.FC<ContentCardProps> = ({ image, title, subtitle, href 
                 "
             >
                 <img
-                    src={image || './src/assets/images/liked.png'}
+                    src={image}
                     className={twMerge(
                         `
-                            aspect-square 
-                            rounded-md 
+                            aspect-square
+                            rounded-md
                             object-cover
                         `,
                         subtitle === 'Artist' && 'rounded-full'
@@ -51,7 +53,7 @@ const ContentCard: React.FC<ContentCardProps> = ({ image, title, subtitle, href 
                     alt="Content image"
                 />
                 <PlayButton
-                    isPlaying={false}
+                    contentId={id}
                     size={24}
                     className="
                         absolute
