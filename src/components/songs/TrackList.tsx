@@ -2,13 +2,15 @@ import React, { useRef, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 import { FaRegClock } from 'react-icons/fa'
 
+import { useClickOutside } from '../../hooks/useClickOutside'
 import useScrollOpacity from '../../hooks/useScrollOpacity'
 
 import { PlaylistTrack, SavedTrack, SimplifiedTrack, Track } from '../../types/Track'
 
+import { normaliseTrackObj } from '../../common/normaliseTrackObject'
+
 import BackgroundColour from '../BackgroundColour'
 import TrackListItem from './TrackListItem'
-import { useClickOutside } from '../../hooks/useClickOutside'
 
 interface TrackListProps {
     tracks: PlaylistTrack[] | Track[] | SavedTrack[] | SimplifiedTrack[]
@@ -24,9 +26,6 @@ const TrackList: React.FC<TrackListProps> = ({ tracks, header, sticky, displayAl
     const containerRef = useRef(null)
     useClickOutside(containerRef, () => setSelectedIndex(null))
 
-    // TODO: infinite scrolling/pagination w/ API
-    // Only render components in view, or cap total no. of rendered components for performance
-
     const handleSelect = (index: number) => {
         if (selectedIndex === index) {
             // TODO: playSong
@@ -34,6 +33,8 @@ const TrackList: React.FC<TrackListProps> = ({ tracks, header, sticky, displayAl
         }
         setSelectedIndex(index)
     }
+
+    const normalisedTracks = tracks.map(normaliseTrackObj)
 
     return (
         <>
@@ -49,9 +50,9 @@ const TrackList: React.FC<TrackListProps> = ({ tracks, header, sticky, displayAl
                 className="mb-4 rounded-md border border-transparent"
             >
                 {shallowList
-                    ? tracks.slice(0, 5).map((track, index) => (
+                    ? normalisedTracks.slice(0, 5).map((track, index) => (
                           <TrackListItem
-                              key={index}
+                              key={track.id}
                               index={index}
                               track={track}
                               album={displayAlbum}
@@ -60,9 +61,9 @@ const TrackList: React.FC<TrackListProps> = ({ tracks, header, sticky, displayAl
                               onSelect={handleSelect}
                           ></TrackListItem>
                       ))
-                    : tracks.map((track, index) => (
+                    : normalisedTracks.map((track, index) => (
                           <TrackListItem
-                              key={index}
+                              key={track.id}
                               index={index}
                               track={track}
                               album={displayAlbum}
