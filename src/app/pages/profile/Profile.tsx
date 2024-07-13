@@ -1,11 +1,9 @@
 import { useEffect } from 'react'
-import { useQuery } from '@tanstack/react-query'
 
 import useColour from '../../../hooks/useColour'
 import { useAuth } from '../../../hooks/useAuth'
 import { useLibrary } from '../../../hooks/useLibrary'
-
-import getUserTopItems from '../../../api/user/UserTopItems'
+import useGetMostListenedTo from '../../../hooks/useGetMostListenedTo'
 
 import { Artist } from '../../../types/Artist'
 
@@ -24,23 +22,14 @@ const Profile = () => {
     const { setColour } = useColour()
     const { user } = useAuth()
     const { data: libraryData, isLoading: libraryLoading, isError: libraryError } = useLibrary()
-    const {
-        data: userData,
-        isLoading: userLoading,
-        isError: userError,
-    } = useQuery({
-        queryKey: ['most-listened-to'],
-        queryFn: async () => getUserTopItems(),
-        enabled: user !== null,
-        staleTime: 600000, // 1000 * 600 seconds
-    })
+    const { data: profileData, isLoading: profileLoading, isError: profileError } = useGetMostListenedTo(user)
 
     useEffect(() => {
         setColour(['16', '88', '184'])
     }, [setColour])
 
-    const isLoading = libraryLoading || userLoading
-    const isError = libraryError || userError
+    const isLoading = libraryLoading || profileLoading
+    const isError = libraryError || profileError
 
     let playlists
     if (user && libraryData) {
@@ -53,7 +42,7 @@ const Profile = () => {
         <NotFound />
     ) : (
         user &&
-        userData &&
+        profileData &&
         playlists && (
             <ProfileWrapper user={user}>
                 <TabMenu>
@@ -81,14 +70,14 @@ const Profile = () => {
                             <span className="text-2xl font-bold">Top tracks this month</span>
                         </div>
                         <TrackList
-                            tracks={userData.top_tracks}
+                            tracks={profileData.top_tracks}
                             header={false}
                             displayAlbum={true}
                             shallowList={true}
                         />
                         <Carousel title={'Top artists this month'}>
                             <CarouselContainer>
-                                {userData.top_artists.map((artist: Artist) => (
+                                {profileData.top_artists.map((artist: Artist) => (
                                     <CarouselSlide key={artist.id}>
                                         <ContentCard
                                             id={artist.id}
@@ -131,7 +120,7 @@ const Profile = () => {
                         value="tab-2"
                     >
                         <TrackList
-                            tracks={userData.top_tracks}
+                            tracks={profileData.top_tracks}
                             header={false}
                             displayAlbum={true}
                         />
