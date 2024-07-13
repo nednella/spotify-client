@@ -1,25 +1,26 @@
 import React from 'react'
 
 import useColour from '../../../../hooks/useColour'
+
 import { SimplifiedPlaylist } from '../../../../types/Playlist'
-import { PlaylistTrack } from '../../../../types/Track'
+
 import { convertAlbumDuration } from '../../../../common/convertAlbumDuration'
 import { toTitleCase } from '../../../../common/toTitleCase'
+
 import HeaderSpacer from '../../../../components/HeaderSpacer'
 
 interface PlaylistHeaderProps {
     playlist: SimplifiedPlaylist
-    tracks: PlaylistTrack[]
+    count: number
+    duration: number
 }
 
-const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({ playlist, tracks }) => {
+const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({ playlist, count, duration }) => {
     const { colour } = useColour()
 
     const followers = playlist.followers.total.toLocaleString('en', { notation: 'standard' }) // Thousands separator
-    const songs = tracks.length.toLocaleString('en', { notation: 'standard' }) // Thousands separator
-    const totalListeningLength = convertAlbumDuration(
-        tracks.reduce((n, { track }) => n + track.duration_ms, 0).toString()
-    )
+    const songs = count.toLocaleString('en', { notation: 'standard' }) // Thousands separator
+    const totalListeningLength = convertAlbumDuration(duration)
 
     return (
         <div
@@ -115,7 +116,6 @@ const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({ playlist, tracks }) => 
                                     md:flex-row
                             "
                     >
-                        {/* TODO: Change to <Link> if implementing /user/ page */}
                         <span>
                             By{' '}
                             <a

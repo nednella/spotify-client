@@ -1,7 +1,6 @@
 import React, { useRef } from 'react'
 
 import { SimplifiedPlaylist } from '../../../../types/Playlist'
-import { Track } from '../../../../types/Track'
 
 import PlaylistHeader from './PlaylistHeader'
 import Header from '../../../../components/Header'
@@ -11,11 +10,12 @@ import BackgroundGradient from '../../../../components/BackgroundGradient'
 
 interface PlaylistWrapperProps {
     playlist: SimplifiedPlaylist
-    tracks: Track[]
+    count: number
+    duration: number
     children: React.ReactNode
 }
 
-const PlaylistWrapper: React.FC<PlaylistWrapperProps> = ({ playlist, tracks, children }) => {
+const PlaylistWrapper: React.FC<PlaylistWrapperProps> = ({ playlist, count, duration, children }) => {
     const contentRef = useRef(null)
 
     return (
@@ -31,15 +31,15 @@ const PlaylistWrapper: React.FC<PlaylistWrapperProps> = ({ playlist, tracks, chi
             <ScrollWrapper contentRef={contentRef}>
                 <PlaylistHeader
                     playlist={playlist}
-                    tracks={tracks}
+                    count={count}
+                    duration={duration}
                 />
-                {/* Content container */}
                 <div className="relative z-[1] h-fit w-full">
                     <BackgroundGradient
                         className="z-[-1]"
                         size="large"
                     />
-                    {/* Content */}
+                    {/* Content container */}
                     <section
                         ref={contentRef}
                         className="mx-auto h-fit w-full max-w-[1400px] p-4"
