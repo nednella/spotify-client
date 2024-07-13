@@ -2,31 +2,29 @@ import React, { useRef, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 import { FaRegClock } from 'react-icons/fa'
 
+import { useClickOutside } from '../../hooks/useClickOutside'
 import useScrollOpacity from '../../hooks/useScrollOpacity'
 
 import { PlaylistTrack, SavedTrack, SimplifiedTrack, Track } from '../../types/Track'
 
+import { normaliseTrackObj } from '../../common/normaliseTrackObject'
+
 import BackgroundColour from '../BackgroundColour'
 import TrackListItem from './TrackListItem'
-import { useClickOutside } from '../../hooks/useClickOutside'
 
 interface TrackListProps {
-    title?: string
     tracks: PlaylistTrack[] | Track[] | SavedTrack[] | SimplifiedTrack[]
     header: boolean
     sticky?: boolean
-    album?: boolean
-    added?: boolean
-    shallow?: boolean
+    displayAlbum?: boolean
+    displayAdded?: boolean
+    shallowList?: boolean
 }
 
-const TrackList: React.FC<TrackListProps> = ({ title, tracks, header, sticky, album, added, shallow }) => {
+const TrackList: React.FC<TrackListProps> = ({ tracks, header, sticky, displayAlbum, displayAdded, shallowList }) => {
     const [selectedIndex, setSelectedIndex] = useState<number | null>(null)
     const containerRef = useRef(null)
     useClickOutside(containerRef, () => setSelectedIndex(null))
-
-    // TODO: infinite scrolling/pagination w/ API
-    // Only render components in view, or cap total no. of rendered components for performance
 
     const handleSelect = (index: number) => {
         if (selectedIndex === index) {
@@ -36,43 +34,40 @@ const TrackList: React.FC<TrackListProps> = ({ title, tracks, header, sticky, al
         setSelectedIndex(index)
     }
 
+    const normalisedTracks = tracks.map(normaliseTrackObj)
+
     return (
         <>
-            {title && (
-                <div className="mb-4 mt-2 select-none">
-                    <span className="text-2xl font-bold">{title}</span>
-                </div>
-            )}
             <TrackListHeader
-                display={header}
+                header={header}
                 sticky={sticky}
-                album={album}
-                added={added}
+                displayAlbum={displayAlbum}
+                displayAdded={displayAdded}
             />
 
             <div
                 ref={containerRef}
                 className="mb-4 rounded-md border border-transparent"
             >
-                {shallow
-                    ? tracks.slice(0, 5).map((track, index) => (
+                {shallowList
+                    ? normalisedTracks.slice(0, 5).map((track, index) => (
                           <TrackListItem
-                              key={index}
+                              key={track.id}
                               index={index}
                               track={track}
-                              album={album}
-                              added={added}
+                              album={displayAlbum}
+                              added={displayAdded}
                               selected={selectedIndex === index}
                               onSelect={handleSelect}
                           ></TrackListItem>
                       ))
-                    : tracks.map((track, index) => (
+                    : normalisedTracks.map((track, index) => (
                           <TrackListItem
-                              key={index}
+                              key={track.id}
                               index={index}
                               track={track}
-                              album={album}
-                              added={added}
+                              album={displayAlbum}
+                              added={displayAdded}
                               selected={selectedIndex === index}
                               onSelect={handleSelect}
                           ></TrackListItem>
@@ -85,19 +80,19 @@ const TrackList: React.FC<TrackListProps> = ({ title, tracks, header, sticky, al
 export default TrackList
 
 interface TrackListHeader {
-    display: boolean
+    header: boolean
     sticky?: boolean
-    album?: boolean
-    added?: boolean
+    displayAlbum?: boolean
+    displayAdded?: boolean
 }
 
-const TrackListHeader: React.FC<TrackListHeader> = ({ display, sticky, album, added }) => {
+const TrackListHeader: React.FC<TrackListHeader> = ({ header, sticky, displayAlbum, displayAdded }) => {
     const { opacity } = useScrollOpacity()
 
-    return display ? (
+    return header ? (
         <div
-            data-display-album={album}
-            data-display-added={added}
+            data-display-album={displayAlbum}
+            data-display-added={displayAdded}
             className={twMerge(
                 `
                     mb-2
@@ -127,8 +122,8 @@ const TrackListHeader: React.FC<TrackListHeader> = ({ display, sticky, album, ad
             />
             <span className="justify-self-end text-base">#</span>
             <span>Title</span>
-            {album && <span className="hidden md:block">Album</span>}
-            {added && <span className="hidden xl:block">Date added</span>}
+            {displayAlbum && <span className="hidden md:block">Album</span>}
+            {displayAdded && <span className="hidden xl:block">Date added</span>}
             <FaRegClock
                 size={16}
                 className="ml-5 justify-self-center"

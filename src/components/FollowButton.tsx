@@ -3,10 +3,10 @@ import Button from './Button'
 import { twMerge } from 'tailwind-merge'
 
 interface FollowButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-    inLibrary: boolean
+    isInLibrary: boolean
     className?: string
 }
-const FollowButton: React.FC<FollowButtonProps> = ({ inLibrary, className, ...props }) => {
+const FollowButton: React.FC<FollowButtonProps> = ({ isInLibrary, className, ...props }) => {
     return (
         <Button
             className={twMerge(
@@ -25,7 +25,7 @@ const FollowButton: React.FC<FollowButtonProps> = ({ inLibrary, className, ...pr
             )}
             {...props}
         >
-            {inLibrary ? <p className="font-bold">Following</p> : <p>Follow</p>}
+            {isInLibrary ? <p className="font-bold">Following</p> : <p>Follow</p>}
         </Button>
     )
 }

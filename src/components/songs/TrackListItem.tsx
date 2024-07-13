@@ -1,5 +1,5 @@
 import React, { CSSProperties, useEffect, useState } from 'react'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useMutation } from '@tanstack/react-query'
 import toast from 'react-hot-toast'
 import { debounce } from 'lodash'
 import { Link } from 'react-router-dom'
@@ -10,18 +10,19 @@ import { VscEllipsis } from 'react-icons/vsc'
 
 import updateLibrary from '../../api/user/UserLibraryUpdate'
 import { useLibrary } from '../../hooks/useLibrary'
-import { PlaylistTrack, Track, SimplifiedTrack, SavedTrack } from '../../types/Track'
+
+import { NormalisedTrack } from '../../types/Track'
+
 import { convertTrackDateAdded } from '../../common/convertTrackDateAdded'
 import { convertTrackDuration } from '../../common/convertTrackDuration'
 
 import Tooltip from '../Tooltip'
 import LibraryButton from '../LibraryButton'
 import OptionsMenu from '../menus/SongOptionsMenu'
-import { normaliseTrackObj } from '../../common/normaliseTrackObject'
 
 interface TrackListItem {
     index: number
-    track: PlaylistTrack | SimplifiedTrack | Track | SavedTrack
+    track: NormalisedTrack
     album?: boolean
     added?: boolean
     selected: boolean
@@ -29,21 +30,17 @@ interface TrackListItem {
 }
 
 const TrackListItem: React.FC<TrackListItem> = ({ index, track, album, added, selected, onSelect }) => {
-    const [inLibrary, setInLibrary] = useState(false)
-    const queryClient = useQueryClient()
+    const [isInLibrary, setisInLibrary] = useState(false)
     const { data: library } = useLibrary()
 
-    const song = normaliseTrackObj(track)
-
     const updateUserLibrary = useMutation({
-        mutationFn: async () => updateLibrary(inLibrary, song.type, song.id),
+        mutationFn: async () => updateLibrary(isInLibrary, track.type, track.id),
         onSuccess: () => {
-            queryClient.refetchQueries({ queryKey: ['library'], type: 'active' })
-            if (inLibrary) {
-                setInLibrary(false)
+            if (isInLibrary) {
+                setisInLibrary(false)
                 toast.success('Removed from Your Library')
             } else {
-                setInLibrary(true)
+                setisInLibrary(true)
                 toast.success('Added to Your Library')
             }
         },
@@ -52,21 +49,26 @@ const TrackListItem: React.FC<TrackListItem> = ({ index, track, album, added, se
         },
     })
 
-    const debounceUpdateUserLibrary = debounce(() => updateUserLibrary.mutate(), 100)
+    const debounceUpdateUserLibrary = debounce(() => updateUserLibrary.mutate(), 300)
 
     const onPlayClick = (e: React.MouseEvent) => {
         e.stopPropagation()
 
-        // TODO: Tooltip onClick --> Play Song
+        // TODO: Tooltip onClick --> Play track
         // TODO: SOCKET OnPlay --> Track # & Track title --> text-green-500
     }
 
+    const onLibraryClick = (e: React.MouseEvent) => {
+        e.stopPropagation()
+        debounceUpdateUserLibrary()
+    }
+
     useEffect(() => {
-        // Check if the song exists in the authenticated user's library.
-        if (library.tracks.some((item) => item.track.id === song.id)) {
-            setInLibrary(true)
-        } else setInLibrary(false)
-    }, [library, song])
+        // Check if the track exists in the authenticated user's library.
+        if (library.tracks.some((item) => item.track.id === track.id)) {
+            setisInLibrary(true)
+        } else setisInLibrary(false)
+    }, [setisInLibrary, library, track])
 
     return (
         <div
@@ -105,7 +107,7 @@ const TrackListItem: React.FC<TrackListItem> = ({ index, track, album, added, se
                 "
                 style={{ direction: 'rtl' }}
             >
-                <Tooltip message={`Play ${song.name} by ${song.artists[0].name}`}>
+                <Tooltip message={`Play ${track.name} by ${track.artists[0].name}`}>
                     <button
                         onClick={(e) => onPlayClick(e)}
                         className="
@@ -141,7 +143,7 @@ const TrackListItem: React.FC<TrackListItem> = ({ index, track, album, added, se
                 "
             >
                 {/* Image container */}
-                {song.album && (
+                {track.album && (
                     <div
                         className="
                         mr-3
@@ -152,7 +154,9 @@ const TrackListItem: React.FC<TrackListItem> = ({ index, track, album, added, se
                         <img
                             className="rounded-sm object-cover"
                             src={
-                                song.album.images[0] ? song.album.images[0].url : '../src/assets/images/placeholder.png'
+                                track.album.images[0]
+                                    ? track.album.images[0].url
+                                    : '../src/assets/images/placeholder.png'
                             }
                             alt="Album artwork"
                         />
@@ -161,11 +165,11 @@ const TrackListItem: React.FC<TrackListItem> = ({ index, track, album, added, se
                 {/* Details container */}
                 <div className="flex flex-col overflow-hidden">
                     {/* Track title */}
-                    <span className="truncate text-base text-white">{song.name}</span>
+                    <span className="truncate text-base text-white">{track.name}</span>
                     {/* Track artists */}
                     <div className="overflow-hidden truncate">
-                        {song.artists.map((artist, index) => (
-                            <React.Fragment key={index}>
+                        {track.artists.map((artist, index) => (
+                            <React.Fragment key={artist.id}>
                                 <Link
                                     to={`/${artist.type}/${artist.id}`}
                                     className="
@@ -177,7 +181,7 @@ const TrackListItem: React.FC<TrackListItem> = ({ index, track, album, added, se
                                 >
                                     {artist.name}
                                 </Link>
-                                {index < song.artists.length - 1 && ', '}
+                                {index < track.artists.length - 1 && ', '}
                             </React.Fragment>
                         ))}
                     </div>
@@ -185,7 +189,7 @@ const TrackListItem: React.FC<TrackListItem> = ({ index, track, album, added, se
             </ItemContainer>
 
             {/* Track album */}
-            {album && song.album && (
+            {album && track.album && (
                 <ItemContainer
                     data-column={3}
                     className="
@@ -196,19 +200,19 @@ const TrackListItem: React.FC<TrackListItem> = ({ index, track, album, added, se
                     "
                 >
                     <Link
-                        to={`/album/${song.album.id}`}
+                        to={`/album/${track.album.id}`}
                         className="
                             hover:text-white
                             hover:underline
                         "
                     >
-                        {song.album.name}
+                        {track.album.name}
                     </Link>
                 </ItemContainer>
             )}
 
             {/* Track date added */}
-            {added && song.added_at && (
+            {added && track.added_at && (
                 <ItemContainer
                     data-column={4}
                     className="
@@ -216,7 +220,7 @@ const TrackListItem: React.FC<TrackListItem> = ({ index, track, album, added, se
                         truncate
                     "
                 >
-                    <span>{convertTrackDateAdded(song.added_at)}</span>
+                    <span>{convertTrackDateAdded(track.added_at)}</span>
                 </ItemContainer>
             )}
 
@@ -232,36 +236,38 @@ const TrackListItem: React.FC<TrackListItem> = ({ index, track, album, added, se
                 "
             >
                 <LibraryButton
-                    inLibrary={inLibrary}
-                    onClick={debounceUpdateUserLibrary}
+                    onClick={(e) => onLibraryClick(e)}
+                    isInLibrary={isInLibrary}
                     size={14}
                     className={twMerge(
                         `
-                        hidden
-                        justify-self-start
-                        shadow-none
-                        group-hover:block
-                        group-data-[selected=true]:block
-                    `,
-                        inLibrary && 'block'
+                            hidden
+                            justify-self-start
+                            shadow-none
+                            group-hover:block
+                            group-data-[selected=true]:block
+                        `,
+                        isInLibrary && 'block'
                     )}
                 />
                 <span
                     className="
                         ml-4
+                        hidden
                         w-[5ch]
                         text-right
+                        xsm:block
                     "
                 >
-                    {convertTrackDuration(song.duration_ms)}
+                    {convertTrackDuration(track.duration_ms)}
                 </span>
                 <OptionsMenu
                     userOwned={false}
-                    url={song.external_urls.spotify}
-                    uri={song.uri}
+                    url={track.external_urls.spotify}
+                    uri={track.uri}
                 >
                     <button className="ml-4">
-                        <Tooltip message={`More options for ${song.name} by ${song.artists[0].name}`}>
+                        <Tooltip message={`More options for ${track.name} by ${track.artists[0].name}`}>
                             <span>
                                 <VscEllipsis
                                     size={20}
