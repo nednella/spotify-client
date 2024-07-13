@@ -1,36 +1,27 @@
 import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
-import { useQuery } from '@tanstack/react-query'
 
-import useColour from '../../../hooks/useColour.tsx'
-import { useAuth } from '../../../hooks/useAuth.tsx'
-import { useLibrary } from '../../../hooks/useLibrary.tsx'
+import useColour from '../../../hooks/useColour'
+import { useAuth } from '../../../hooks/useAuth'
+import { useLibrary } from '../../../hooks/useLibrary'
+import useGetPlaylist from '../../../hooks/useGetPlaylist'
 
-import getPlaylist from '../../../api/playlist/getPlaylist.ts'
+import { PlaylistTrack } from '../../../types/Track'
 
-import Loading from '../Loading.tsx'
-import NotFound from '../NotFound.tsx'
+import Loading from '../Loading'
+import NotFound from '../NotFound'
 
-import PlaylistWrapper from './components/PlaylistWrapper.tsx'
-import ActionBar from '../../../components/ActionBar.tsx'
-import TrackList from '../../../components/songs/TrackList.tsx'
-import Footer from '../../../components/Footer.tsx'
+import PlaylistWrapper from './components/PlaylistWrapper'
+import ActionBar from '../../../components/ActionBar'
+import TrackList from '../../../components/songs/TrackList'
+import Footer from '../../../components/Footer'
 
 const Playlist = () => {
     const { setColour } = useColour()
-    const { id: playlistId } = useParams()
     const { user } = useAuth()
+    const { id } = useParams()
     const { data: libraryData, isLoading: libraryLoading, isError: libraryError } = useLibrary()
-    const {
-        data: playlistData,
-        isLoading: playlistLoading,
-        isError: playlistError,
-    } = useQuery({
-        queryKey: ['playlist', playlistId],
-        queryFn: async () => getPlaylist(playlistId),
-        enabled: user !== null && playlistId !== null,
-        staleTime: 600000, // 1000 * 60 * 10 minutes
-    })
+    const { data: playlistData, isLoading: playlistLoading, isError: playlistError } = useGetPlaylist(user, id)
 
     useEffect(() => {
         setColour(['86', '58', '204'])
@@ -39,7 +30,7 @@ const Playlist = () => {
     const isLoading = libraryLoading || playlistLoading
     const isError = libraryError || playlistError
 
-    if (!playlistId) return <NotFound />
+    if (!id) return <NotFound />
 
     return isLoading ? (
         <Loading />
@@ -51,7 +42,8 @@ const Playlist = () => {
         playlistData && (
             <PlaylistWrapper
                 playlist={playlistData.playlist}
-                tracks={playlistData.tracks}
+                count={playlistData.tracks.length}
+                duration={playlistData.tracks.reduce((n: number, { track }: PlaylistTrack) => n + track.duration_ms, 0)}
             >
                 <ActionBar
                     user={user}
