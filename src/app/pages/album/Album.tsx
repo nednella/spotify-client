@@ -1,18 +1,18 @@
 import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 
-import useColour from '../../../hooks/useColour.tsx'
-import { useAuth } from '../../../hooks/useAuth.tsx'
-import { useLibrary } from '../../../hooks/useLibrary.tsx'
-import useGetAlbum from '../../../hooks/useGetAlbum.tsx'
+import useColour from '../../../hooks/useColour'
+import { useAuth } from '../../../hooks/useAuth'
+import { useLibrary } from '../../../hooks/useLibrary'
+import useGetAlbum from '../../../hooks/useGetAlbum'
 
 import Loading from '../Loading'
 import NotFound from '../NotFound'
 
-import AlbumWrapper from './components/AlbumWrapper.tsx'
-import ActionBar from '../../../components/ActionBar.tsx'
-import TrackList from '../../../components/songs/TrackList.tsx'
-import Footer from '../../../components/Footer.tsx'
+import AlbumWrapper from './components/AlbumWrapper'
+import ActionBar from '../../../components/ActionBar'
+import TrackList from '../../../components/songs/TrackList'
+import Footer from '../../../components/Footer'
 
 const Album = () => {
     const { setColour } = useColour()
