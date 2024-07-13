@@ -9,7 +9,7 @@ const useGetMostListenedTo = (user: User | null) => {
         queryKey: ['most-listened-to'],
         queryFn: async () => getUserTopItems(),
         enabled: user !== null,
-        staleTime: 600000, // 1000 * 600 seconds
+        staleTime: 600000, // 1000 * 60 * 10 minutes
     })
 }
 
