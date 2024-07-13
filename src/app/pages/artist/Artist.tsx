@@ -1,12 +1,10 @@
 import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
-import { useQuery } from '@tanstack/react-query'
 
+import useColour from '../../../hooks/useColour'
 import { useAuth } from '../../../hooks/useAuth'
 import { useLibrary } from '../../../hooks/useLibrary'
-import useColour from '../../../hooks/useColour'
-
-import getArtist from '../../../api/artist/getArtist'
+import useGetArtist from '../../../hooks/useGetArtist'
 
 import { Artist as ArtistType } from '../../../types/Artist'
 import { SimplifiedAlbum } from '../../../types/Album'
@@ -28,19 +26,10 @@ import Footer from '../../../components/Footer'
 
 const Artist = () => {
     const { setColour } = useColour()
-    const { id: artistId } = useParams()
     const { user } = useAuth()
+    const { id } = useParams()
     const { data: libraryData, isLoading: libraryLoading, isError: libraryError } = useLibrary()
-    const {
-        data: artistData,
-        isLoading: artistLoading,
-        isError: artistError,
-    } = useQuery({
-        queryKey: ['artist', artistId],
-        queryFn: async () => getArtist(artistId),
-        enabled: user !== null && artistId !== null,
-        staleTime: 600000, // 1000 * 60 * 10 minutes
-    })
+    const { data: artistData, isLoading: artistLoading, isError: artistError } = useGetArtist(user, id)
 
     useEffect(() => {
         setColour(['56', '144', '176'])
@@ -49,18 +38,20 @@ const Artist = () => {
     const isLoading = libraryLoading || artistLoading
     const isError = libraryError || artistError
 
-    if (!artistId) return <NotFound />
+    if (!id) return <NotFound />
 
     let most_recent, albums, singles
     if (artistData) {
-        // Cap most recent to 20
+        // Cap most recent to 20 items
         most_recent = artistData.albums.slice(0, 20)
+
         // Sort oldest to newest (newest -> oldest separates albums from singles in the sort)
         most_recent = most_recent.sort(
             (a: SimplifiedAlbum, b: SimplifiedAlbum) =>
                 Number(a.release_date.substring(0, 4)) - Number(b.release_date.substring(0, 4))
         )
-        // Sort newest to oldest
+
+        // Reverse sort to newest to oldest
         most_recent = most_recent.reverse()
         albums = artistData.albums.filter((album: SimplifiedAlbum) => album.album_type === 'album')
         singles = artistData.albums.filter((album: SimplifiedAlbum) => album.album_type === 'single')
