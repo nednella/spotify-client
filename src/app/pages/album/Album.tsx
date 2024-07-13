@@ -1,12 +1,10 @@
 import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
-import { useQuery } from '@tanstack/react-query'
 
 import useColour from '../../../hooks/useColour.tsx'
 import { useAuth } from '../../../hooks/useAuth.tsx'
 import { useLibrary } from '../../../hooks/useLibrary.tsx'
-
-import getAlbum from '../../../api/album/getAlbum.ts'
+import useGetAlbum from '../../../hooks/useGetAlbum.tsx'
 
 import Loading from '../Loading'
 import NotFound from '../NotFound'
@@ -18,19 +16,10 @@ import Footer from '../../../components/Footer.tsx'
 
 const Album = () => {
     const { setColour } = useColour()
-    const { id: albumId } = useParams()
     const { user } = useAuth()
+    const { id } = useParams()
     const { data: libraryData, isLoading: libraryLoading, isError: libraryError } = useLibrary()
-    const {
-        data: albumData,
-        isLoading: albumLoading,
-        isError: albumError,
-    } = useQuery({
-        queryKey: ['album', albumId],
-        queryFn: async () => getAlbum(albumId),
-        enabled: user !== null && albumId !== null,
-        staleTime: 600000, // 1000 * 60 * 10 minutes
-    })
+    const { data: albumData, isLoading: albumLoading, isError: albumError } = useGetAlbum(user, id)
 
     useEffect(() => {
         setColour(['86', '58', '204'])
@@ -39,7 +28,7 @@ const Album = () => {
     const isLoading = libraryLoading || albumLoading
     const isError = libraryError || albumError
 
-    if (!albumId) return <NotFound />
+    if (!id) return <NotFound />
 
     return isLoading ? (
         <Loading />
