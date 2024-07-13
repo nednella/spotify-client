@@ -7,13 +7,13 @@ import { MdAdd } from 'react-icons/md'
 import Tooltip from './Tooltip'
 
 interface LibraryButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-    inLibrary: boolean
+    isInLibrary: boolean
     size: number
     className?: string
 }
 
-const LibraryButton: React.FC<LibraryButtonProps> = ({ inLibrary, size, className, ...props }) => {
-    return inLibrary ? (
+const LibraryButton: React.FC<LibraryButtonProps> = ({ isInLibrary, size, className, ...props }) => {
+    return isInLibrary ? (
         <Tooltip message="Remove from Your Library">
             <Container
                 className={className}

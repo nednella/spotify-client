@@ -6,12 +6,13 @@ import useLoginModal from '../../hooks/useLoginModal'
 import PlayButton from '../PlayButton'
 
 interface RecentCardProps {
+    id: string
     image: string
     title: string
-    href?: string
+    href: string
 }
 
-const RecentCard: React.FC<RecentCardProps> = ({ image, title, href }) => {
+const RecentCard: React.FC<RecentCardProps> = ({ id, image, title, href }) => {
     const { user } = useAuth()
     const loginModal = useLoginModal()
 
@@ -80,7 +81,7 @@ const RecentCard: React.FC<RecentCardProps> = ({ image, title, href }) => {
                     {title}
                 </p>
                 <PlayButton
-                    isPlaying={false}
+                    contentId={id}
                     size={20}
                     className="
                         mr-2

@@ -11,6 +11,8 @@ import getArtist from '../../../api/artist/getArtist'
 import { Artist as ArtistType } from '../../../types/Artist'
 import { SimplifiedAlbum } from '../../../types/Album'
 
+import { toTitleCase } from '../../../common/toTitleCase'
+
 import Loading from '../Loading'
 import NotFound from '../NotFound'
 
@@ -103,28 +105,27 @@ const Artist = () => {
                             library={libraryData.artists}
                             content={artistData.artist}
                         />
+                        <div className="mb-4 mt-2 select-none">
+                            <span className="text-2xl font-bold">Popular</span>
+                        </div>
                         <TrackList
-                            title="Popular"
                             tracks={artistData.top_tracks}
                             header={false}
-                            shallow={true}
+                            shallowList={true}
                         />
                         <Carousel title={'Most recent releases'}>
                             <CarouselContainer>
                                 {most_recent.map((album: SimplifiedAlbum) => (
                                     <CarouselSlide key={album.id}>
                                         <ContentCard
+                                            id={album.id}
                                             image={
                                                 album.images && album.images[0]
                                                     ? album.images[0].url
                                                     : '../src/assets/images/liked.png'
                                             }
                                             title={album.name}
-                                            subtitle={
-                                                album.album_type === 'album'
-                                                    ? `${album.release_date.substring(0, 4)} \u2022 Album`
-                                                    : `${album.release_date.substring(0, 4)} \u2022 Single`
-                                            }
+                                            subtitle={`${album.release_date.substring(0, 4)} \u2022 ${toTitleCase(album.album_type)}`}
                                             href={`/${album.type}/${album.id}`}
                                         />
                                     </CarouselSlide>
@@ -136,13 +137,14 @@ const Artist = () => {
                                 {artistData.related_artists.map((artist: ArtistType) => (
                                     <CarouselSlide key={artist.id}>
                                         <ContentCard
+                                            id={artist.id}
                                             image={
                                                 artist.images && artist.images[0]
                                                     ? artist.images[0].url
                                                     : '../src/assets/images/liked.png'
                                             }
                                             title={artist.name}
-                                            subtitle={'Artist'}
+                                            subtitle={toTitleCase(artist.type)}
                                             href={`/${artist.type}/${artist.id}`}
                                         />
                                     </CarouselSlide>
@@ -160,6 +162,7 @@ const Artist = () => {
                                 <ContentSection>
                                     {albums.map((album: SimplifiedAlbum) => (
                                         <ContentCard
+                                            id={album.id}
                                             key={album.id}
                                             image={
                                                 album.images && album.images[0]
@@ -167,7 +170,7 @@ const Artist = () => {
                                                     : '../src/assets/images/liked.png'
                                             }
                                             title={album.name}
-                                            subtitle={`${album.release_date.substring(0, 4)} \u2022 Album`}
+                                            subtitle={`${album.release_date.substring(0, 4)} \u2022 ${toTitleCase(album.album_type)}`}
                                             href={`/${album.type}/${album.id}`}
                                         />
                                     ))}
@@ -189,6 +192,7 @@ const Artist = () => {
                                 <ContentSection>
                                     {singles.map((album: SimplifiedAlbum) => (
                                         <ContentCard
+                                            id={album.id}
                                             key={album.id}
                                             image={
                                                 album.images && album.images[0]
@@ -196,7 +200,7 @@ const Artist = () => {
                                                     : '../src/assets/images/liked.png'
                                             }
                                             title={album.name}
-                                            subtitle={`${album.release_date.substring(0, 4)} \u2022 Single`}
+                                            subtitle={`${album.release_date.substring(0, 4)} \u2022 ${toTitleCase(album.album_type)}`}
                                             href={`/${album.type}/${album.id}`}
                                         />
                                     ))}
