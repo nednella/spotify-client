@@ -8,7 +8,6 @@ import { VscEllipsis } from 'react-icons/vsc'
 
 import updateLibrary from '../api/user/UserLibraryUpdate'
 
-import { User } from '../types/User'
 import { SimplifiedPlaylist } from '../types/Playlist'
 import { Album } from '../types/Album'
 import { Artist } from '../types/Artist'
@@ -20,14 +19,13 @@ import OptionsMenu from './menus/ContentOptionsMenu'
 import Tooltip from './Tooltip'
 
 interface ActionBarProps {
-    user: User
     library: Album[] | Artist[] | SimplifiedPlaylist[]
     content: Album | Artist | SimplifiedPlaylist
+    isUserCreated: boolean
     className?: string
 }
 
-const ActionBar: React.FC<ActionBarProps> = ({ user, library, content, className }) => {
-    const [userOwned, setUserOwned] = useState(false)
+const ActionBar: React.FC<ActionBarProps> = ({ library, content, isUserCreated, className }) => {
     const [isInLibrary, setisInLibrary] = useState(false)
     const queryClient = useQueryClient()
 
@@ -51,18 +49,11 @@ const ActionBar: React.FC<ActionBarProps> = ({ user, library, content, className
     const debounceUpdateUserLibrary = debounce(() => updateUserLibrary.mutate(), 300)
 
     useEffect(() => {
-        // Check if the content is a playlist and owner by the authenticated user.
-        if (content.type === 'playlist') {
-            const playlist = library.find((item): item is SimplifiedPlaylist => item.id === content.id)
-            if (playlist && playlist.owner.id === user.id) {
-                setUserOwned(true)
-            } else setUserOwned(false)
-        }
         // Check if the content is in the authenticated user's library.
         if (library.some((item) => item.id === content.id)) {
             return setisInLibrary(true)
         } else return setisInLibrary(false)
-    }, [user, library, content])
+    }, [library, content])
 
     return (
         <>
@@ -73,12 +64,12 @@ const ActionBar: React.FC<ActionBarProps> = ({ user, library, content, className
                         size={24}
                         className="mr-6 shadow-md shadow-black/30"
                     />
-                    {!userOwned &&
+                    {!isUserCreated &&
                         (content.type === 'artist' ? (
                             <FollowButton
+                                isInLibrary={isInLibrary}
                                 onClick={debounceUpdateUserLibrary}
                                 disabled={updateUserLibrary.isPending}
-                                isInLibrary={isInLibrary}
                                 className="mr-6"
                             />
                         ) : (
@@ -90,11 +81,8 @@ const ActionBar: React.FC<ActionBarProps> = ({ user, library, content, className
                                 size={24}
                             />
                         ))}
-
-                    {/* TODO: replace with ellipsis popup menu and include external link on the menu */}
-                    {/* TODO: Add user-owned playlist options (rename, edit, delete, etc.) */}
                     <OptionsMenu
-                        userOwned={userOwned}
+                        isUserCreated={isUserCreated}
                         url={content.external_urls.spotify}
                         uri={content.uri}
                     >
