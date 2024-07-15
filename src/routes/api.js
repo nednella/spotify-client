@@ -147,17 +147,9 @@ router.get(
             return response.data
         }
 
-        const getIsUserFollowing = async (access_token, id) => {
-            const response = await spotifyAPI.checkMeAlbums(access_token, id)
-            return response.data[0]
-        }
+        const [album] = await Promise.all([getAlbum(access_token, id)])
 
-        const [album, is_user_following] = await Promise.all([
-            getAlbum(access_token, id),
-            getIsUserFollowing(access_token, id),
-        ])
-
-        res.status(200).json({ album, is_user_following })
+        res.status(200).json({ album })
     })
 )
 
@@ -179,18 +171,12 @@ router.get(
             return response.data
         }
 
-        const getIsUserFollowing = async (access_token, id) => {
-            const response = await spotifyAPI.checkMePlaylists(access_token, id)
-            return response.data[0]
-        }
-
-        const [playlist, tracks, is_user_following] = await Promise.all([
+        const [playlist, tracks] = await Promise.all([
             getPlaylist(access_token, id),
             fetchPaginatedItems(getPlaylistTracks, access_token, limit, cap, [id], processData),
-            getIsUserFollowing(access_token, id),
         ])
 
-        res.status(200).json({ playlist, tracks, is_user_following })
+        res.status(200).json({ playlist, tracks })
     })
 )
 
@@ -223,17 +209,11 @@ router.get(
             return response.data.artists
         }
 
-        const getIsUserFollowing = async (access_token, id) => {
-            const response = await spotifyAPI.checkMeArtists(access_token, id)
-            return response.data[0]
-        }
-
-        const [artist, top_tracks, albums, related_artists, is_user_following] = await Promise.all([
+        const [artist, top_tracks, albums, related_artists] = await Promise.all([
             getArtist(access_token, id),
             getTopTracks(access_token, id),
             fetchPaginatedItems(getAlbums, access_token, limit, cap, [id, data_types], processData),
             getRelated(access_token, id),
-            getIsUserFollowing(access_token, id),
         ])
 
         res.status(200).json({
@@ -241,7 +221,6 @@ router.get(
             top_tracks,
             albums,
             related_artists,
-            is_user_following,
         })
     })
 )
