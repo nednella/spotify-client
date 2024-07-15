@@ -46,9 +46,9 @@ const Playlist = () => {
                 duration={playlistData.tracks.reduce((n: number, { track }: PlaylistTrack) => n + track.duration_ms, 0)}
             >
                 <ActionBar
-                    user={user}
                     library={libraryData.playlists}
                     content={playlistData.playlist}
+                    isUserCreated={playlistData.isUserCreated}
                 />
                 <TrackList
                     tracks={playlistData.tracks}
