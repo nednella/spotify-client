@@ -171,12 +171,23 @@ router.get(
             return response.data
         }
 
-        const [playlist, tracks] = await Promise.all([
+        const getUser = async (access_token) => {
+            const response = await spotifyAPI.getMe(access_token)
+            return response.data
+        }
+
+        const [playlist, tracks, user] = await Promise.all([
             getPlaylist(access_token, id),
             fetchPaginatedItems(getPlaylistTracks, access_token, limit, cap, [id], processData),
+            getUser(access_token),
         ])
 
-        res.status(200).json({ playlist, tracks })
+        let isUserCreated = false
+        if (playlist.owner.id === user.id) {
+            isUserCreated = true
+        }
+
+        res.status(200).json({ playlist, tracks, isUserCreated })
     })
 )
 
