@@ -20,14 +20,14 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onChange, children, className, st
                 onOpenChange={onChange}
             >
                 <Dialog.Portal>
-                    <Dialog.Overlay className="fixed inset-0 z-20 bg-black/90" />
+                    <Dialog.Overlay className="fixed inset-0 z-[99] bg-black/70" />
                     <Dialog.Content
                         className={twMerge(
                             `
                                 fixed
                                 left-[50%]
                                 top-[50%]
-                                z-30
+                                z-[100]
                                 h-full
                                 max-h-full
                                 w-full
