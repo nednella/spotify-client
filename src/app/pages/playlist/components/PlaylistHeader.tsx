@@ -1,6 +1,8 @@
 import React from 'react'
+import { HiOutlinePencil } from 'react-icons/hi2'
 
 import useColour from '../../../../hooks/useColour'
+import useEditPlaylistModal from '../../../../hooks/useEditPlaylistModal'
 
 import { SimplifiedPlaylist } from '../../../../types/Playlist'
 
@@ -11,12 +13,14 @@ import HeaderSpacer from '../../../../components/HeaderSpacer'
 
 interface PlaylistHeaderProps {
     playlist: SimplifiedPlaylist
+    isUserCreated: boolean
     count: number
     duration: number
 }
 
-const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({ playlist, count, duration }) => {
+const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({ playlist, isUserCreated, count, duration }) => {
     const { colour } = useColour()
+    const editPlaylistModal = useEditPlaylistModal()
 
     const followers = playlist.followers.total.toLocaleString('en', { notation: 'standard' }) // Thousands separator
     const songs = count.toLocaleString('en', { notation: 'standard' }) // Thousands separator
@@ -34,87 +38,110 @@ const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({ playlist, count, durati
             {/* Heading content */}
             <section
                 className="
-                            mx-auto
-                            flex
-                            h-full
-                            max-w-[1400px]
-                            select-none
-                            flex-col
-                            px-4
-                            md:flex-row
-                        "
+                    mx-auto
+                    flex
+                    h-full
+                    max-w-[1400px]
+                    select-none
+                    flex-col
+                    px-4
+                    md:flex-row
+                "
             >
                 {/* Image container */}
                 <div
                     className="
-                                mb-4
-                                max-h-[288px]
-                                min-h-[128px]
-                                w-[40vw]
-                                min-w-[128px]
-                                max-w-[288px]
-                                self-center
-                                md:mb-0
-                                md:mr-4
-                                md:max-h-[128px]
-                                md:max-w-[128px]
-                                md:self-end
-                            "
+                        group
+                        relative
+                        mb-4
+                        max-h-[288px]
+                        min-h-[128px]
+                        w-[40vw]
+                        min-w-[128px]
+                        max-w-[288px]
+                        self-center
+                        md:mb-0
+                        md:mr-4
+                        md:max-h-[128px]
+                        md:max-w-[128px]
+                        md:self-end
+                    "
                 >
                     {/* Image */}
                     <img
                         className="
-                                    aspect-square
-                                    rounded-md
-                                    object-cover
-                                "
+                            aspect-square
+                            rounded-md
+                            object-cover
+                        "
                         src={
                             playlist.images && playlist.images[0]
                                 ? playlist.images[0].url
-                                : '../src/assets/images/liked.png'
+                                : '../src/assets/images/placeholder.png'
                         }
                     />
+                    {isUserCreated && (
+                        <div
+                            onClick={() => editPlaylistModal.onOpen()}
+                            className="
+                                absolute
+                                left-0
+                                top-0
+                                hidden
+                                h-full
+                                w-full
+                                cursor-pointer
+                                items-center
+                                justify-center
+                                rounded-md
+                                bg-black/50
+                                group-hover:flex
+                            "
+                        >
+                            <HiOutlinePencil size={40} />
+                        </div>
+                    )}
                 </div>
                 {/* Details container */}
                 <div
                     className="
-                                flex
-                                flex-col
-                                gap-y-2
-                                overflow-hidden
-                                md:self-end
-                            "
+                        flex
+                        flex-col
+                        gap-y-2
+                        overflow-hidden
+                        md:self-end
+                    "
                 >
                     {/* Details */}
                     <p className="hidden md:block">{toTitleCase(playlist.type)}</p>
                     <p
                         className="
-                                    text-3xl
-                                    font-bold
-                                    md:text-5xl
-                                    md:font-extrabold
-                                "
+                            text-3xl
+                            font-bold
+                            md:text-5xl
+                            md:font-extrabold
+                        "
                     >
                         {playlist.name}
                     </p>
                     <p
                         className="
-                                    text-sm
-                                    font-medium
-                                    text-neutral-400
-                                "
+                            text-sm
+                            font-medium
+                            text-neutral-400
+                        "
                     >
                         {playlist.description}
                     </p>
                     <div
                         className="
-                                    flex
-                                    flex-col
-                                    flex-wrap
-                                    text-sm
-                                    font-normal
-                                    md:flex-row
-                            "
+                            flex
+                            flex-col
+                            flex-wrap
+                            text-sm
+                            font-normal
+                            md:flex-row
+                        "
                     >
                         <span>
                             By{' '}

@@ -10,12 +10,13 @@ import BackgroundGradient from '../../../../components/BackgroundGradient'
 
 interface PlaylistWrapperProps {
     playlist: SimplifiedPlaylist
+    isUserCreated: boolean
     count: number
     duration: number
     children: React.ReactNode
 }
 
-const PlaylistWrapper: React.FC<PlaylistWrapperProps> = ({ playlist, count, duration, children }) => {
+const PlaylistWrapper: React.FC<PlaylistWrapperProps> = ({ playlist, isUserCreated, count, duration, children }) => {
     const contentRef = useRef(null)
 
     return (
@@ -31,6 +32,7 @@ const PlaylistWrapper: React.FC<PlaylistWrapperProps> = ({ playlist, count, dura
             <ScrollWrapper contentRef={contentRef}>
                 <PlaylistHeader
                     playlist={playlist}
+                    isUserCreated={isUserCreated}
                     count={count}
                     duration={duration}
                 />
