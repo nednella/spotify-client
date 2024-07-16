@@ -42,6 +42,7 @@ const Playlist = () => {
         playlistData && (
             <PlaylistWrapper
                 playlist={playlistData.playlist}
+                isUserCreated={playlistData.isUserCreated}
                 count={playlistData.tracks.length}
                 duration={playlistData.tracks.reduce((n: number, { track }: PlaylistTrack) => n + track.duration_ms, 0)}
             >
