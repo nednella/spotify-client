@@ -429,6 +429,27 @@ export default class spotifyAPI {
             .execute()
     }
 
+    /**
+     * Change a playlist's name and description (the user must own the playlist.)
+     * Docs URL: https://developer.spotify.com/documentation/web-api/reference/change-playlist-details
+     * @param {string} access_token - Authenticated user's access token.
+     * @param {string} playlist_id - The Spotify ID of the playlist.
+     * @param {string} name - The Spotify playlist name (required.)
+     * @param {string} description - The Spotify playlist description (not required.)
+     * @returns {Promise} - A promise that if successful, resolves into an empty response.
+     */
+    updateMePlaylist = (access_token, playlist_id, name, description) => {
+        return new ApiRequest(access_token)
+            .setMethod('PUT')
+            .setPath(`/playlists/${playlist_id}`)
+            .setBodyParams({
+                name: name,
+                description: description,
+            })
+            .build()
+            .execute()
+    }
+
     /* MISC ENDPOINTS */
     // TODO: add check if user is following X among other misc calls
 

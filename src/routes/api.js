@@ -253,6 +253,18 @@ router.post(
     })
 )
 
+router.put(
+    '/user/playlists',
+    asyncHandler(async (req, res) => {
+        const { access_token } = req.session.user
+        const { id, name, description } = req.query
+
+        await spotifyAPI.updateMePlaylist(access_token, id, name, description)
+
+        res.status(200).json('Playlist details updated.')
+    })
+)
+
 /* PLACEHOLDER ROUTE */
 router.get(
     '',
