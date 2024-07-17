@@ -1,17 +1,34 @@
-import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
 import React from 'react'
+import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
+import { useLocation } from 'react-router-dom'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import toast from 'react-hot-toast'
 
 import { MdDeleteOutline } from 'react-icons/md'
 import { FaSpotify } from 'react-icons/fa'
+import removePlaylistItem from '../../api/playlist/removePlaylistItem'
 
 interface OptionsMenuProps {
-    userOwned: boolean
+    isUserCreated: boolean
     url: string
     uri: string
     children: React.ReactNode
 }
-const OptionsMenu: React.FC<OptionsMenuProps> = ({ userOwned, url, uri, children }) => {
-    // TODO: remove song option
+const OptionsMenu: React.FC<OptionsMenuProps> = ({ isUserCreated, url, uri, children }) => {
+    const queryClient = useQueryClient()
+    const location = useLocation()
+    const id = location.pathname.split('/')[2] // Parse playlist id from page URL
+
+    const removeTrack = useMutation({
+        mutationFn: async () => removePlaylistItem(id, uri),
+        onSuccess: () => {
+            toast.success('Track removed from playlist')
+            queryClient.refetchQueries({ queryKey: ['playlist', id], type: 'active' })
+        },
+        onError: () => {
+            toast.error('Something went wrong')
+        },
+    })
 
     return (
         <DropdownMenu.Root>
@@ -38,7 +55,7 @@ const OptionsMenu: React.FC<OptionsMenuProps> = ({ userOwned, url, uri, children
                         transition
                     "
                 >
-                    {userOwned && (
+                    {isUserCreated && (
                         <>
                             <DropdownMenu.Item className="outline-none">
                                 <div
@@ -56,8 +73,7 @@ const OptionsMenu: React.FC<OptionsMenuProps> = ({ userOwned, url, uri, children
                                 >
                                     <MdDeleteOutline className="size-5 text-neutral-400" />
                                     <button
-                                        // TODO: Delete personal playlist, add a confirmation box
-                                        onClick={() => {}}
+                                        onClick={() => removeTrack.mutate()}
                                         className="text-sm font-normal text-neutral-200"
                                     >
                                         Remove from this playlist
