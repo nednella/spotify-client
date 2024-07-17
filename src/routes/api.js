@@ -265,6 +265,30 @@ router.put(
     })
 )
 
+router.post(
+    '/playlist/tracks',
+    asyncHandler(async (req, res) => {
+        const { access_token } = req.session.user
+        const { id, uri } = req.query
+
+        await spotifyAPI.addPlaylistTracks(access_token, id, [{ uri: uri }])
+
+        res.status(200).json('Playlist track(s) added.')
+    })
+)
+
+router.delete(
+    '/playlist/tracks',
+    asyncHandler(async (req, res) => {
+        const { access_token } = req.session.user
+        const { id, uri } = req.query
+
+        await spotifyAPI.removePlaylistTracks(access_token, id, [{ uri: uri }])
+
+        res.status(200).json('Playlist track(s) removed.')
+    })
+)
+
 /* PLACEHOLDER ROUTE */
 router.get(
     '',

@@ -565,4 +565,42 @@ export default class spotifyAPI {
             .build()
             .execute()
     }
+
+    /**
+     * Add one or more items to a user's playlist.
+     * Docs URL: https://developer.spotify.com/documentation/web-api/reference/add-tracks-to-playlist
+     * @param {string} access_token - Authenticated user's access token.
+     * @param {string} playlist_id - The Spotify ID of the playlist.
+     * @param {string} tracks - A comma-separated list of spotify URI's to add. Can be track or episode URI's.
+     * @returns {Promise} - A promise that if successful, resolves into a snapshot id of the playlist.
+     */
+    addPlaylistTracks = (access_token, playlist_id, tracks) => {
+        return new ApiRequest(access_token)
+            .setMethod('POST')
+            .setPath(`/playlists/${playlist_id}/tracks`)
+            .setBodyParams({
+                uris: tracks,
+            })
+            .build()
+            .execute()
+    }
+
+    /**
+     * Remove one or more items from a user's playlist.
+     * Docs URL: https://developer.spotify.com/documentation/web-api/reference/remove-tracks-playlist
+     * @param {string} access_token - Authenticated user's access token.
+     * @param {string} playlist_id - The Spotify ID of the playlist.
+     * @param {string[]} tracks - Array of spotify URI's of the tracks of episodes to remove.
+     * @returns {Promise} - A promise that if successful, resolves into a snapshot id of the playlist.
+     */
+    removePlaylistTracks = (access_token, playlist_id, tracks) => {
+        return new ApiRequest(access_token)
+            .setMethod('DELETE')
+            .setPath(`/playlists/${playlist_id}/tracks`)
+            .setBodyParams({
+                tracks: tracks,
+            })
+            .build()
+            .execute()
+    }
 }
