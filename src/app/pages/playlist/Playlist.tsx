@@ -57,6 +57,7 @@ const Playlist = () => {
                     sticky={true}
                     displayAlbum={true}
                     displayAdded={true}
+                    isUserCreated={playlistData.isUserCreated}
                 />
                 <Footer />
             </PlaylistWrapper>
