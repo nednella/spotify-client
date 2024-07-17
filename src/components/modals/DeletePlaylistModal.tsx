@@ -14,7 +14,7 @@ const DeletePlaylistModal = () => {
     const queryClient = useQueryClient()
     const navigate = useNavigate()
     const location = useLocation()
-    const id = location.pathname.split('/')[2]
+    const id = location.pathname.split('/')[2] // Parse playlist id from page URL
 
     const onChange = (open: boolean) => {
         if (!open) {
