@@ -26,10 +26,11 @@ interface TrackListItem {
     album?: boolean
     added?: boolean
     selected: boolean
+    isUserCreated?: boolean
     onSelect: (value: number) => void
 }
 
-const TrackListItem: React.FC<TrackListItem> = ({ index, track, album, added, selected, onSelect }) => {
+const TrackListItem: React.FC<TrackListItem> = ({ index, track, album, added, isUserCreated, selected, onSelect }) => {
     const [isInLibrary, setisInLibrary] = useState(false)
     const { data: library } = useLibrary()
 
@@ -262,7 +263,7 @@ const TrackListItem: React.FC<TrackListItem> = ({ index, track, album, added, se
                     {convertTrackDuration(track.duration_ms)}
                 </span>
                 <OptionsMenu
-                    userOwned={false}
+                    isUserCreated={isUserCreated || false}
                     url={track.external_urls.spotify}
                     uri={track.uri}
                 >

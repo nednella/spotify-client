@@ -1,18 +1,22 @@
-import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
 import React from 'react'
+import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
 
 import { HiOutlinePencil } from 'react-icons/hi2'
 import { MdDeleteOutline } from 'react-icons/md'
 import { FaSpotify } from 'react-icons/fa'
 
+import useEditPlaylistModal from '../../hooks/useEditPlaylistModal'
+import useDeletePlaylistModal from '../../hooks/useDeletePlaylistModal'
+
 interface OptionsMenuProps {
-    userOwned: boolean
+    isUserCreated: boolean
     url: string
     uri: string
     children: React.ReactNode
 }
-const OptionsMenu: React.FC<OptionsMenuProps> = ({ userOwned, url, uri, children }) => {
-    // TODO: add edit and delete playlist options
+const OptionsMenu: React.FC<OptionsMenuProps> = ({ isUserCreated, url, uri, children }) => {
+    const editPlaylistModal = useEditPlaylistModal()
+    const deletePlaylistModal = useDeletePlaylistModal()
 
     return (
         <DropdownMenu.Root>
@@ -39,10 +43,11 @@ const OptionsMenu: React.FC<OptionsMenuProps> = ({ userOwned, url, uri, children
                         transition
                     "
                 >
-                    {userOwned && (
+                    {isUserCreated && (
                         <>
                             <DropdownMenu.Item className="outline-none">
-                                <div
+                                <button
+                                    onClick={() => editPlaylistModal.onOpen()}
                                     className="
                                         flex
                                         h-10
@@ -56,17 +61,12 @@ const OptionsMenu: React.FC<OptionsMenuProps> = ({ userOwned, url, uri, children
                                     "
                                 >
                                     <HiOutlinePencil className="size-5 text-neutral-400" />
-                                    <button
-                                        // TODO: Edit personal playlist modal
-                                        onClick={() => {}}
-                                        className="text-sm font-normal text-neutral-200"
-                                    >
-                                        Edit playlist details
-                                    </button>
-                                </div>
+                                    <span className="text-sm font-normal text-neutral-200">Edit playlist details</span>
+                                </button>
                             </DropdownMenu.Item>
                             <DropdownMenu.Item className="outline-none">
-                                <div
+                                <button
+                                    onClick={() => deletePlaylistModal.onOpen()}
                                     className="
                                         flex
                                         h-10
@@ -80,20 +80,16 @@ const OptionsMenu: React.FC<OptionsMenuProps> = ({ userOwned, url, uri, children
                                     "
                                 >
                                     <MdDeleteOutline className="size-5 text-neutral-400" />
-                                    <button
-                                        // TODO: Delete personal playlist, add a confirmation box
-                                        onClick={() => {}}
-                                        className="text-sm font-normal text-neutral-200"
-                                    >
-                                        Delete playlist
-                                    </button>
-                                </div>
+                                    <span className="text-sm font-normal text-neutral-200">Delete playlist</span>
+                                </button>
                             </DropdownMenu.Item>
                             <DropdownMenu.Separator className="m-[5px] h-[1px] bg-neutral-600" />
                         </>
                     )}
                     <DropdownMenu.Item className="outline-none">
-                        <div
+                        <a
+                            href={url}
+                            target="_blank"
                             className="
                                 flex
                                 h-10
@@ -107,17 +103,13 @@ const OptionsMenu: React.FC<OptionsMenuProps> = ({ userOwned, url, uri, children
                             "
                         >
                             <FaSpotify className="size-5 text-neutral-400" />
-                            <a
-                                href={url}
-                                target="_blank"
-                                className="text-sm font-normal text-neutral-200"
-                            >
-                                Open in web app
-                            </a>
-                        </div>
+                            <span className="text-sm font-normal text-neutral-200">Open in web app</span>
+                        </a>
                     </DropdownMenu.Item>
                     <DropdownMenu.Item className="outline-none">
-                        <div
+                        <a
+                            href={uri}
+                            target="_blank"
                             className="
                                 flex
                                 h-10
@@ -131,14 +123,8 @@ const OptionsMenu: React.FC<OptionsMenuProps> = ({ userOwned, url, uri, children
                             "
                         >
                             <FaSpotify className="size-5 text-neutral-400" />
-                            <a
-                                href={uri}
-                                target="_blank"
-                                className="text-sm font-normal text-neutral-200"
-                            >
-                                Open in desktop app
-                            </a>
-                        </div>
+                            <span className="text-sm font-normal text-neutral-200">Open in desktop app</span>
+                        </a>
                     </DropdownMenu.Item>
                     <DropdownMenu.Arrow
                         height={8}
