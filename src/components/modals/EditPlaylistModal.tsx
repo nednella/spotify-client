@@ -16,7 +16,7 @@ const EditPlaylistModal = () => {
     const { isOpen, onClose } = useEditPlaylistModal()
     const queryClient = useQueryClient()
     const location = useLocation()
-    const id = location.pathname.split('/')[2]
+    const id = location.pathname.split('/')[2] // Parse playlist id from page URL
 
     const onChange = (open: boolean) => {
         if (!open) {
