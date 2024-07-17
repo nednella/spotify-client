@@ -42,13 +42,14 @@ const Playlist = () => {
         playlistData && (
             <PlaylistWrapper
                 playlist={playlistData.playlist}
+                isUserCreated={playlistData.isUserCreated}
                 count={playlistData.tracks.length}
                 duration={playlistData.tracks.reduce((n: number, { track }: PlaylistTrack) => n + track.duration_ms, 0)}
             >
                 <ActionBar
-                    user={user}
                     library={libraryData.playlists}
                     content={playlistData.playlist}
+                    isUserCreated={playlistData.isUserCreated}
                 />
                 <TrackList
                     tracks={playlistData.tracks}
@@ -56,6 +57,7 @@ const Playlist = () => {
                     sticky={true}
                     displayAlbum={true}
                     displayAdded={true}
+                    isUserCreated={playlistData.isUserCreated}
                 />
                 <Footer />
             </PlaylistWrapper>

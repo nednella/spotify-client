@@ -19,9 +19,18 @@ interface TrackListProps {
     displayAlbum?: boolean
     displayAdded?: boolean
     shallowList?: boolean
+    isUserCreated?: boolean
 }
 
-const TrackList: React.FC<TrackListProps> = ({ tracks, header, sticky, displayAlbum, displayAdded, shallowList }) => {
+const TrackList: React.FC<TrackListProps> = ({
+    tracks,
+    header,
+    sticky,
+    displayAlbum,
+    displayAdded,
+    shallowList,
+    isUserCreated,
+}) => {
     const [selectedIndex, setSelectedIndex] = useState<number | null>(null)
     const containerRef = useRef(null)
     useClickOutside(containerRef, () => setSelectedIndex(null))
@@ -57,6 +66,7 @@ const TrackList: React.FC<TrackListProps> = ({ tracks, header, sticky, displayAl
                               track={track}
                               album={displayAlbum}
                               added={displayAdded}
+                              isUserCreated={isUserCreated}
                               selected={selectedIndex === index}
                               onSelect={handleSelect}
                           ></TrackListItem>
@@ -68,6 +78,7 @@ const TrackList: React.FC<TrackListProps> = ({ tracks, header, sticky, displayAl
                               track={track}
                               album={displayAlbum}
                               added={displayAdded}
+                              isUserCreated={isUserCreated}
                               selected={selectedIndex === index}
                               onSelect={handleSelect}
                           ></TrackListItem>
