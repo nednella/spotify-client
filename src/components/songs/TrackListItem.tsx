@@ -1,5 +1,5 @@
 import React, { CSSProperties, useEffect, useState } from 'react'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import toast from 'react-hot-toast'
 import { debounce } from 'lodash'
 import { Link } from 'react-router-dom'
@@ -33,6 +33,7 @@ interface TrackListItem {
 const TrackListItem: React.FC<TrackListItem> = ({ index, track, album, added, isUserCreated, selected, onSelect }) => {
     const [isInLibrary, setisInLibrary] = useState(false)
     const { data: library } = useLibrary()
+    const queryClient = useQueryClient()
 
     const updateUserLibrary = useMutation({
         mutationFn: async () => updateLibrary(isInLibrary, track.type, track.id),
@@ -44,6 +45,7 @@ const TrackListItem: React.FC<TrackListItem> = ({ index, track, album, added, is
                 setisInLibrary(true)
                 toast.success('Added to Your Library')
             }
+            queryClient.refetchQueries({ queryKey: ['library'], type: 'active' })
         },
         onError: () => {
             toast.error('Something went wrong')
