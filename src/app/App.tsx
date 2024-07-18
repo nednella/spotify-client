@@ -7,6 +7,7 @@ import Content from '../components/Content'
 
 import Home from './pages/Home'
 import Search from './pages/Search'
+import Collection from './pages/collection/Collection'
 import Playlist from './pages/playlist/Playlist'
 import Album from './pages/album/Album'
 import Artist from './pages/artist/Artist'
@@ -29,6 +30,11 @@ const App = () => {
             label: 'Search',
             path: '/search',
             element: <Search />,
+        },
+        {
+            label: 'Collection',
+            path: '/collection/:id',
+            element: user ? <Collection /> : <Navigate to={'/'} />,
         },
         {
             label: 'Playlist',
