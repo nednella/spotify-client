@@ -45,8 +45,8 @@ const LibraryContent: React.FC<LibraryContentProps> = ({ user, data }) => {
             <Accordion>
                 {tracks && (
                     <LikedSongs
-                        active={location.pathname === '/playlist/liked'}
-                        href={'playlist/liked'}
+                        active={location.pathname === '/collection/tracks'}
+                        href={'collection/tracks'}
                     />
                 )}
                 {yourPlaylists && (
