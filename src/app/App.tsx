@@ -6,7 +6,7 @@ import Sidebar from '../components/sidebar/Sidebar'
 import Content from '../components/Content'
 
 import Home from './pages/Home'
-import Search from './pages/Search'
+import Search from './pages/search/Search'
 import Collection from './pages/collection/Collection'
 import Playlist from './pages/playlist/Playlist'
 import Album from './pages/album/Album'
@@ -29,7 +29,7 @@ const App = () => {
         {
             label: 'Search',
             path: '/search',
-            element: <Search />,
+            element: user ? <Search /> : <Navigate to={'/'} />,
         },
         {
             label: 'Collection',
