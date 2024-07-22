@@ -17,9 +17,10 @@ import useScrollOpacity from '../hooks/useScrollOpacity'
 interface HeaderProps {
     className?: string
     children?: React.ReactNode
+    forceDisplayChildren?: boolean
 }
 
-const Header: React.FC<HeaderProps> = ({ className, children }) => {
+const Header: React.FC<HeaderProps> = ({ className, children, forceDisplayChildren }) => {
     const { user } = useAuth()
     const { opacity } = useScrollOpacity()
     const navigate = useNavigate()
@@ -27,7 +28,7 @@ const Header: React.FC<HeaderProps> = ({ className, children }) => {
 
     return (
         <div className={twMerge('absolute top-0 z-50 h-[64px] w-full', className)}>
-            <BackgroundColour gradient={true} />
+            <BackgroundColour />
             {/* Header container */}
             <div className="mx-auto h-fit max-w-[1400px]">
                 {/* Header content */}
@@ -68,7 +69,7 @@ const Header: React.FC<HeaderProps> = ({ className, children }) => {
                     <div
                         className={twMerge(
                             'pointer-events-none flex w-full items-center gap-x-2 overflow-hidden opacity-0 transition duration-700',
-                            opacity === 1 && 'opacity-1 pointer-events-auto'
+                            forceDisplayChildren || opacity === 1 ? 'opacity-1 pointer-events-auto' : null
                         )}
                     >
                         {children}
