@@ -127,10 +127,7 @@ const TrackListHeader: React.FC<TrackListHeader> = ({ header, sticky, displayAlb
                 opacity === 1 && 'mx-[-16px] px-8'
             )}
         >
-            <BackgroundColour
-                defaultClr={true}
-                gradient={true}
-            />
+            <BackgroundColour defaultClr={true} />
             <span className="justify-self-end text-base">#</span>
             <span>Title</span>
             {displayAlbum && <span className="hidden md:block">Album</span>}
