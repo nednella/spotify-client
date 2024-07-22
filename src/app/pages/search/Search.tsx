@@ -9,6 +9,7 @@ import NotFound from '../NotFound'
 
 import SearchWrapper from './components/SearchWrapper'
 import BrowseCategories from './components/BrowseCategories'
+import Footer from '../../../components/Footer'
 
 const Search = () => {
     const { defaultColour, setColour } = useColour()
@@ -28,6 +29,7 @@ const Search = () => {
         data && (
             <SearchWrapper>
                 <BrowseCategories categories={data} />
+                <Footer />
             </SearchWrapper>
         )
     )
