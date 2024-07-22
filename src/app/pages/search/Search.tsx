@@ -8,7 +8,7 @@ import Loading from '../Loading'
 import NotFound from '../NotFound'
 
 import SearchWrapper from './components/SearchWrapper'
-import ContentSectionLoading from '../../../components/content/ContentSectionLoading'
+import BrowseCategories from './components/BrowseCategories'
 
 const Search = () => {
     const { defaultColour, setColour } = useColour()
@@ -27,11 +27,7 @@ const Search = () => {
         user &&
         data && (
             <SearchWrapper>
-                <ContentSectionLoading />
-                <ContentSectionLoading />
-                <ContentSectionLoading />
-                <ContentSectionLoading />
-                <ContentSectionLoading />
+                <BrowseCategories categories={data} />
             </SearchWrapper>
         )
     )
