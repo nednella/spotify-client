@@ -16,7 +16,7 @@ const SidebarNav = () => {
         {
             icon: BiSearch,
             label: 'Search',
-            active: location.pathname === '/search',
+            active: location.pathname.startsWith('/search'),
             href: '/search',
         },
     ]
