@@ -1,6 +1,7 @@
 import React from 'react'
 
-import { Category } from '../../../../types/Category'
+import { Category } from '../../../../../types/Category'
+
 import BrowseCategory from './BrowseCategory'
 
 interface BrowseCategoriesProps {
@@ -9,7 +10,7 @@ interface BrowseCategoriesProps {
 
 const BrowseCategories: React.FC<BrowseCategoriesProps> = ({ categories }) => {
     return (
-        <section className="flex select-none flex-col">
+        <section className="mt-8 flex select-none flex-col px-4">
             <div className="py-2">
                 <span className="text-2xl font-bold">Browse all</span>
             </div>
@@ -20,7 +21,7 @@ const BrowseCategories: React.FC<BrowseCategoriesProps> = ({ categories }) => {
                     w-full
                     grid-cols-2
                     gap-6
-                    md:grid-cols-3
+                    xsm:grid-cols-3
                     lg:grid-cols-4
                 "
             >

@@ -29,7 +29,7 @@ const App = () => {
         },
         {
             label: 'Search',
-            path: '/search',
+            path: '/search/*',
             element: user ? <Search /> : <Navigate to={'/'} />,
         },
         {

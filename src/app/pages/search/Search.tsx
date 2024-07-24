@@ -1,37 +1,37 @@
 import { useEffect } from 'react'
+import { Route, Routes } from 'react-router-dom'
 
 import useColour from '../../../hooks/useColour'
-import { useAuth } from '../../../hooks/useAuth'
-import useGetBrowseCategories from '../../../hooks/useGetBrowseCategories'
 
-import Loading from '../Loading'
-import NotFound from '../NotFound'
-
+import Browse from './browse/Browse'
+import Results from './results/Results'
+import NotFound from './NotFound'
 import SearchWrapper from './components/SearchWrapper'
-import BrowseCategories from './components/BrowseCategories'
-import Footer from '../../../components/Footer'
 
 const Search = () => {
     const { defaultColour, setColour } = useColour()
-    const { user } = useAuth()
-    const { data, isLoading, isError } = useGetBrowseCategories(user)
 
     useEffect(() => {
         setColour(defaultColour)
     }, [defaultColour, setColour])
 
-    return isLoading ? (
-        <Loading />
-    ) : isError ? (
-        <NotFound />
-    ) : (
-        user &&
-        data && (
-            <SearchWrapper>
-                <BrowseCategories categories={data} />
-                <Footer />
-            </SearchWrapper>
-        )
+    return (
+        <SearchWrapper>
+            <Routes>
+                <Route
+                    index
+                    element={<Browse />}
+                />
+                <Route
+                    path="/:query/*"
+                    element={<Results />}
+                />
+                <Route
+                    path="/*"
+                    element={<NotFound />}
+                />
+            </Routes>
+        </SearchWrapper>
     )
 }
 
