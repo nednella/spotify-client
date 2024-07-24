@@ -21,10 +21,8 @@ const Genre = () => {
     const { data, isLoading, isError } = useGetGenre(user, id)
 
     useEffect(() => {
-        setColour(['100', '20', '150'])
+        setColour(['255', '220', '220'])
     }, [setColour])
-
-    console.log(data)
 
     return isLoading ? (
         <Loading />
