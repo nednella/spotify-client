@@ -5,7 +5,7 @@ import useColour from '../../../hooks/useColour'
 
 import Browse from './browse/Browse'
 import Results from './results/Results'
-import NotFound from './NotFound'
+
 import SearchWrapper from './components/SearchWrapper'
 
 const Search = () => {
@@ -25,10 +25,6 @@ const Search = () => {
                 <Route
                     path="/:query/*"
                     element={<Results />}
-                />
-                <Route
-                    path="/*"
-                    element={<NotFound />}
                 />
             </Routes>
         </SearchWrapper>
