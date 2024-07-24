@@ -19,8 +19,8 @@ interface TrackListProps {
     stickyHeight?: string
     displayAlbum?: boolean
     displayAdded?: boolean
-    shallowList?: boolean
     isUserCreated?: boolean
+    className?: string
 }
 
 const TrackList: React.FC<TrackListProps> = ({
@@ -30,8 +30,8 @@ const TrackList: React.FC<TrackListProps> = ({
     stickyHeight,
     displayAlbum,
     displayAdded,
-    shallowList,
     isUserCreated,
+    className,
 }) => {
     const [selectedIndex, setSelectedIndex] = useState<number | null>(null)
     const containerRef = useRef(null)
@@ -58,33 +58,20 @@ const TrackList: React.FC<TrackListProps> = ({
             />
             <div
                 ref={containerRef}
-                className="mb-4 rounded-md border border-transparent"
+                className={twMerge('mb-4 rounded-md border border-transparent', className)}
             >
-                {shallowList
-                    ? normalisedTracks.slice(0, 5).map((track, index) => (
-                          <TrackListItem
-                              key={track.id}
-                              index={index}
-                              track={track}
-                              album={displayAlbum}
-                              added={displayAdded}
-                              isUserCreated={isUserCreated}
-                              selected={selectedIndex === index}
-                              onSelect={handleSelect}
-                          />
-                      ))
-                    : normalisedTracks.map((track, index) => (
-                          <TrackListItem
-                              key={track.id}
-                              index={index}
-                              track={track}
-                              album={displayAlbum}
-                              added={displayAdded}
-                              isUserCreated={isUserCreated}
-                              selected={selectedIndex === index}
-                              onSelect={handleSelect}
-                          />
-                      ))}
+                {normalisedTracks.map((track, index) => (
+                    <TrackListItem
+                        key={track.id}
+                        index={index}
+                        track={track}
+                        album={displayAlbum}
+                        added={displayAdded}
+                        isUserCreated={isUserCreated}
+                        selected={selectedIndex === index}
+                        onSelect={handleSelect}
+                    />
+                ))}
             </div>
         </>
     )
