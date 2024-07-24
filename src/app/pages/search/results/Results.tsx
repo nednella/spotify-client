@@ -7,9 +7,12 @@ import Loading from '../Loading'
 import NotFound from '../NotFound'
 
 import ResultsFilters from './components/ResultsFilters'
-import ContentContainer from '../../../../components/PageContentContainer'
-import TrackList from '../../../../components/songs/TrackList'
-import Footer from '../../../../components/Footer'
+import All from './all/All'
+
+import Albums from './albums/Albums'
+import Artists from './artists/Artists'
+import Playlists from './playlists/Playlists'
+import Tracks from './tracks/Tracks'
 
 const Results = () => {
     const { query } = useParams()
@@ -30,48 +33,46 @@ const Results = () => {
                     <Route
                         path="/"
                         element={
-                            <ContentContainer>
-                                <p>all</p>
-                            </ContentContainer>
-                        }
-                    />
-                    <Route
-                        path="/artists"
-                        element={
-                            <ContentContainer>
-                                <p>artists</p>
-                            </ContentContainer>
+                            <All
+                                query={query}
+                                data={data}
+                            />
                         }
                     />
                     <Route
                         path="/albums"
                         element={
-                            <ContentContainer>
-                                <p>albums</p>
-                            </ContentContainer>
+                            <Albums
+                                query={query}
+                                albums={data.albums}
+                            />
+                        }
+                    />
+                    <Route
+                        path="/artists"
+                        element={
+                            <Artists
+                                query={query}
+                                artists={data.artists}
+                            />
                         }
                     />
                     <Route
                         path="/playlists"
                         element={
-                            <ContentContainer>
-                                <p>playlists</p>
-                            </ContentContainer>
+                            <Playlists
+                                query={query}
+                                playlists={data.playlists}
+                            />
                         }
                     />
                     <Route
                         path="/tracks"
                         element={
-                            <ContentContainer>
-                                <TrackList
-                                    tracks={data.tracks}
-                                    header
-                                    sticky
-                                    stickyHeight="110"
-                                    displayAlbum
-                                />
-                                <Footer />
-                            </ContentContainer>
+                            <Tracks
+                                query={query}
+                                tracks={data.tracks}
+                            />
                         }
                     />
                     <Route
