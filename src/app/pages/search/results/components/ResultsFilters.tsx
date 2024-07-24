@@ -65,6 +65,7 @@ const FilterItem: React.FC<FilterItemProps> = ({ to, text, active }) => {
                     px-4
                     py-1
                     text-sm
+                    font-normal
                     text-white
                     hover:opacity-100
                     active:scale-100
