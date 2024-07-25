@@ -7,7 +7,6 @@ import { SimplifiedTrack } from './Track'
 export interface Album {
     album_type: string
     artists: SimplifiedArtist[]
-    available_markets: string[]
     copyrights: Copyrights
     external_ids: ExternalIds
     external_urls: ExternalUrls
@@ -15,6 +14,7 @@ export interface Album {
     href: string
     id: string
     images: Image[]
+    is_playable: boolean
     label: string
     name: string
     popularity: number
@@ -30,11 +30,11 @@ export interface SimplifiedAlbum {
     album_group: string
     album_type: string
     artists: SimplifiedArtist[]
-    available_markets: string[]
     external_urls: ExternalUrls
     href: string
     id: string
     images: Image[]
+    is_playable: boolean
     name: string
     release_date: string
     release_date_precision: string
