@@ -1,13 +1,15 @@
 import React from 'react'
+import { twMerge } from 'tailwind-merge'
 
 interface ContentSectionProps {
     title?: string
     children: React.ReactNode
+    className?: string
 }
 
-const ContentSection: React.FC<ContentSectionProps> = ({ title, children }) => {
+const ContentSection: React.FC<ContentSectionProps> = ({ title, children, className }) => {
     return (
-        <section className="flex select-none flex-col">
+        <section className={twMerge('flex select-none flex-col', className)}>
             {title && (
                 <div className="mt-6 flex items-center justify-between pb-1">
                     <p className="text-2xl font-bold">{title}</p>
