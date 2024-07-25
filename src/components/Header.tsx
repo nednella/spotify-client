@@ -27,12 +27,12 @@ const Header: React.FC<HeaderProps> = ({ className, children, forceDisplayChildr
     const location = useLocation()
 
     return (
-        <div className={twMerge('absolute top-0 z-50 h-[64px] w-full', className)}>
+        <div className={twMerge('absolute top-0 z-50 flex h-[64px] w-full items-center', className)}>
             <BackgroundColour />
             {/* Header container */}
-            <div className="mx-auto h-fit max-w-[1400px]">
+            <div className="mx-auto h-fit w-full max-w-[1400px]">
                 {/* Header content */}
-                <header className="m-4 flex select-none flex-nowrap items-center justify-between gap-x-2">
+                <header className="mx-4 flex select-none flex-nowrap items-center justify-between gap-x-2 self-center">
                     {/* {Router buttons} */}
                     <div className="hidden shrink-0 gap-x-2 md:flex">
                         <Button
