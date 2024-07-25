@@ -140,15 +140,17 @@ export default class spotifyAPI {
      * @param {string} access_token - Authenticated user's access token.
      * @param {number} limit - Spotify API pagination page limit.
      * @param {number} offset - Spotify API pagination page offset.
+     * @param {string} market - The ISO 3166-1 alpha-2 country code associated with the user. Defaults to GB if not supplied.
      * @returns {Promise} - A promise that if successful, resolves into an object containing the requested information.
      */
-    getMeTracks = (access_token, limit, offset) => {
+    getMeTracks = (access_token, limit, offset, market) => {
         return new ApiRequest(access_token)
             .setMethod('GET')
             .setPath('/me/tracks')
             .setQueryParams({
                 limit: limit || 20,
                 offset: offset || 0,
+                market: market || 'GB',
             })
             .build()
             .execute()
@@ -526,10 +528,41 @@ export default class spotifyAPI {
      * Docs URL: https://developer.spotify.com/documentation/web-api/reference/get-an-album
      * @param {string} access_token - Authenticated user's access token.
      * @param {string} album_id - Unique album Spotify ID.
+     * @param {string} market - The ISO 3166-1 alpha-2 country code associated with the user. Defaults to GB if not supplied.
      * @returns - A promise that if successful, resolves into an object containing the requested information.
      */
-    getAlbum = (access_token, album_id) => {
-        return new ApiRequest(access_token).setMethod('GET').setPath(`/albums/${album_id}`).build().execute()
+    getAlbum = (access_token, album_id, market) => {
+        return new ApiRequest(access_token)
+            .setMethod('GET')
+            .setPath(`/albums/${album_id}`)
+            .setQueryParams({
+                market: market || 'GB',
+            })
+            .build()
+            .execute()
+    }
+
+    /**
+     * Get Spotify catalog information about an album's tracks.
+     * Docs URL: https://developer.spotify.com/documentation/web-api/reference/get-an-albums-tracks
+     * @param {string} access_token - Authenticated user's access token.
+     * @param {string} album_id - Unique album Spotify ID.
+     * @param {number} limit - Spotify API pagination page limit.
+     * @param {number} offset - Spotify API pagination page offset.
+     * @param {string} market - The ISO 3166-1 alpha-2 country code associated with the user. Defaults to GB if not supplied.
+     * @returns - A promise that if successful, resolves into an object containing the requested information.
+     */
+    getAlbumTracks = (access_token, album_id, limit, offset, market) => {
+        return new ApiRequest(access_token)
+            .setMethod('GET')
+            .setPath(`/albums/${album_id}/tracks`)
+            .setQueryParams({
+                limit: limit || 20,
+                offset: offset || 0,
+                market: market || 'GB',
+            })
+            .build()
+            .execute()
     }
 
     /* PLAYLIST ENDPOINTS */
@@ -552,15 +585,17 @@ export default class spotifyAPI {
      * @param {string} playlist_id - Unique playlist Spotify ID.
      * @param {number} limit - Spotify API pagination page limit.
      * @param {number} offset - Spotify API pagination page offset.
+     * @param {string} market - The ISO 3166-1 alpha-2 country code associated with the user. Defaults to GB if not supplied.
      * @returns - A promise that if successful, resolves into an object containing the requested information.
      */
-    getPlaylistTracks = (access_token, playlist_id, limit, offset) => {
+    getPlaylistTracks = (access_token, playlist_id, limit, offset, market) => {
         return new ApiRequest(access_token)
             .setMethod('GET')
             .setPath(`/playlists/${playlist_id}/tracks`)
             .setQueryParams({
                 limit: limit || 20,
                 offset: offset || 0,
+                market: market || 'GB',
             })
             .build()
             .execute()
