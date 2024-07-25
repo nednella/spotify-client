@@ -10,7 +10,7 @@ import Loading from '../Loading.tsx'
 import NotFound from '../NotFound.tsx'
 
 import CollectionWrapper from './components/CollectionWrapper.tsx'
-import TrackList from '../../../components/songs/TrackList.tsx'
+import TrackList from '../../../components/tracks/TrackList.tsx'
 import Footer from '../../../components/Footer.tsx'
 import CollectionActionBar from './components/CollectionActionBar.tsx'
 
