@@ -35,7 +35,6 @@ const ContentCard: React.FC<ContentCardProps> = ({ id, image, title, subtitle, h
                 className="
                     relative
                     flex
-                    flex-grow
                     items-center
                     justify-center
                 "
@@ -70,7 +69,7 @@ const ContentCard: React.FC<ContentCardProps> = ({ id, image, title, subtitle, h
             </div>
             <div className="h-fit max-h-16 w-full overflow-hidden text-left">
                 <p className="truncate font-normal">{title}</p>
-                <p className="truncate text-wrap text-sm text-neutral-400">{subtitle}</p>
+                <p className="line-clamp-2 truncate text-wrap text-sm text-neutral-400">{subtitle}</p>
             </div>
         </Link>
     )
