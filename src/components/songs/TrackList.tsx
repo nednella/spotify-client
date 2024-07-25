@@ -16,20 +16,22 @@ interface TrackListProps {
     tracks: PlaylistTrack[] | Track[] | SavedTrack[] | SimplifiedTrack[]
     header: boolean
     sticky?: boolean
+    stickyHeight?: string
     displayAlbum?: boolean
     displayAdded?: boolean
-    shallowList?: boolean
     isUserCreated?: boolean
+    className?: string
 }
 
 const TrackList: React.FC<TrackListProps> = ({
     tracks,
     header,
     sticky,
+    stickyHeight,
     displayAlbum,
     displayAdded,
-    shallowList,
     isUserCreated,
+    className,
 }) => {
     const [selectedIndex, setSelectedIndex] = useState<number | null>(null)
     const containerRef = useRef(null)
@@ -50,39 +52,26 @@ const TrackList: React.FC<TrackListProps> = ({
             <TrackListHeader
                 header={header}
                 sticky={sticky}
+                stickyHeight={stickyHeight}
                 displayAlbum={displayAlbum}
                 displayAdded={displayAdded}
             />
-
             <div
                 ref={containerRef}
-                className="mb-4 rounded-md border border-transparent"
+                className={twMerge('mb-4 rounded-md border border-transparent', className)}
             >
-                {shallowList
-                    ? normalisedTracks.slice(0, 5).map((track, index) => (
-                          <TrackListItem
-                              key={track.id}
-                              index={index}
-                              track={track}
-                              album={displayAlbum}
-                              added={displayAdded}
-                              isUserCreated={isUserCreated}
-                              selected={selectedIndex === index}
-                              onSelect={handleSelect}
-                          ></TrackListItem>
-                      ))
-                    : normalisedTracks.map((track, index) => (
-                          <TrackListItem
-                              key={track.id}
-                              index={index}
-                              track={track}
-                              album={displayAlbum}
-                              added={displayAdded}
-                              isUserCreated={isUserCreated}
-                              selected={selectedIndex === index}
-                              onSelect={handleSelect}
-                          ></TrackListItem>
-                      ))}
+                {normalisedTracks.map((track, index) => (
+                    <TrackListItem
+                        key={track.id}
+                        index={index}
+                        track={track}
+                        album={displayAlbum}
+                        added={displayAdded}
+                        isUserCreated={isUserCreated}
+                        selected={selectedIndex === index}
+                        onSelect={handleSelect}
+                    />
+                ))}
             </div>
         </>
     )
@@ -93,11 +82,12 @@ export default TrackList
 interface TrackListHeader {
     header: boolean
     sticky?: boolean
+    stickyHeight?: string
     displayAlbum?: boolean
     displayAdded?: boolean
 }
 
-const TrackListHeader: React.FC<TrackListHeader> = ({ header, sticky, displayAlbum, displayAdded }) => {
+const TrackListHeader: React.FC<TrackListHeader> = ({ header, sticky, stickyHeight, displayAlbum, displayAdded }) => {
     const { opacity } = useScrollOpacity()
 
     return header ? (
@@ -121,16 +111,14 @@ const TrackListHeader: React.FC<TrackListHeader> = ({ header, sticky, displayAlb
                     md:grid
                     md:grid-cols-[16px_minmax(120px,6fr)_120px]
                     md:data-[display-album=true]:grid-cols-[16px_minmax(120px,6fr)_minmax(120px,5fr)_120px]
-                    xl:data-[display-album=true]:grid-cols-[16px_minmax(120px,6fr)_minmax(120px,4fr)_minmax(120px,3fr)_120px]
+                    xl:data-[display-added=true]:grid-cols-[16px_minmax(120px,6fr)_minmax(120px,4fr)_minmax(120px,3fr)_120px]
                 `,
                 sticky && 'sticky top-[64px]',
+                stickyHeight && `top-[${stickyHeight}px]`,
                 opacity === 1 && 'mx-[-16px] px-8'
             )}
         >
-            <BackgroundColour
-                defaultClr={true}
-                gradient={true}
-            />
+            <BackgroundColour defaultClr={true} />
             <span className="justify-self-end text-base">#</span>
             <span>Title</span>
             {displayAlbum && <span className="hidden md:block">Album</span>}

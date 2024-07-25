@@ -6,7 +6,8 @@ import Sidebar from '../components/sidebar/Sidebar'
 import Content from '../components/Content'
 
 import Home from './pages/Home'
-import Search from './pages/Search'
+import Search from './pages/search/Search'
+import Genre from './pages/genre/Genre'
 import Collection from './pages/collection/Collection'
 import Playlist from './pages/playlist/Playlist'
 import Album from './pages/album/Album'
@@ -28,8 +29,13 @@ const App = () => {
         },
         {
             label: 'Search',
-            path: '/search',
-            element: <Search />,
+            path: '/search/*',
+            element: user ? <Search /> : <Navigate to={'/'} />,
+        },
+        {
+            label: 'Genre',
+            path: '/genre/:id',
+            element: user ? <Genre /> : <Navigate to={'/'} />,
         },
         {
             label: 'Collection',
