@@ -13,7 +13,7 @@ const ResultsFilters = () => {
         <>
             <div className="sticky top-[64px] z-[1]">
                 <BackgroundColour />
-                <div className="px-4 py-2">
+                <div className="flex flex-wrap gap-3 px-4 py-2">
                     <FilterItem
                         to={''}
                         text={'All'}
@@ -53,10 +53,7 @@ interface FilterItemProps {
 
 const FilterItem: React.FC<FilterItemProps> = ({ to, text, active }) => {
     return (
-        <Link
-            to={to}
-            className="mr-3"
-        >
+        <Link to={to}>
             <Button
                 data-active={active}
                 className="
