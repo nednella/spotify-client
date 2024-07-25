@@ -8,7 +8,7 @@ const SearchBar = () => {
     const formRef = useRef<HTMLFormElement>(null)
     const navigate = useNavigate()
 
-    const debounceNavigate = debounce((e) => navigate(e.target.value, { replace: true }), 400)
+    const debounceNavigate = debounce((e) => navigate(encodeURIComponent(e.target.value), { replace: true }), 400)
 
     const onClear = () => {
         if (formRef.current) {
