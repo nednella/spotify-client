@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { Track } from '../../../../../../types/Track'
-import TrackList from '../../../../../../components/songs/TrackList'
+import TrackList from '../../../../../../components/tracks/TrackList'
 
 interface SongsProps {
     songs: Track[]

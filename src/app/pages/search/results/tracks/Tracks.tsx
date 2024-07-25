@@ -3,7 +3,7 @@ import React from 'react'
 import { Track } from '../../../../../types/Track'
 
 import ContentContainer from '../../../../../components/PageContentContainer'
-import TrackList from '../../../../../components/songs/TrackList'
+import TrackList from '../../../../../components/tracks/TrackList'
 import Footer from '../../../../../components/Footer'
 
 interface TracksProps {
