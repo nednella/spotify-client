@@ -26,7 +26,7 @@ const SidebarNav = () => {
                 <SidebarItem
                     key={route.label}
                     {...route}
-                ></SidebarItem>
+                />
             ))}
         </>
     )
