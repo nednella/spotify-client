@@ -7,11 +7,9 @@ const Loading = () => {
                 absolute
                 left-[50%]
                 top-[50%]
-                flex
                 w-full
                 translate-x-[-50%]
                 translate-y-[-50%]
-                flex-col
                 items-center
                 justify-center
             "
