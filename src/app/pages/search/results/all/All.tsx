@@ -15,9 +15,9 @@ interface AllProps {
 const All: React.FC<AllProps> = ({ query, data }) => {
     return (
         <ContentContainer>
-            {data.albums.length > 0 &&
-            data.artists.length > 0 &&
-            data.playlists.length > 0 &&
+            {data.albums.length > 0 ||
+            data.artists.length > 0 ||
+            data.playlists.length > 0 ||
             data.tracks.length > 0 ? (
                 <>
                     <Songs songs={data.tracks} />
