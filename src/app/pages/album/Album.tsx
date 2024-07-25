@@ -40,9 +40,9 @@ const Album = () => {
         albumData && (
             <AlbumWrapper album={albumData.album}>
                 <ActionBar
-                    user={user}
                     library={libraryData.albums}
                     content={albumData.album}
+                    isUserCreated={false}
                 />
                 <TrackList
                     tracks={albumData.album.tracks.items}
