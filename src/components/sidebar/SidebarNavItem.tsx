@@ -31,6 +31,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ icon: Icon, label, active, hr
                 `,
                 active && 'text-white'
             )}
+            draggable={false}
         >
             <Icon size={30} />
             <p className="w-full truncate">{label}</p>
