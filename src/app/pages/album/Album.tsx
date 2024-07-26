@@ -11,7 +11,7 @@ import NotFound from '../NotFound'
 
 import AlbumWrapper from './components/AlbumWrapper'
 import ActionBar from '../../../components/ActionBar'
-import TrackList from '../../../components/songs/TrackList'
+import TrackList from '../../../components/tracks/TrackList'
 import Footer from '../../../components/Footer'
 
 const Album = () => {
@@ -40,9 +40,9 @@ const Album = () => {
         albumData && (
             <AlbumWrapper album={albumData.album}>
                 <ActionBar
-                    user={user}
                     library={libraryData.albums}
                     content={albumData.album}
+                    isUserCreated={false}
                 />
                 <TrackList
                     tracks={albumData.album.tracks.items}

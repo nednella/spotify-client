@@ -6,7 +6,6 @@ import { PublicUserSimplified } from './User'
 export interface Track {
     album: SimplifiedAlbum
     artists: SimplifiedArtist[]
-    available_markets: string[]
     disc_number: number
     duration_ms: number
     explicit: boolean
@@ -15,6 +14,7 @@ export interface Track {
     href: string
     id: string
     is_local: boolean
+    is_playable: boolean
     name: string
     popularity: number
     preview_url: string
@@ -25,7 +25,6 @@ export interface Track {
 
 export interface SimplifiedTrack {
     artists: SimplifiedArtist[]
-    available_markets: string[]
     disc_number: number
     duration_ms: number
     explicit: boolean
@@ -33,6 +32,7 @@ export interface SimplifiedTrack {
     href: string
     id: string
     is_local: boolean
+    is_playable: boolean
     name: string
     preview_url: string
     track_number: number
@@ -57,7 +57,6 @@ export interface NormalisedTrack {
     added_by?: PublicUserSimplified
     album?: SimplifiedAlbum
     artists: SimplifiedArtist[]
-    available_markets: string[]
     disc_number: number
     duration_ms: number
     explicit: boolean
@@ -66,6 +65,7 @@ export interface NormalisedTrack {
     href: string
     id: string
     is_local: boolean
+    is_playable: boolean
     name: string
     popularity?: number
     preview_url: string
