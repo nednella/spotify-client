@@ -33,26 +33,26 @@ const LoginModal = () => {
         >
             <div
                 className="
-                flex
-                h-full
-                flex-col
-                items-center
-                justify-center
-                lg:flex-row
-            "
+                    flex
+                    h-full
+                    flex-col
+                    items-center
+                    justify-center
+                    lg:flex-row
+                "
             >
                 <div
                     className="
-                    flex
-                    h-[200px]
-                    w-[200px]
-                    items-center
-                    sm:h-[240px]
-                    sm:w-[240px]
-                    lg:mr-16
-                    lg:h-[300px]
-                    lg:w-[300px]
-                "
+                        flex
+                        h-[200px]
+                        w-[200px]
+                        items-center
+                        sm:h-[240px]
+                        sm:w-[240px]
+                        lg:mr-16
+                        lg:h-[300px]
+                        lg:w-[300px]
+                    "
                 >
                     <img
                         src={img}

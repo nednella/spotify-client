@@ -13,7 +13,7 @@ import NotFound from '../NotFound'
 import ProfileWrapper from './components/ProfileWrapper'
 import { TabContent, TabItems, TabMenu, TabTrigger } from '../../../components/TabMenu'
 import BackgroundColour from '../../../components/BackgroundColour'
-import TrackList from '../../../components/songs/TrackList'
+import TrackList from '../../../components/tracks/TrackList'
 import { Carousel, CarouselContainer, CarouselSlide } from '../../../components/carousel/Carousel'
 import ContentCard from '../../../components/content/ContentCard'
 import Footer from '../../../components/Footer'
@@ -47,10 +47,7 @@ const Profile = () => {
             <ProfileWrapper user={user}>
                 <TabMenu>
                     <TabItems className="sticky top-[64px] z-50">
-                        <BackgroundColour
-                            defaultClr={true}
-                            gradient={true}
-                        />
+                        <BackgroundColour defaultClr={true} />
                         <div className="mx-auto max-w-[1400px]">
                             <TabTrigger
                                 value="tab-1"
@@ -70,10 +67,9 @@ const Profile = () => {
                             <span className="text-2xl font-bold">Top tracks this month</span>
                         </div>
                         <TrackList
-                            tracks={profileData.top_tracks}
+                            tracks={profileData.top_tracks.slice(0, 5)}
                             header={false}
                             displayAlbum={true}
-                            shallowList={true}
                         />
                         <Carousel title={'Top artists this month'}>
                             <CarouselContainer>

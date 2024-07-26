@@ -23,6 +23,8 @@ const BrowseCategories: React.FC<BrowseCategoriesProps> = ({ categories }) => {
                     gap-6
                     xsm:grid-cols-3
                     lg:grid-cols-4
+                    xl:grid-cols-5
+                    2xl:grid-cols-6
                 "
             >
                 {categories.map((category) => (

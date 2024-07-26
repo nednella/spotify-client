@@ -13,7 +13,7 @@ import NotFound from '../NotFound'
 
 import PlaylistWrapper from './components/PlaylistWrapper'
 import ActionBar from '../../../components/ActionBar'
-import TrackList from '../../../components/songs/TrackList'
+import TrackList from '../../../components/tracks/TrackList'
 import Footer from '../../../components/Footer'
 
 const Playlist = () => {

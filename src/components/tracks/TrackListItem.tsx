@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom'
 import { twMerge } from 'tailwind-merge'
 
 import { RiPlayLargeFill } from 'react-icons/ri'
+import { BsFillExplicitFill } from 'react-icons/bs'
 import { VscEllipsis } from 'react-icons/vsc'
 
 import updateLibrary from '../../api/user/UserLibraryUpdate'
@@ -171,16 +172,17 @@ const TrackListItem: React.FC<TrackListItem> = ({ index, track, album, added, is
                     <span className="truncate text-base text-white">{track.name}</span>
                     {/* Track artists */}
                     <div className="overflow-hidden truncate">
+                        {track.explicit && <BsFillExplicitFill className="mb-1 mr-1 inline-block" />}
                         {track.artists.map((artist, index) => (
                             <React.Fragment key={artist.id}>
                                 <Link
                                     to={`/${artist.type}/${artist.id}`}
                                     className="
-                                            hover:text-white
-                                            hover:underline
-                                            group-hover:text-white
-                                            group-data-[selected=true]:text-white
-                                        "
+                                        hover:text-white
+                                        hover:underline
+                                        group-hover:text-white
+                                        group-data-[selected=true]:text-white
+                                    "
                                 >
                                     {artist.name}
                                 </Link>
