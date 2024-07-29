@@ -121,7 +121,7 @@ export default class spotifyAPI {
      * @param {*} time_range - Over what time from the affinities are computed. Valid values: 'long_term', 'medium_term', 'short_term'.
      * @returns - A promise that if successful, resolves into an object containing the requested information.
      */
-    getMeTopItems = (access_token, limit, offset, type, time_range) => {
+    getMeTopItems = (access_token, limit, offset, type, time_range, market) => {
         return new ApiRequest(access_token)
             .setMethod('GET')
             .setPath(`/me/top/${type}`)
@@ -129,6 +129,7 @@ export default class spotifyAPI {
                 limit: limit || 20,
                 offset: offset || 0,
                 time_range: time_range,
+                market: market || 'GB',
             })
             .build()
             .execute()
@@ -634,6 +635,73 @@ export default class spotifyAPI {
             .setPath(`/playlists/${playlist_id}/tracks`)
             .setBodyParams({
                 tracks: tracks,
+            })
+            .build()
+            .execute()
+    }
+
+    /* BROWSE ENDPOINTS */
+
+    /**
+     * Get Spotify catalog information about albums, artists, playlists, tracks, shows, episodes, or audiobooks that match a keyword string.
+     * Docs URL: https://developer.spotify.com/documentation/web-api/reference/search
+     * @param {string} access_token - Authenticated user's access token.
+     * @param {*} search_query - The search query.
+     * @param {*} type - A comma-separated string of types to search across. Allowed values: album, artist, playlist, track, show, episode, audiobook.
+     * @param {number} limit - Spotify API pagination page limit.
+     * @param {number} offset - Spotify API pagination page offset.
+     * @returns - A promise that if successful, resolves into an object containing the requested information.
+     */
+    getSearch = (access_token, limit, offset, search_query, type) => {
+        return new ApiRequest(access_token)
+            .setMethod('GET')
+            .setPath('/search')
+            .setQueryParams({
+                q: search_query,
+                type: 'album,playlist,artist,track',
+                limit: limit || 20,
+                offset: offset || 0,
+            })
+            .build()
+            .execute()
+    }
+
+    /**
+     * Get a list of categories used to tag items in Spotify.
+     * Docs URL: https://developer.spotify.com/documentation/web-api/reference/get-categories
+     * @param {string} access_token - Authenticated user's access token.
+     * @param {number} limit - Spotify API pagination page limit.
+     * @param {number} offset - Spotify API pagination page offset.
+     * @returns - A promise that if successful, resolves into an object containing the requested information.
+     */
+    getBrowseCategories = (access_token, limit, offset) => {
+        return new ApiRequest(access_token)
+            .setMethod('GET')
+            .setPath('/browse/categories')
+            .setQueryParams({
+                limit: limit || 20,
+                offset: offset || 0,
+            })
+            .build()
+            .execute()
+    }
+
+    /**
+     * Get a list of Spotify playlists tagged with a particular category.
+     * Docs URL: https://developer.spotify.com/documentation/web-api/reference/get-a-categories-playlists
+     * @param {string} access_token - Authenticated user's access token.
+     * @param {*} category_id - The Spotify Category ID.
+     * @param {number} limit - Spotify API pagination page limit.
+     * @param {number} offset - Spotify API pagination page offset.
+     * @returns - A promise that if successful, resolves into an object containing the requested information.
+     */
+    getCategoryPlaylists = (access_token, limit, offset, category_id) => {
+        return new ApiRequest(access_token)
+            .setMethod('GET')
+            .setPath(`/browse/categories/${category_id}/playlists`)
+            .setQueryParams({
+                limit: limit || 20,
+                offset: offset || 0,
             })
             .build()
             .execute()

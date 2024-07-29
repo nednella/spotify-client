@@ -1,4 +1,4 @@
-import express, { response } from 'express'
+import express from 'express'
 
 import { spotifyAPI } from '../index.js'
 
@@ -286,6 +286,82 @@ router.delete(
         await spotifyAPI.removePlaylistTracks(access_token, id, [{ uri: uri }])
 
         res.status(200).json('Playlist track(s) removed.')
+    })
+)
+
+router.get(
+    '/browse',
+    asyncHandler(async (req, res) => {
+        const { access_token } = req.session.user
+        const limit = SPOTIFY_API_PAGINATION_LIMIT
+        const cap = SPOTIFY_API_PAGINATION_ITEM_CAP
+
+        const getBrowseCategories = async (access_token, limit, offset) => {
+            const response = await spotifyAPI.getBrowseCategories(access_token, limit, offset)
+            return response.data.categories
+        }
+
+        const [categories] = await Promise.all([
+            fetchPaginatedItems(getBrowseCategories, access_token, limit, cap, [], processData),
+        ])
+
+        res.status(200).json(categories)
+    })
+)
+
+router.get(
+    '/genre/:id',
+    asyncHandler(async (req, res) => {
+        const { access_token } = req.session.user
+        const { id } = req.params
+        const limit = SPOTIFY_API_PAGINATION_LIMIT
+
+        // Capped to 50 items.
+        const getCategoryPlaylists = async (access_token, category_id, limit, offset) => {
+            const response = await spotifyAPI.getCategoryPlaylists(access_token, limit, offset, category_id)
+            return response.data
+        }
+
+        const [playlists] = await Promise.all([getCategoryPlaylists(access_token, id, limit, 0)])
+
+        // NOTE: it is clear that Spotify playlists have 'tags' used as filters, that cannot be retrieved by the public API,
+        // therefore it is impossible to group these playlists in the same manner as the official application.
+        // Instead duplicated items are simply removed below.
+        const genre = {
+            name: playlists.message,
+            playlists: Array.from(new Set(playlists.playlists.items.map((item) => item.id))).map((id) => {
+                return playlists.playlists.items.find((item) => item.id === id)
+            }),
+        }
+
+        res.status(200).json(genre)
+    })
+)
+
+router.get(
+    '/search/:query',
+    asyncHandler(async (req, res) => {
+        const { access_token } = req.session.user
+        const { query } = req.params
+        const limit = SPOTIFY_API_PAGINATION_LIMIT
+        const cap = SPOTIFY_API_PAGINATION_ITEM_CAP
+
+        // Capped to 50 items for each category.
+        const getSearch = async (access_token, limit, offset, search_query) => {
+            const response = await spotifyAPI.getSearch(access_token, limit, offset, search_query)
+            return response.data
+        }
+
+        const response = await getSearch(access_token, limit, 0, query)
+
+        const results = {
+            artists: response.artists.items,
+            albums: response.albums.items,
+            playlists: response.playlists.items,
+            tracks: response.tracks.items,
+        }
+
+        res.status(200).json(results)
     })
 )
 
