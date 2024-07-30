@@ -1,4 +1,4 @@
-import express from 'express'
+import express, { response } from 'express'
 
 import { spotifyAPI } from '../index.js'
 
@@ -362,6 +362,38 @@ router.get(
         }
 
         res.status(200).json(results)
+    })
+)
+
+router.get(
+    '/album-releases',
+    asyncHandler(async (req, res) => {
+        const { access_token } = req.session.user
+
+        const getAlbums = async (access_token, limit, offset) => {
+            const response = await spotifyAPI.getAlbumReleases(access_token, limit, offset)
+            return response.data.albums.items
+        }
+
+        const albums = await getAlbums(access_token)
+
+        res.status(200).json(albums)
+    })
+)
+
+router.get(
+    '/featured-playlists',
+    asyncHandler(async (req, res) => {
+        const { access_token } = req.session.user
+
+        const getPlaylists = async (access_token, limit, offset) => {
+            const response = await spotifyAPI.getFeaturedPlaylists(access_token, limit, offset)
+            return response.data.playlists.items
+        }
+
+        const playlists = await getPlaylists(access_token)
+
+        res.status(200).json(playlists)
     })
 )
 

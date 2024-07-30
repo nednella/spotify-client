@@ -566,6 +566,26 @@ export default class spotifyAPI {
             .execute()
     }
 
+    /**
+     * Get a list of new album releases featured in Spotify.
+     * Docs URL: https://developer.spotify.com/documentation/web-api/reference/get-new-releases
+     * @param {string} access_token - Authenticated user's access token.
+     * @param {number} limit - Spotify API pagination page limit.
+     * @param {number} offset - Spotify API pagination page offset.
+     * @returns - A promise that if successful, resolves into an object containing the requested information.
+     */
+    getAlbumReleases = (access_token, limit, offset) => {
+        return new ApiRequest(access_token)
+            .setMethod('GET')
+            .setPath('/browse/new-releases')
+            .setQueryParams({
+                limit: limit || 20,
+                offset: offset || 0,
+            })
+            .build()
+            .execute()
+    }
+
     /* PLAYLIST ENDPOINTS */
 
     /**
@@ -577,6 +597,28 @@ export default class spotifyAPI {
      */
     getPlaylist = (access_token, playlist_id) => {
         return new ApiRequest(access_token).setMethod('GET').setPath(`/playlists/${playlist_id}`).build().execute()
+    }
+
+    /**
+     * Get a list of Spotify featured playlists.
+     * Docs URL: https://developer.spotify.com/documentation/web-api/reference/get-featured-playlists
+     * @param {string} access_token - Authenticated user's access token.
+     * @param {number} limit - Spotify API pagination page limit.
+     * @param {number} offset - Spotify API pagination page offset.
+     * @param {string} locale - The ISO 3166-1 alpha-2 country code associated with the user. Defaults to GB if not supplied.
+     * @returns - A promise that if successful, resolves into an object containing the requested information.
+     */
+    getFeaturedPlaylists = (access_token, limit, offset, locale) => {
+        return new ApiRequest(access_token)
+            .setMethod('GET')
+            .setPath('/browse/featured-playlists')
+            .setQueryParams({
+                limit: limit || 20,
+                offset: offset || 0,
+                locale: locale || 'GB',
+            })
+            .build()
+            .execute()
     }
 
     /**
