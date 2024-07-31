@@ -1,11 +1,11 @@
 import React, { useRef } from 'react'
 
-import { useAuth } from '../../hooks/useAuth'
+import { useAuth } from '../../../../hooks/useAuth'
 
-import Header from '../Header'
-import ScrollWrapper from './ScrollWrapper'
-import HeaderSpacer from '../HeaderSpacer'
-import BackgroundGradient from '../BackgroundGradient'
+import Header from '../../../../components/Header'
+import ScrollWrapper from '../../../../components/wrappers/ScrollWrapper'
+import HeaderSpacer from '../../../../components/HeaderSpacer'
+import BackgroundGradient from '../../../../components/BackgroundGradient'
 // import BackgroundColour from '../BackgroundColour'
 
 interface HomeWrapperProps {
