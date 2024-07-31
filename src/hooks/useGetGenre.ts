@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 
 import { User } from '../types/User'
-import getGenre from '../api/search/getGenre'
+import getGenre from '../api/browse/getGenre'
 
 const useGetBrowseCategories = (user: User | null, id: string | undefined) => {
     return useQuery({
