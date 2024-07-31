@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 
-import getBrowseCategories from '../api/search/getBrowseCategories'
+import getBrowseCategories from '../api/browse/getBrowseCategories'
 
 const useGetBrowseCategories = () => {
     return useQuery({

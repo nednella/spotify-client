@@ -71,7 +71,10 @@ const Profile = () => {
                             header={false}
                             displayAlbum={true}
                         />
-                        <Carousel title={'Top artists this month'}>
+                        <Carousel
+                            title={'Top artists this month'}
+                            className="mt-8"
+                        >
                             <CarouselContainer>
                                 {profileData.top_artists.map((artist: Artist) => (
                                     <CarouselSlide key={artist.id}>
@@ -90,7 +93,10 @@ const Profile = () => {
                                 ))}
                             </CarouselContainer>
                         </Carousel>
-                        <Carousel title={'Your playlists'}>
+                        <Carousel
+                            title={'Your playlists'}
+                            className="mt-8"
+                        >
                             <CarouselContainer>
                                 {playlists.map((playlist) => (
                                     <CarouselSlide key={playlist.id}>
