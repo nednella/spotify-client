@@ -12,7 +12,7 @@ interface CarouselProps {
     className?: string
 }
 
-export const Carousel: React.FC<CarouselProps> = ({ title, children }) => {
+export const Carousel: React.FC<CarouselProps> = ({ title, children, className }) => {
     const [emblaRef, emblaApi] = useEmblaCarousel({ slidesToScroll: 'auto' })
     const [prevBtnDisabled, setPrevBtnDisabled] = useState(true)
     const [nextBtnDisabled, setNextBtnDisabled] = useState(true)
@@ -40,8 +40,8 @@ export const Carousel: React.FC<CarouselProps> = ({ title, children }) => {
     }, [emblaApi, onSelect])
 
     return (
-        <section className="flex select-none flex-col">
-            <div className="mt-6 flex items-center justify-between pb-1">
+        <section className={twMerge('flex select-none flex-col', className)}>
+            <div className="flex items-center justify-between pb-1">
                 <p className="text-2xl font-bold">{title}</p>
                 <div className="flex gap-x-2">
                     <CarouselButton
