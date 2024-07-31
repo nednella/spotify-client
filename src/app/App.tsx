@@ -5,7 +5,7 @@ import { useAuth } from '../hooks/useAuth'
 import Sidebar from '../components/sidebar/Sidebar'
 import Content from '../components/Content'
 
-import Home from './pages/Home'
+import Home from './pages/home/Home'
 import Search from './pages/search/Search'
 import Genre from './pages/genre/Genre'
 import Collection from './pages/collection/Collection'

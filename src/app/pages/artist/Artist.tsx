@@ -100,7 +100,10 @@ const Artist = () => {
                             tracks={artistData.top_tracks.slice(0, 5)}
                             header={false}
                         />
-                        <Carousel title={'Most recent releases'}>
+                        <Carousel
+                            title={'Most recent releases'}
+                            className="mt-8"
+                        >
                             <CarouselContainer>
                                 {most_recent.map((album: SimplifiedAlbum) => (
                                     <CarouselSlide key={album.id}>
@@ -119,7 +122,10 @@ const Artist = () => {
                                 ))}
                             </CarouselContainer>
                         </Carousel>
-                        <Carousel title={'Fans also like'}>
+                        <Carousel
+                            title={'Fans also like'}
+                            className="mt-8"
+                        >
                             <CarouselContainer>
                                 {artistData.related_artists.map((artist: ArtistType) => (
                                     <CarouselSlide key={artist.id}>
