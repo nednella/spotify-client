@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 
-import getSearch from '../api/search/getSearch'
+import getSearch from '../api/browse/getSearch'
 
 const useGetPlaylist = (query: string | undefined) => {
     return useQuery({
