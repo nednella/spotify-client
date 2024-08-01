@@ -4,6 +4,7 @@ import { useAuth } from '../hooks/useAuth'
 
 import Sidebar from '../components/sidebar/Sidebar'
 import Content from '../components/Content'
+import Player from '../components/player/Player'
 
 import Home from './pages/home/Home'
 import Search from './pages/search/Search'
@@ -85,7 +86,17 @@ const App = () => {
     ]
 
     return (
-        <div className="flex h-full">
+        <div
+            className="
+                grid
+                h-full
+                grid-cols-1
+                grid-rows-[1fr,72px]
+                md:grid-cols-[max-content,1fr]
+                md:gap-2
+                md:p-2
+            "
+        >
             <Sidebar />
             <Content>
                 <Routes>
@@ -97,6 +108,7 @@ const App = () => {
                     ))}
                 </Routes>
             </Content>
+            <Player />
         </div>
     )
 }
