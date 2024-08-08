@@ -2,6 +2,9 @@ import { useAuth } from '../../hooks/useAuth'
 
 import PlayerContainer from './PlayerContainer'
 import Banner from './Banner'
+import NowPlaying from './NowPlaying'
+import PlayerControls from './PlayerControls'
+import Devices from './Devices'
 
 const Player = () => {
     const { user } = useAuth()
@@ -11,11 +14,11 @@ const Player = () => {
             {!user ? (
                 <Banner />
             ) : (
-                <div className="flex h-full">
-                    <div className="flex-1">Media</div>
-                    <div className="flex-1">Controls</div>
-                    <div className="flex-1">Buttons</div>
-                </div>
+                <footer className="flex h-full select-none">
+                    <NowPlaying />
+                    <PlayerControls />
+                    <Devices />
+                </footer>
             )}
         </PlayerContainer>
     )
