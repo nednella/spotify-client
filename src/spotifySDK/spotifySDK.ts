@@ -4,7 +4,7 @@ export default window.onSpotifyWebPlaybackSDKReady = (token: string): Spotify.Pl
         getOAuthToken: (cb) => {
             cb(token)
         },
-        volume: 0.25,
+        volume: 0.125,
     })
 
     player.addListener('ready', ({ device_id }) => {
