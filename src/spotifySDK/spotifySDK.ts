@@ -1,3 +1,5 @@
+import { setDeviceId, syncSDKPlayerState } from '../hooks/usePlayer'
+
 export default window.onSpotifyWebPlaybackSDKReady = (token: string): Spotify.Player => {
     const player = new Spotify.Player({
         name: 'Spotify Clone',
@@ -8,11 +10,14 @@ export default window.onSpotifyWebPlaybackSDKReady = (token: string): Spotify.Pl
     })
 
     player.addListener('ready', ({ device_id }) => {
+        // DEBUG
         console.log('Connected with Device ID', device_id)
+
+        setDeviceId(device_id)
     })
 
     player.addListener('player_state_changed', (state) => {
-        console.log('Player state changed', state)
+        syncSDKPlayerState(state)
     })
 
     player.on('initialization_error', ({ message }) => {
