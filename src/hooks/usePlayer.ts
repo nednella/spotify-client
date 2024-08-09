@@ -1,5 +1,7 @@
 import { create } from 'zustand'
 
+import spotifySDK from '../spotifySDK/spotifySDK'
+
 import { CurrentlyPlaying, defaultCurrentlyPlaying } from '../types/CurrentlyPlaying'
 import { Device, defaultDevice } from '../types/Device'
 import { defaultPlaybackState } from '../types/Defaults'
@@ -13,6 +15,8 @@ interface PlayerStore {
     deviceId: string
     playerState: Spotify.PlaybackState
     queue: Spotify.Track[]
+    initialisePlayer: (token: string) => void
+    setDeviceId: (id: string) => void
 }
 
 const usePlayer = create<PlayerStore>()((set, get) => ({
@@ -24,6 +28,13 @@ const usePlayer = create<PlayerStore>()((set, get) => ({
     deviceId: '',
     playerState: defaultPlaybackState,
     queue: [],
+    initialisePlayer: async (token: string) => {
+        if (!get().deviceId) spotifySDK(token).connect()
+    },
+    setDeviceId: (id: string) => set(() => ({ deviceId: id })),
 }))
 
 export default usePlayer
+
+// Defined actions to allow usage outside of functional components where React hooks cannot be used
+export const setDeviceId = (id: string) => usePlayer.setState({ deviceId: id })
