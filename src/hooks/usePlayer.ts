@@ -17,6 +17,7 @@ interface PlayerStore {
     queue: Spotify.Track[]
     initialisePlayer: (token: string) => void
     setDeviceId: (id: string) => void
+    syncSDKPlayerState: (state: Spotify.PlaybackState) => void
 }
 
 const usePlayer = create<PlayerStore>()((set, get) => ({
@@ -32,9 +33,11 @@ const usePlayer = create<PlayerStore>()((set, get) => ({
         if (!get().deviceId) spotifySDK(token).connect()
     },
     setDeviceId: (id: string) => set(() => ({ deviceId: id })),
+    syncSDKPlayerState: (state: Spotify.PlaybackState) => set(() => ({ playerState: state })),
 }))
 
 export default usePlayer
 
 // Defined actions to allow usage outside of functional components where React hooks cannot be used
 export const setDeviceId = (id: string) => usePlayer.setState({ deviceId: id })
+export const syncSDKPlayerState = (state: Spotify.PlaybackState) => usePlayer.setState({ playerState: state })
