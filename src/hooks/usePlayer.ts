@@ -15,8 +15,10 @@ interface PlayerStore {
     deviceId: string
     playerState: Spotify.PlaybackState
     queue: Spotify.Track[]
+    SDK: Spotify.Player | null
     initialisePlayer: (token: string) => void
     setDeviceId: (id: string) => void
+    setSDK: (SDK: Spotify.Player) => void
     syncSDKPlayerState: (state: Spotify.PlaybackState) => void
 }
 
@@ -29,10 +31,15 @@ const usePlayer = create<PlayerStore>()((set, get) => ({
     deviceId: '',
     playerState: defaultPlaybackState,
     queue: [],
+    SDK: null,
     initialisePlayer: async (token: string) => {
-        if (!get().deviceId) spotifySDK(token).connect()
+        if (!get().SDK) {
+            get().setSDK(spotifySDK(token))
+            get().SDK?.connect()
+        }
     },
     setDeviceId: (id: string) => set(() => ({ deviceId: id })),
+    setSDK: (SDKobj: Spotify.Player) => set(() => ({ SDK: SDKobj })),
     syncSDKPlayerState: (state: Spotify.PlaybackState) => set(() => ({ playerState: state })),
 }))
 
