@@ -1,4 +1,4 @@
-import { setDeviceId, syncSDKPlayerState } from '../hooks/usePlayer'
+import { getAvailableDevices, setDeviceId, syncSDKPlayerState } from '../hooks/usePlayer'
 
 export default window.onSpotifyWebPlaybackSDKReady = (token: string): Spotify.Player => {
     const player = new Spotify.Player({
@@ -6,7 +6,7 @@ export default window.onSpotifyWebPlaybackSDKReady = (token: string): Spotify.Pl
         getOAuthToken: (cb) => {
             cb(token)
         },
-        volume: 0.125,
+        volume: 0.02,
     })
 
     player.addListener('ready', ({ device_id }) => {
@@ -14,6 +14,7 @@ export default window.onSpotifyWebPlaybackSDKReady = (token: string): Spotify.Pl
         console.log('Connected with Device ID', device_id)
 
         setDeviceId(device_id)
+        getAvailableDevices()
     })
 
     player.addListener('player_state_changed', (state) => {
