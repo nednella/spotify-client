@@ -91,7 +91,7 @@ const App = () => {
                 grid
                 h-full
                 grid-cols-1
-                grid-rows-[1fr,72px]
+                grid-rows-[1fr,max-content]
                 md:grid-cols-[max-content,1fr]
                 md:gap-2
                 md:p-2
