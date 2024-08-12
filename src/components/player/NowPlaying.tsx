@@ -4,11 +4,11 @@ import { Link } from 'react-router-dom'
 import usePlayer from '../../hooks/usePlayer'
 
 const NowPlaying = () => {
-    const currentTrack = usePlayer((state) => state.playerState.track_window.current_track)
+    const currentTrack = usePlayer((state) => state.playerState?.track_window.current_track)
 
     return (
         <div className="w-[30%] pl-2">
-            {currentTrack.id && (
+            {currentTrack && currentTrack.id && (
                 <div className="flex h-full items-center text-sm text-neutral-400">
                     {/* Image container */}
                     <div
