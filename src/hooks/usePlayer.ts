@@ -22,7 +22,7 @@ interface PlayerStore {
     getDevices: () => void
     initialisePlayer: (token: string) => void
     isActiveDeviceExternal: () => boolean
-    setActiveDevice: (deviceId: string) => void
+    setActiveDevice: (deviceId: string | null) => void
     setDeviceId: (id: string) => void
     setSDK: (SDK: Spotify.Player) => void
     syncSDKPlayerState: (state: Spotify.PlaybackState) => void
@@ -40,14 +40,11 @@ const usePlayer = create<PlayerStore>()((set, get) => ({
     SDK: null,
     getDevices: async () => {
         const devices = await getDevices()
-        set((state) => ({ devices: { ...state.devices, list: devices } }))
-
         const activeDevice = devices.find((device: Device) => device.is_active)
+        set((state) => ({ devices: { ...state.devices, list: devices } }))
         if (activeDevice) set((state) => ({ devices: { ...state.devices, active: activeDevice } }))
         else {
-            // Transfer playback to this device.
-            await setDevice(get().deviceId)
-
+            await setDevice(get().deviceId) // Transfer playback to this device.
             const thisDevice = devices.find((device: Device) => device.id === get().deviceId)
             set((state) => ({ devices: { ...state.devices, active: thisDevice } }))
         }
@@ -61,7 +58,15 @@ const usePlayer = create<PlayerStore>()((set, get) => ({
             get().SDK?.connect()
         }
     },
-    setActiveDevice: async (deviceId) => await setDevice(deviceId),
+    setActiveDevice: async (deviceId) => {
+        if (!deviceId) return
+        set(() => ({ playerState: defaultPlaybackState }))
+        await setDevice(deviceId)
+        const devices = await getDevices()
+        const activeDevice = devices.find((device: Device) => device.id === deviceId)
+        set((state) => ({ devices: { ...state.devices, active: activeDevice } }))
+        set((state) => ({ devices: { ...state.devices, list: devices } }))
+    },
     setDeviceId: (id: string) => set(() => ({ deviceId: id })),
     setSDK: (SDKobj: Spotify.Player) => set(() => ({ SDK: SDKobj })),
     syncSDKPlayerState: (state: Spotify.PlaybackState) => set(() => ({ playerState: state })),
