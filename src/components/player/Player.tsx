@@ -9,6 +9,7 @@ import Banner from './Banner'
 import NowPlaying from './NowPlaying'
 import PlayerControls from './PlayerControls'
 import Devices from './Devices'
+import ActiveDevice from './ActiveDevice'
 
 const Player = () => {
     const { user } = useAuth()
@@ -24,10 +25,20 @@ const Player = () => {
             {!user ? (
                 <Banner />
             ) : (
-                <footer className="flex h-full select-none">
-                    <NowPlaying />
-                    <PlayerControls />
-                    <Devices />
+                <footer
+                    className="
+                        flex
+                        h-fit
+                        select-none
+                        flex-col
+                    "
+                >
+                    <div className="flex h-[72px]">
+                        <NowPlaying />
+                        <PlayerControls />
+                        <Devices />
+                    </div>
+                    <ActiveDevice />
                 </footer>
             )}
         </PlayerContainer>
