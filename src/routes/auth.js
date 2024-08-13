@@ -59,7 +59,10 @@ router.get(
 
         // Return authenticated user's profile as a method of validating session.
         const response = await spotifyAPI.getMe(access_token)
-        res.status(200).json(response.data)
+        const user = response.data
+        user.token = access_token // Token required on the client to enable usage of Spotify Playback SDK.
+
+        res.status(200).json(user)
     })
 )
 
