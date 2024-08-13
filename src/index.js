@@ -8,6 +8,7 @@ import SpotifyApi from './spotify-request-wrapper/spotify-request-wrapper.js'
 
 import auth from './routes/auth.js'
 import api from './routes/api.js'
+import player from './routes/player.js'
 
 import errorHandler from './middleware/errorHandler.js'
 
@@ -67,6 +68,7 @@ app.use(bodyParser.json())
 // App routes
 app.use('/auth', auth)
 app.use('/api', api)
+app.use('/player', player)
 
 // Error handling
 app.use(errorHandler)

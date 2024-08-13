@@ -748,4 +748,81 @@ export default class spotifyAPI {
             .build()
             .execute()
     }
+
+    /* PLAYER ENDPOINTS - REQUIRES SPOTIFY PREMIUM FOR AUTHENTICATED USER */
+
+    /**
+     * Get information about a user's available Spotify Connect devices.
+     * Docs URL: https://developer.spotify.com/documentation/web-api/reference/get-a-users-available-devices
+     * @param {string} access_token - Authenticated user's access token.
+     * @returns - A promise that if successful, resolves into an object containing the requested information.
+     */
+    getAvailableDevices = (access_token) => {
+        return new ApiRequest(access_token).setMethod('GET').setPath('/me/player/devices').build().execute()
+    }
+
+    /**
+     * Transfer playback to a new device and optionally begin playback.
+     * Docs URL: https://developer.spotify.com/documentation/web-api/reference/transfer-a-users-playback
+     * @param {string} access_token - Authenticated user's access token.
+     * @param {string} device_id - the ID of the device on which the playback should be transferred.
+     * @returns - A promise that if successful, resolves into the string 'Playback transferred'.
+     */
+    setActiveDevice = (access_token, device_id) => {
+        return new ApiRequest(access_token)
+            .setMethod('PUT')
+            .setPath('/me/player')
+            .setBodyParams({
+                device_ids: [device_id],
+                play: false,
+            })
+            .build()
+            .execute()
+    }
+
+    /**
+     * Start a new context, or resume current playback, on the user's active device.
+     * Docs URL: https://developer.spotify.com/documentation/web-api/reference/start-a-users-playback
+     * @param {string} access_token - Authenticated user's access token.
+     * @param {string} device_id - (OPTIONAL) The id of the device the command is targeting. If not supplied, the currently active device is targeted.
+     * @param {string} context_uri - (OPTIONAL) Spotify URI context to paly. Valid contexts are albums, artists & playlists.
+     * @param {string[]} uris - (OPTIONAL) JSON array of the track URI's to play.
+     * @param {integer} offset - (OPTIONAL) Indicates from where in the context playback should start. Only available when context_uri is that of a playlist or album.
+     * @param {integer} position_ms - At what position the playback should resume, defaults to 0 if not included.
+     * @returns - A promise that if successful, resolves into the string 'Playback started'.
+     */
+    play = (access_token, device_id, context_uri, uris, offset, position_ms) => {
+        return new ApiRequest(access_token)
+            .setMethod('PUT')
+            .setPath('/me/player/play')
+            .setQueryParams({
+                device_id: device_id,
+            })
+            .setBodyParams({
+                context_uri: context_uri,
+                uris: uris,
+                offset: { position: offset },
+                position_ms: position_ms || 0,
+            })
+            .build()
+            .execute()
+    }
+
+    /**
+     * Pause playback on the user's account.
+     * Docs URL: https://developer.spotify.com/documentation/web-api/reference/pause-a-users-playback
+     * @param {string} access_token - Authenticated user's access token.
+     * @param {string} device_id - (OPTIONAL) The id of the device the command is targeting. If not supplied, the currently active device is targeted.
+     * @returns - A promise that if successful, resolves into the string 'Playback paused'.
+     */
+    pause = (access_token, device_id) => {
+        return new ApiRequest(access_token)
+            .setMethod('PUT')
+            .setPath('/me/player/pause')
+            .setQueryParams({
+                device_id: device_id,
+            })
+            .build()
+            .execute()
+    }
 }
