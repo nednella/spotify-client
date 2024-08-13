@@ -19,7 +19,7 @@ const CollectionWrapper: React.FC<CollectionWrapperProps> = ({ count, duration, 
         <>
             <Header>
                 <PlayButton
-                    contentId={'spotify:collection:tracks'}
+                    contextUri={'spotify:collection:tracks'}
                     size={24}
                     className="absolute"
                 />

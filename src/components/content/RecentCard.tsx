@@ -6,13 +6,13 @@ import useLoginModal from '../../hooks/useLoginModal'
 import PlayButton from '../PlayButton'
 
 interface RecentCardProps {
-    id: string
+    uri: string
     image: string
     title: string
     href: string
 }
 
-const RecentCard: React.FC<RecentCardProps> = ({ id, image, title, href }) => {
+const RecentCard: React.FC<RecentCardProps> = ({ uri, image, title, href }) => {
     const { user } = useAuth()
     const loginModal = useLoginModal()
 
@@ -24,7 +24,7 @@ const RecentCard: React.FC<RecentCardProps> = ({ id, image, title, href }) => {
             loginModal.onOpen()
         }
 
-        // TODO: navigate(href) -- href should be /type/id (/album/123456, /playlist/789123)
+        // TODO: navigate(href) -- href should be /type/uri (/album/123456, /playlist/789123)
         const tmp = href
         console.log('Header item href: ', tmp)
     }
@@ -81,7 +81,7 @@ const RecentCard: React.FC<RecentCardProps> = ({ id, image, title, href }) => {
                     {title}
                 </p>
                 <PlayButton
-                    contentId={id}
+                    contextUri={uri}
                     size={20}
                     className="
                         mr-2

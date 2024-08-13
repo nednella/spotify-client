@@ -21,7 +21,7 @@ const Artists: React.FC<ArtistsProps> = ({ query, artists }) => {
                 <ContentSection className="my-8">
                     {artists.map((artist: Artist) => (
                         <ContentCard
-                            id={artist.id}
+                            uri={artist.uri}
                             key={artist.id}
                             image={
                                 artist.images && artist.images[0]

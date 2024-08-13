@@ -1,23 +1,29 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { twMerge } from 'tailwind-merge'
 
 import { RiPlayLargeFill } from 'react-icons/ri'
 import { IoIosPause } from 'react-icons/io'
+import usePlayer from '../hooks/usePlayer'
 
 interface PlayButtonProps {
-    contentId: string
+    contextUri: string
     size: number
     className?: string
 }
 
-const PlayButton: React.FC<PlayButtonProps> = ({ size, className }) => {
-    const [isPlaying] = useState(false)
+const PlayButton: React.FC<PlayButtonProps> = ({ contextUri, size, className }) => {
+    const player = usePlayer()
+    const isThisContextPlaying = player.playerState.context.uri && player.playerState.context.uri === contextUri
 
-    // TODO: integrate usePlayer and current_track id vs loaded content ID
-    // to determine playing states
+    const handleClick = (e: React.MouseEvent) => {
+        e.preventDefault()
+        e.stopPropagation()
+        player.playContext(contextUri)
+    }
 
     return (
         <button
+            onClick={(e) => handleClick(e)}
             className={twMerge(
                 `
                     flex
@@ -33,7 +39,7 @@ const PlayButton: React.FC<PlayButtonProps> = ({ size, className }) => {
                 className
             )}
         >
-            {isPlaying ? (
+            {isThisContextPlaying ? (
                 <IoIosPause
                     className="text-black"
                     size={size}

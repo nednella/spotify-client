@@ -20,7 +20,7 @@ const Playlists: React.FC<PlaylistsProps> = ({ playlists }) => {
                     {playlists.slice(0, 20).map((playlist: SimplifiedPlaylist) => (
                         <CarouselSlide key={playlist.id}>
                             <ContentCard
-                                id={playlist.id}
+                                uri={playlist.uri}
                                 image={
                                     playlist.images && playlist.images[0]
                                         ? playlist.images[0].url

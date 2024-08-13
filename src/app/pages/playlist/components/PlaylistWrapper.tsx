@@ -23,7 +23,7 @@ const PlaylistWrapper: React.FC<PlaylistWrapperProps> = ({ playlist, isUserCreat
         <>
             <Header>
                 <PlayButton
-                    contentId={playlist.id}
+                    contextUri={playlist.uri}
                     size={24}
                     className="absolute"
                 />
