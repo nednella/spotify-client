@@ -13,12 +13,20 @@ interface PlayButtonProps {
 
 const PlayButton: React.FC<PlayButtonProps> = ({ contextUri, size, className }) => {
     const player = usePlayer()
-    const isThisContextPlaying = player.playerState.context.uri && player.playerState.context.uri === contextUri
+    const isPlaying = !player.playerState?.paused
+    const isThisContextActive = player.playerState?.context.uri === contextUri
 
     const handleClick = (e: React.MouseEvent) => {
         e.preventDefault()
         e.stopPropagation()
-        player.playContext(contextUri)
+
+        if (isThisContextActive) {
+            if (isPlaying) {
+                player.pause()
+            } else player.play()
+        } else {
+            player.playContext(contextUri)
+        }
     }
 
     return (
@@ -31,6 +39,7 @@ const PlayButton: React.FC<PlayButtonProps> = ({ contextUri, size, className }) 
                     rounded-full
                     bg-green-500
                     p-3
+                    text-black
                     shadow-lg
                     shadow-black/50
                     transition
@@ -39,17 +48,7 @@ const PlayButton: React.FC<PlayButtonProps> = ({ contextUri, size, className }) 
                 className
             )}
         >
-            {isThisContextPlaying ? (
-                <IoIosPause
-                    className="text-black"
-                    size={size}
-                />
-            ) : (
-                <RiPlayLargeFill
-                    className="text-black"
-                    size={size}
-                />
-            )}
+            {isPlaying && isThisContextActive ? <IoIosPause size={size} /> : <RiPlayLargeFill size={size} />}
         </button>
     )
 }
