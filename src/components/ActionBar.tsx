@@ -60,7 +60,7 @@ const ActionBar: React.FC<ActionBarProps> = ({ library, content, isUserCreated, 
             <div className={twMerge('flex h-20 items-center justify-between py-4', className)}>
                 <div className="flex items-center">
                     <PlayButton
-                        contentId={''}
+                        contextUri={content.uri}
                         size={24}
                         className="mr-6 shadow-md shadow-black/30"
                     />

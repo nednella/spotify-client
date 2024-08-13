@@ -36,7 +36,7 @@ const Genre = () => {
                     {data.playlists.map((playlist: SimplifiedPlaylist) => (
                         <ContentCard
                             key={playlist.id}
-                            id={playlist.id}
+                            uri={playlist.uri}
                             image={
                                 playlist.images && playlist.images[0]
                                     ? playlist.images[0].url

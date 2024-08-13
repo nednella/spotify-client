@@ -48,7 +48,7 @@ const Home = () => {
                         {discover.playlists.slice(0, 20).map((playlist: SimplifiedPlaylist) => (
                             <CarouselSlide key={playlist.id}>
                                 <ContentCard
-                                    id={playlist.id}
+                                    uri={playlist.uri}
                                     image={
                                         playlist.images && playlist.images[0]
                                             ? playlist.images[0].url
@@ -73,7 +73,7 @@ const Home = () => {
                         {album_releases.map((album: SimplifiedAlbum) => (
                             <CarouselSlide key={album.id}>
                                 <ContentCard
-                                    id={album.id}
+                                    uri={album.uri}
                                     image={
                                         album.images && album.images[0]
                                             ? album.images[0].url
@@ -98,7 +98,7 @@ const Home = () => {
                         {featured_playlists.map((playlist: SimplifiedPlaylist) => (
                             <CarouselSlide key={playlist.id}>
                                 <ContentCard
-                                    id={playlist.id}
+                                    uri={playlist.uri}
                                     image={
                                         playlist.images && playlist.images[0]
                                             ? playlist.images[0].url
@@ -123,7 +123,7 @@ const Home = () => {
                         {throwback.playlists.slice(0, 20).map((playlist: SimplifiedPlaylist) => (
                             <CarouselSlide key={playlist.id}>
                                 <ContentCard
-                                    id={playlist.id}
+                                    uri={playlist.uri}
                                     image={
                                         playlist.images && playlist.images[0]
                                             ? playlist.images[0].url
@@ -147,7 +147,7 @@ const Home = () => {
                     {library.playlists.map((playlist: SimplifiedPlaylist) => (
                         <CarouselSlide key={playlist.id}>
                             <ContentCard
-                                id={playlist.id}
+                                uri={playlist.uri}
                                 image={
                                     playlist.images && playlist.images[0]
                                         ? playlist.images[0].url

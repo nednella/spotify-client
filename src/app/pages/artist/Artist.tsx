@@ -108,7 +108,7 @@ const Artist = () => {
                                 {most_recent.map((album: SimplifiedAlbum) => (
                                     <CarouselSlide key={album.id}>
                                         <ContentCard
-                                            id={album.id}
+                                            uri={album.uri}
                                             image={
                                                 album.images && album.images[0]
                                                     ? album.images[0].url
@@ -130,7 +130,7 @@ const Artist = () => {
                                 {artistData.related_artists.map((artist: ArtistType) => (
                                     <CarouselSlide key={artist.id}>
                                         <ContentCard
-                                            id={artist.id}
+                                            uri={artist.uri}
                                             image={
                                                 artist.images && artist.images[0]
                                                     ? artist.images[0].url
@@ -155,7 +155,7 @@ const Artist = () => {
                                 <ContentSection>
                                     {albums.map((album: SimplifiedAlbum) => (
                                         <ContentCard
-                                            id={album.id}
+                                            uri={album.uri}
                                             key={album.id}
                                             image={
                                                 album.images && album.images[0]
@@ -185,7 +185,7 @@ const Artist = () => {
                                 <ContentSection>
                                     {singles.map((album: SimplifiedAlbum) => (
                                         <ContentCard
-                                            id={album.id}
+                                            uri={album.uri}
                                             key={album.id}
                                             image={
                                                 album.images && album.images[0]

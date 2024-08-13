@@ -20,7 +20,7 @@ const ArtistWrapper: React.FC<ArtistWrapperProps> = ({ artist, children }) => {
         <>
             <Header>
                 <PlayButton
-                    contentId={artist.id}
+                    contextUri={artist.uri}
                     size={24}
                     className="absolute"
                 />

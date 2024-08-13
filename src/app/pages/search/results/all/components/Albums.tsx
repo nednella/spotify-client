@@ -20,7 +20,7 @@ const Albums: React.FC<AlbumsProps> = ({ albums }) => {
                     {albums.slice(0, 20).map((album: SimplifiedAlbum) => (
                         <CarouselSlide key={album.id}>
                             <ContentCard
-                                id={album.id}
+                                uri={album.uri}
                                 image={
                                     album.images && album.images[0]
                                         ? album.images[0].url

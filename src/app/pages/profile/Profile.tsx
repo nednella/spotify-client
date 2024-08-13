@@ -79,7 +79,7 @@ const Profile = () => {
                                 {profileData.top_artists.map((artist: Artist) => (
                                     <CarouselSlide key={artist.id}>
                                         <ContentCard
-                                            id={artist.id}
+                                            uri={artist.uri}
                                             image={
                                                 artist.images && artist.images[0]
                                                     ? artist.images[0].url
@@ -101,7 +101,7 @@ const Profile = () => {
                                 {playlists.map((playlist) => (
                                     <CarouselSlide key={playlist.id}>
                                         <ContentCard
-                                            id={playlist.id}
+                                            uri={playlist.uri}
                                             image={
                                                 playlist.images && playlist.images[0]
                                                     ? playlist.images[0].url
