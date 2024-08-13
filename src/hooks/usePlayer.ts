@@ -4,6 +4,8 @@ import spotifySDK from '../spotifySDK/spotifySDK'
 
 import getDevices from '../api/player/getDevices'
 import setDevice from '../api/player/setDevice'
+import play from '../api/player/play'
+import pause from '../api/player/pause'
 
 import { CurrentlyPlaying, defaultCurrentlyPlaying } from '../types/CurrentlyPlaying'
 import { Device, defaultDevice } from '../types/Device'
@@ -22,6 +24,9 @@ interface PlayerStore {
     getDevices: () => void
     initialisePlayer: (token: string) => void
     isThisDeviceActive: () => boolean
+    pause: () => void
+    play: () => void
+    playContext: (contextUri: string, offset?: number) => void
     setActiveDevice: (deviceId: string | null) => void
     setDeviceId: (id: string) => void
     setSDK: (SDK: Spotify.Player) => void
@@ -49,15 +54,32 @@ const usePlayer = create<PlayerStore>()((set, get) => ({
             set((state) => ({ devices: { ...state.devices, active: thisDevice } }))
         }
     },
-    isThisDeviceActive: () => {
-        return get().devices.active.id === get().deviceId
-    },
     initialisePlayer: (token: string) => {
         if (!get().SDK) {
             get().setSDK(spotifySDK(token))
             get().SDK?.connect()
         }
     },
+    isThisDeviceActive: () => {
+        return get().devices.active.id === get().deviceId
+    },
+    pause: async () => {
+        const SDK = get().SDK
+        if (SDK && get().isThisDeviceActive()) {
+            SDK.pause()
+        } else {
+            await pause(get().devices.active.id)
+        }
+    },
+    play: async () => {
+        const SDK = get().SDK
+        if (SDK && get().isThisDeviceActive()) {
+            SDK.togglePlay()
+        } else {
+            await play(get().devices.active.id)
+        }
+    },
+    playContext: async (contextUri: string, offset?: number) => await play(get().devices.active.id, contextUri, offset),
     setActiveDevice: async (deviceId) => {
         if (!deviceId) return
         set(() => ({ playerState: defaultPlaybackState }))
