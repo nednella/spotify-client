@@ -21,7 +21,7 @@ interface PlayerStore {
     SDK: Spotify.Player | null
     getDevices: () => void
     initialisePlayer: (token: string) => void
-    isActiveDeviceExternal: () => boolean
+    isThisDeviceActive: () => boolean
     setActiveDevice: (deviceId: string | null) => void
     setDeviceId: (id: string) => void
     setSDK: (SDK: Spotify.Player) => void
@@ -49,8 +49,8 @@ const usePlayer = create<PlayerStore>()((set, get) => ({
             set((state) => ({ devices: { ...state.devices, active: thisDevice } }))
         }
     },
-    isActiveDeviceExternal: () => {
-        return get().devices.active.id !== get().deviceId
+    isThisDeviceActive: () => {
+        return get().devices.active.id === get().deviceId
     },
     initialisePlayer: (token: string) => {
         if (!get().SDK) {
