@@ -1,6 +1,8 @@
 import { useNavigate } from 'react-router-dom'
 import { twMerge } from 'tailwind-merge'
 
+import { FiVolume2 } from 'react-icons/fi'
+
 import { toTitleCase } from '../../common/toTitleCase'
 
 interface LibraryItemProps {
@@ -8,11 +10,12 @@ interface LibraryItemProps {
     title: string
     type: string
     author: string
-    active?: boolean
+    playing?: boolean
+    selected?: boolean
     href: string
 }
 
-const LibraryItem: React.FC<LibraryItemProps> = ({ image, title, type, author, active, href }) => {
+const LibraryItem: React.FC<LibraryItemProps> = ({ image, title, type, author, playing, selected, href }) => {
     const navigate = useNavigate()
 
     return (
@@ -23,32 +26,37 @@ const LibraryItem: React.FC<LibraryItemProps> = ({ image, title, type, author, a
                     flex
                     cursor-pointer
                     select-none
+                    items-center
                     gap-x-2
                     rounded-md
                     p-2
                     transition
                     hover:bg-neutral-700/50
                 `,
-                active && 'bg-neutral-700/80 hover:bg-neutral-700'
+                selected && 'bg-neutral-700/80 hover:bg-neutral-700'
             )}
         >
-            <div className="">
-                <img
-                    className={twMerge(
-                        'max-h-12 min-h-12 min-w-12 max-w-12 rounded-md',
-                        type === 'artist' && 'rounded-full'
-                    )}
-                    src={image}
-                    alt=""
-                />
-            </div>
+            <img
+                className={twMerge(
+                    'max-h-12 min-h-12 min-w-12 max-w-12 rounded-md',
+                    type === 'artist' && 'rounded-full'
+                )}
+                src={image}
+                alt=""
+            />
             <div className="flex flex-grow flex-col justify-center overflow-hidden">
-                <div className="truncate font-medium">{title}</div>
+                <div className={twMerge('truncate font-medium', playing && 'text-green-500')}>{title}</div>
                 <div className="truncate text-sm font-medium text-neutral-400">
                     {toTitleCase(type)}
                     {type !== 'artist' && ' \u2022 ' + author}
                 </div>
             </div>
+            {playing && (
+                <FiVolume2
+                    className="shrink-0 text-green-500"
+                    size={20}
+                />
+            )}
         </div>
     )
 }

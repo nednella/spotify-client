@@ -19,6 +19,7 @@ import NoPlaylists from './NoPlaylists'
 import NoFollowedPlaylists from './NoFollowedPlaylists'
 import NoAlbums from './NoAlbums'
 import NoArtists from './NoArtists'
+import usePlayer from '../../hooks/usePlayer'
 
 interface LibraryContentProps {
     user: User
@@ -27,6 +28,7 @@ interface LibraryContentProps {
 
 const LibraryContent: React.FC<LibraryContentProps> = ({ user, data }) => {
     const location = useLocation()
+    const currentPlayerContextUri = usePlayer((state) => state.playerState?.context.uri)
 
     const tracks: SavedTrack[] = data.tracks
     const yourPlaylists: SimplifiedPlaylist[] = data.playlists.filter(
@@ -68,7 +70,8 @@ const LibraryContent: React.FC<LibraryContentProps> = ({ user, data }) => {
                                         title={item.name}
                                         author={item.owner.display_name}
                                         type={item.type}
-                                        active={location.pathname === `/${item.type}/${item.id}`}
+                                        playing={item.uri === currentPlayerContextUri}
+                                        selected={location.pathname === `/${item.type}/${item.id}`}
                                         href={`${item.type}/${item.id}`}
                                     />
                                 ))
@@ -98,7 +101,8 @@ const LibraryContent: React.FC<LibraryContentProps> = ({ user, data }) => {
                                         title={item.name}
                                         author={item.owner.display_name}
                                         type={item.type}
-                                        active={location.pathname === `/${item.type}/${item.id}`}
+                                        playing={item.uri === currentPlayerContextUri}
+                                        selected={location.pathname === `/${item.type}/${item.id}`}
                                         href={`${item.type}/${item.id}`}
                                     />
                                 ))
@@ -128,7 +132,8 @@ const LibraryContent: React.FC<LibraryContentProps> = ({ user, data }) => {
                                         title={item.name}
                                         author={item.artists[0].name}
                                         type={item.type}
-                                        active={location.pathname === `/${item.type}/${item.id}`}
+                                        playing={item.uri === currentPlayerContextUri}
+                                        selected={location.pathname === `/${item.type}/${item.id}`}
                                         href={`${item.type}/${item.id}`}
                                     />
                                 ))
@@ -158,7 +163,8 @@ const LibraryContent: React.FC<LibraryContentProps> = ({ user, data }) => {
                                         title={item.name}
                                         author={item.name}
                                         type={item.type}
-                                        active={location.pathname === `/${item.type}/${item.id}`}
+                                        playing={item.uri === currentPlayerContextUri}
+                                        selected={location.pathname === `/${item.type}/${item.id}`}
                                         href={`${item.type}/${item.id}`}
                                     />
                                 ))
