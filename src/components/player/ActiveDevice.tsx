@@ -6,7 +6,7 @@ const ActiveDevice = () => {
     const player = usePlayer()
     console.log(player)
 
-    if (player.devices.active.id && player.isActiveDeviceExternal())
+    if (player.devices.active.id && !player.isThisDeviceActive())
         return (
             <div
                 className="

@@ -9,10 +9,10 @@ import Tooltip from '../Tooltip'
 const Devices = () => {
     const player = usePlayer()
     return (
-        <div className="flex w-[30%] items-center justify-end pr-2">
+        <div className="flex w-[30%] items-center justify-end gap-4 pr-2">
             <DeviceMenu>
                 <button
-                    data-active={!player.isActiveDeviceExternal()}
+                    data-active={player.isThisDeviceActive()}
                     className="
                         text-neutral-400
                         hover:text-white
