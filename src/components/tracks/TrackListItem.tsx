@@ -39,7 +39,7 @@ const TrackListItem: React.FC<TrackListItem> = ({ index, track, album, added, is
     const queryClient = useQueryClient()
     const player = usePlayer()
     const isPlaying = !player.playerState?.paused
-    const isThisCurrentTrack = player.playerState?.track_window.current_track.name === track.name
+    const isThisCurrentTrack = player.playerState?.track_window?.current_track?.name === track.name
 
     const updateUserLibrary = useMutation({
         mutationFn: async () => updateLibrary(isInLibrary, track.type, track.id),
@@ -109,7 +109,7 @@ const TrackListItem: React.FC<TrackListItem> = ({ index, track, album, added, is
                 data-[selected=true]:hover:bg-neutral-500/50
                 md:data-[display-album=true]:grid-cols-[16px_minmax(120px,6fr)_minmax(120px,5fr)_120px]
                 xl:data-[display-added=true]:grid-cols-[16px_minmax(120px,6fr)_minmax(120px,4fr)_minmax(120px,3fr)_120px]
-             "
+            "
         >
             {/* Track index */}
             <ItemContainer
