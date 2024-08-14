@@ -12,6 +12,8 @@ import previous from '../api/player/previous'
 import { CurrentlyPlaying, defaultCurrentlyPlaying } from '../types/CurrentlyPlaying'
 import { Device, defaultDevice } from '../types/Device'
 import { defaultPlaybackState } from '../types/Defaults'
+import repeat from '../api/player/repeat'
+import shuffle from '../api/player/shuffle'
 
 interface PlayerStore {
     currentTrack: CurrentlyPlaying
@@ -35,6 +37,8 @@ interface PlayerStore {
     setDeviceId: (id: string) => void
     setSDK: (SDK: Spotify.Player) => void
     syncSDKPlayerState: (state: Spotify.PlaybackState) => void
+    toggleRepeat: () => void
+    toggleShuffle: () => void
 }
 
 const usePlayer = create<PlayerStore>()((set, get) => ({
@@ -112,6 +116,17 @@ const usePlayer = create<PlayerStore>()((set, get) => ({
     setDeviceId: (id: string) => set(() => ({ deviceId: id })),
     setSDK: (SDKobj: Spotify.Player) => set(() => ({ SDK: SDKobj })),
     syncSDKPlayerState: (state: Spotify.PlaybackState) => set(() => ({ playerState: state })),
+    toggleRepeat: async () => {
+        const repeatState = get().playerState?.repeat_mode
+        if (repeatState === 0) await repeat(get().devices.active.id, 'context')
+        else if (repeatState === 1) await repeat(get().devices.active.id, 'track')
+        else await repeat(get().devices.active.id, 'off')
+    },
+    toggleShuffle: async () => {
+        const shuffleState = get().playerState?.shuffle
+        if (shuffleState === false) await shuffle(get().devices.active.id, true)
+        else await shuffle(get().devices.active.id, false)
+    },
 }))
 
 export default usePlayer
