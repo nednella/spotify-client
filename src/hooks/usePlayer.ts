@@ -6,6 +6,8 @@ import getDevices from '../api/player/getDevices'
 import setDevice from '../api/player/setDevice'
 import play from '../api/player/play'
 import pause from '../api/player/pause'
+import next from '../api/player/next'
+import previous from '../api/player/previous'
 
 import { CurrentlyPlaying, defaultCurrentlyPlaying } from '../types/CurrentlyPlaying'
 import { Device, defaultDevice } from '../types/Device'
@@ -24,9 +26,11 @@ interface PlayerStore {
     getDevices: () => void
     initialisePlayer: (token: string) => void
     isThisDeviceActive: () => boolean
+    next: () => void
     pause: () => void
     play: () => void
     playContext: (contextUri: string, offset?: number) => void
+    previous: () => void
     setActiveDevice: (deviceId: string | null) => void
     setDeviceId: (id: string) => void
     setSDK: (SDK: Spotify.Player) => void
@@ -63,6 +67,14 @@ const usePlayer = create<PlayerStore>()((set, get) => ({
     isThisDeviceActive: () => {
         return get().devices.active.id === get().deviceId
     },
+    next: async () => {
+        const SDK = get().SDK
+        if (SDK && get().isThisDeviceActive()) {
+            SDK.nextTrack()
+        } else {
+            await next(get().devices.active.id)
+        }
+    },
     pause: async () => {
         const SDK = get().SDK
         if (SDK && get().isThisDeviceActive()) {
@@ -80,6 +92,14 @@ const usePlayer = create<PlayerStore>()((set, get) => ({
         }
     },
     playContext: async (contextUri: string, offset?: number) => await play(get().devices.active.id, contextUri, offset),
+    previous: async () => {
+        const SDK = get().SDK
+        if (SDK && get().isThisDeviceActive()) {
+            SDK.previousTrack()
+        } else {
+            await previous(get().devices.active.id)
+        }
+    },
     setActiveDevice: async (deviceId) => {
         if (!deviceId) return
         set(() => ({ playerState: defaultPlaybackState }))
