@@ -1,8 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { twMerge } from 'tailwind-merge'
 
-import { FiVolume2 } from 'react-icons/fi'
-
 import { toTitleCase } from '../../common/toTitleCase'
 
 interface LibraryItemProps {
@@ -10,12 +8,22 @@ interface LibraryItemProps {
     title: string
     type: string
     author: string
-    playing?: boolean
-    selected?: boolean
+    isActive?: boolean
+    isPlaying?: boolean
+    isCurrentContext?: boolean
     href: string
 }
 
-const LibraryItem: React.FC<LibraryItemProps> = ({ image, title, type, author, playing, selected, href }) => {
+const LibraryItem: React.FC<LibraryItemProps> = ({
+    image,
+    title,
+    author,
+    type,
+    href,
+    isActive,
+    isPlaying,
+    isCurrentContext,
+}) => {
     const navigate = useNavigate()
 
     return (
@@ -33,7 +41,7 @@ const LibraryItem: React.FC<LibraryItemProps> = ({ image, title, type, author, p
                     transition
                     hover:bg-neutral-700/50
                 `,
-                selected && 'bg-neutral-700/80 hover:bg-neutral-700'
+                isActive && 'bg-neutral-700/80 hover:bg-neutral-700'
             )}
         >
             <img
@@ -45,16 +53,23 @@ const LibraryItem: React.FC<LibraryItemProps> = ({ image, title, type, author, p
                 alt=""
             />
             <div className="flex flex-grow flex-col justify-center overflow-hidden">
-                <div className={twMerge('truncate font-medium', playing && 'text-green-500')}>{title}</div>
+                <div className={twMerge('truncate font-medium', isCurrentContext && 'text-green-500')}>{title}</div>
                 <div className="truncate text-sm font-medium text-neutral-400">
                     {toTitleCase(type)}
                     {type !== 'artist' && ' \u2022 ' + author}
                 </div>
             </div>
-            {playing && (
-                <FiVolume2
-                    className="shrink-0 text-green-500"
-                    size={20}
+            {isPlaying && isCurrentContext && (
+                <img
+                    className="
+                        size-4
+                        max-h-4
+                        max-w-4
+                        group-hover:hidden
+                        group-data-[selected=true]:hidden
+                    "
+                    src="../../src/assets/images/equaliser-animation.gif"
+                    alt=""
                 />
             )}
         </div>
