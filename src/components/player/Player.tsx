@@ -4,7 +4,7 @@ import { useAuth } from '../../hooks/useAuth'
 import usePlayer from '../../hooks/usePlayer'
 
 import PlayerContainer from './PlayerContainer'
-import Banner from './Banner'
+import SignedOutBanner from './SignedOutBanner'
 
 import NowPlaying from './NowPlaying'
 import PlayerControls from './PlayerControls'
@@ -23,7 +23,7 @@ const Player = () => {
     return (
         <PlayerContainer>
             {!user ? (
-                <Banner />
+                <SignedOutBanner />
             ) : (
                 <footer
                     className="
