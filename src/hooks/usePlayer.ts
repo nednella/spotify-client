@@ -8,12 +8,14 @@ import play from '../api/player/play'
 import pause from '../api/player/pause'
 import next from '../api/player/next'
 import previous from '../api/player/previous'
+import repeat from '../api/player/repeat'
+import shuffle from '../api/player/shuffle'
+import _volume from '../api/player/volume'
+import seek from '../api/player/seek'
 
 import { CurrentlyPlaying, defaultCurrentlyPlaying } from '../types/CurrentlyPlaying'
 import { Device, defaultDevice } from '../types/Device'
 import { defaultPlaybackState } from '../types/Defaults'
-import repeat from '../api/player/repeat'
-import shuffle from '../api/player/shuffle'
 
 interface PlayerStore {
     currentTrack: CurrentlyPlaying
@@ -33,9 +35,11 @@ interface PlayerStore {
     play: () => void
     playContext: (contextUri: string, offset?: number) => void
     previous: () => void
+    seek: (position: number) => void
     setActiveDevice: (deviceId: string | null) => void
     setDeviceId: (id: string) => void
     setSDK: (SDK: Spotify.Player) => void
+    setVolume: (volume: number) => void
     syncSDKPlayerState: (state: Spotify.PlaybackState) => void
     toggleRepeat: () => void
     toggleShuffle: () => void
@@ -113,8 +117,24 @@ const usePlayer = create<PlayerStore>()((set, get) => ({
         set((state) => ({ devices: { ...state.devices, active: activeDevice } }))
         set((state) => ({ devices: { ...state.devices, list: devices } }))
     },
+    seek: async (position: number) => {
+        const SDK = get().SDK
+        if (SDK && get().isThisDeviceActive()) {
+            await SDK.seek(position)
+        } else {
+            await seek(get().devices.active.id, position)
+        }
+    },
     setDeviceId: (id: string) => set(() => ({ deviceId: id })),
     setSDK: (SDKobj: Spotify.Player) => set(() => ({ SDK: SDKobj })),
+    setVolume: async (volume: number) => {
+        const SDK = get().SDK
+        if (SDK && get().isThisDeviceActive()) {
+            SDK.setVolume(volume)
+        } else {
+            await _volume(get().devices.active.id, volume * 100)
+        }
+    },
     syncSDKPlayerState: (state: Spotify.PlaybackState) => set(() => ({ playerState: state })),
     toggleRepeat: async () => {
         const repeatState = get().playerState?.repeat_mode
