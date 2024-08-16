@@ -4,7 +4,6 @@ import usePlayer from '../../hooks/usePlayer'
 
 const ActiveDevice = () => {
     const player = usePlayer()
-    console.log(player)
 
     if (player.devices.active.id && !player.isThisDeviceActive())
         return (
