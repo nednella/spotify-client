@@ -5,11 +5,13 @@ import usePlayer from '../../hooks/usePlayer'
 import DeviceMenu from '../menus/DeviceMenu'
 
 import Tooltip from '../Tooltip'
+import Volume from './Volume'
 
 const Devices = () => {
     const player = usePlayer()
     return (
         <div className="flex w-[30%] items-center justify-end gap-4 pr-2">
+            <Volume />
             <DeviceMenu>
                 <button
                     data-active={player.isThisDeviceActive()}
