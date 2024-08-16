@@ -2,85 +2,141 @@ import { IoPlaySkipBackSharp, IoPlaySkipForwardSharp } from 'react-icons/io5'
 import { MdPause, MdPlayArrow } from 'react-icons/md'
 import { FiShuffle, FiRepeat } from 'react-icons/fi'
 
+import usePlayer from '../../hooks/usePlayer'
+
 import Button from '../Button'
 import Tooltip from '../Tooltip'
-import Slider from '../Slider'
+import Seeker from './Seeker'
+import React from 'react'
+import { twMerge } from 'tailwind-merge'
 
-const PlayerControls = () => {
-    const isPlaying = true
+const Controls = () => {
+    const player = usePlayer()
 
     return (
-        <div className="mt-auto w-[40%]">
-            {/* Playback controls */}
+        <div className="my-auto w-[40%]">
             <div className="mb-2 flex items-center gap-x-6">
                 <div className="flex w-full justify-end gap-x-4">
-                    <Tooltip message={'Toggle shuffle'}>
-                        <button
-                            data-active={true}
-                            disabled={false}
+                    {/* Shuffle */}
+                    <CButton
+                        tooltip={'Toggle shuffle'}
+                        onClick={() => player.toggleShuffle()}
+                        active={player.playerState?.shuffle}
+                        disabled={player.playerState?.disallows.toggling_shuffle}
+                    >
+                        <FiShuffle size={20} />
+                    </CButton>
+                    {/* Previous */}
+                    <CButton
+                        tooltip={'Previous'}
+                        onClick={() => player.previous()}
+                        disabled={player.playerState?.disallows.skipping_prev}
+                    >
+                        <IoPlaySkipBackSharp size={20} />
+                    </CButton>
+                </div>
+                {/* Play/pause */}
+                {player.playerState?.paused ? (
+                    <Tooltip message={'Play'}>
+                        <Button
+                            onClick={() => player.play()}
+                            disabled={player.playerState?.disallows.resuming}
                             className="
-                                text-neutral-400
-                                enabled:hover:text-white
+                                w-fit
+                                bg-white
+                                p-1
+                                text-black
                                 disabled:cursor-not-allowed
                                 disabled:opacity-50
-                                data-[active=true]:text-green-500
                             "
                         >
-                            <FiShuffle size={20} />
-                        </button>
-                    </Tooltip>
-
-                    <Tooltip message={'Previous'}>
-                        <button className="text-neutral-400 hover:text-white">
-                            <IoPlaySkipBackSharp size={20} />
-                        </button>
-                    </Tooltip>
-                </div>
-                {!isPlaying ? (
-                    <Tooltip message={'Play'}>
-                        <Button className="w-fit bg-white p-1 text-black">
                             <MdPlayArrow size={24} />
                         </Button>
                     </Tooltip>
                 ) : (
                     <Tooltip message={'Pause'}>
-                        <Button className="w-fit bg-white p-1 text-black">
+                        <Button
+                            onClick={() => player.pause()}
+                            disabled={player.playerState?.disallows.pausing}
+                            className="
+                                w-fit
+                                bg-white
+                                p-1
+                                text-black
+                                disabled:cursor-not-allowed
+                                disabled:opacity-50
+                            "
+                        >
                             <MdPause size={24} />
                         </Button>
                     </Tooltip>
                 )}
                 <div className="flex w-full justify-start gap-x-4">
-                    <Tooltip message={'Next'}>
-                        <button className="text-neutral-400 hover:text-white">
-                            <IoPlaySkipForwardSharp size={20} />
-                        </button>
-                    </Tooltip>
+                    {/* Next */}
+                    <CButton
+                        tooltip={'Next'}
+                        onClick={() => player.next()}
+                        disabled={player.playerState?.disallows.skipping_next}
+                    >
+                        <IoPlaySkipForwardSharp size={20} />
+                    </CButton>
 
-                    <Tooltip message={'Toggle repeat'}>
-                        <button
-                            data-active={true}
-                            disabled={false}
-                            className="
-                                text-neutral-400
-                                enabled:hover:text-white
-                                disabled:cursor-not-allowed
-                                disabled:opacity-50
-                                data-[active=true]:text-green-500
-                            "
-                        >
-                            <FiRepeat size={20} />
-                        </button>
-                    </Tooltip>
+                    {/* Repeat */}
+                    <CButton
+                        tooltip={'Toggle repeat'}
+                        onClick={() => player.toggleRepeat()}
+                        active={player.playerState?.repeat_mode !== 0}
+                        disabled={
+                            player.playerState?.disallows.toggling_repeat_context &&
+                            player.playerState?.disallows.toggling_repeat_track
+                        }
+                    >
+                        <FiRepeat size={20} />
+                        {player.playerState?.repeat_mode === 2 && (
+                            <span className="absolute left-[110%] top-[50%] translate-y-[-50%] text-sm">1</span>
+                        )}
+                    </CButton>
                 </div>
             </div>
             {/* Playback seek */}
-            <div className="flex items-center justify-center gap-x-2 text-sm text-neutral-300">
-                <span className="text-nowrap">-:--</span>
-                <Slider className="w-full max-w-[600px]" />
-                <span className="text-nowrap">-:--</span>
-            </div>
+            <Seeker />
         </div>
     )
 }
 
-export default PlayerControls
+export default Controls
+
+interface CButtonProps {
+    tooltip: string
+    onClick: () => void
+    active?: boolean
+    disabled?: boolean
+    className?: string
+    children: React.ReactNode
+}
+
+const CButton: React.FC<CButtonProps> = ({ tooltip, onClick, active, disabled, className, children }) => {
+    return (
+        <Tooltip message={tooltip}>
+            <button
+                onClick={onClick}
+                data-active={active}
+                disabled={disabled}
+                className={twMerge(
+                    `
+                        relative
+                        text-neutral-400
+                        enabled:hover:text-white
+                        disabled:cursor-not-allowed
+                        disabled:opacity-50
+                        data-[active=true]:text-green-500
+                        data-[active=true]:enabled:hover:text-green-400
+                    `,
+                    className
+                )}
+            >
+                {children}
+            </button>
+        </Tooltip>
+    )
+}
