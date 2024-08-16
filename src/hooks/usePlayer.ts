@@ -43,6 +43,7 @@ interface PlayerStore {
     syncSDKPlayerState: (state: Spotify.PlaybackState) => void
     toggleRepeat: () => void
     toggleShuffle: () => void
+    updatePlayerPos: (pos: number) => void
 }
 
 const usePlayer = create<PlayerStore>()((set, get) => ({
@@ -147,6 +148,7 @@ const usePlayer = create<PlayerStore>()((set, get) => ({
         if (shuffleState === false) await shuffle(get().devices.active.id, true)
         else await shuffle(get().devices.active.id, false)
     },
+    updatePlayerPos: (pos) => set((state) => ({ playerState: { ...state.playerState, position: pos } })),
 }))
 
 export default usePlayer
