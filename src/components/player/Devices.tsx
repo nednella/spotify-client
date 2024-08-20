@@ -13,21 +13,22 @@ const Devices = () => {
     const player = usePlayer()
     return (
         <div className="flex w-[30%] items-center justify-center gap-4 pr-2">
-            <TrackQueueMenu>
-                <button
-                    className="
+            {player.isThisDeviceActive() && (
+                <TrackQueueMenu>
+                    <button
+                        className="
                         text-neutral-400
                         hover:text-white
                     "
-                >
-                    <Tooltip message={'Queue'}>
-                        <span>
-                            <PiPlaylist size={22} />
-                        </span>
-                    </Tooltip>
-                </button>
-            </TrackQueueMenu>
-
+                    >
+                        <Tooltip message={'Queue'}>
+                            <span>
+                                <PiPlaylist size={22} />
+                            </span>
+                        </Tooltip>
+                    </button>
+                </TrackQueueMenu>
+            )}
             <DeviceMenu>
                 <button
                     data-active={player.isThisDeviceActive()}
@@ -44,7 +45,6 @@ const Devices = () => {
                     </Tooltip>
                 </button>
             </DeviceMenu>
-
             <Volume />
         </div>
     )
