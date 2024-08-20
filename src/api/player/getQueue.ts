@@ -1,7 +1,7 @@
 import axios from 'axios'
 import toast from 'react-hot-toast'
 
-export default async function getQeueue() {
+export default async function getQueue() {
     try {
         const response = await axios.get(`http://localhost:5000/player/queue`, { withCredentials: true })
         const { data } = response
