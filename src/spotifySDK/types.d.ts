@@ -7,6 +7,11 @@ interface Window {
 // // Docs URL: https://developer.spotify.com/documentation/web-playback-sdk/reference#objects
 
 declare namespace Spotify {
+    interface Artist {
+        name: string
+        uri: string
+    }
+
     interface Track {
         album: {
             images: {
@@ -15,10 +20,7 @@ declare namespace Spotify {
             name: string
             uri: string
         }
-        artists: {
-            name: string
-            uri: string
-        }[]
+        artists: Artist[]
         duration_ms: number
         id: string | null
         is_playable: boolean
