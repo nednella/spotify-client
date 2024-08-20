@@ -1,7 +1,9 @@
+import { PiPlaylist } from 'react-icons/pi'
 import { FiSpeaker } from 'react-icons/fi'
 
 import usePlayer from '../../hooks/usePlayer'
 
+import TrackQueueMenu from '../menus/TrackQueueMenu'
 import DeviceMenu from '../menus/DeviceMenu'
 
 import Tooltip from '../Tooltip'
@@ -10,8 +12,22 @@ import Volume from './Volume'
 const Devices = () => {
     const player = usePlayer()
     return (
-        <div className="flex w-[30%] items-center justify-end gap-4 pr-2">
-            <Volume />
+        <div className="flex w-[30%] items-center justify-center gap-4 pr-2">
+            <TrackQueueMenu>
+                <button
+                    className="
+                        text-neutral-400
+                        hover:text-white
+                    "
+                >
+                    <Tooltip message={'Queue'}>
+                        <span>
+                            <PiPlaylist size={22} />
+                        </span>
+                    </Tooltip>
+                </button>
+            </TrackQueueMenu>
+
             <DeviceMenu>
                 <button
                     data-active={player.isThisDeviceActive()}
@@ -23,11 +39,13 @@ const Devices = () => {
                 >
                     <Tooltip message={'Connect to a device'}>
                         <span>
-                            <FiSpeaker size={20} />
+                            <FiSpeaker size={18} />
                         </span>
                     </Tooltip>
                 </button>
             </DeviceMenu>
+
+            <Volume />
         </div>
     )
 }
