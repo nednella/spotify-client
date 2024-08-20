@@ -1,4 +1,4 @@
-import { getAvailableDevices, setDeviceId, syncSDKPlayerState } from '../hooks/usePlayer'
+import { getAvailableDevices, syncSDKTrackQueue, setDeviceId, syncSDKPlayerState } from '../hooks/usePlayer'
 
 export default window.onSpotifyWebPlaybackSDKReady = (token: string): Spotify.Player => {
     const player = new Spotify.Player({
@@ -19,6 +19,7 @@ export default window.onSpotifyWebPlaybackSDKReady = (token: string): Spotify.Pl
 
     player.addListener('player_state_changed', (state) => {
         syncSDKPlayerState(state)
+        syncSDKTrackQueue()
     })
 
     player.on('initialization_error', ({ message }) => {
