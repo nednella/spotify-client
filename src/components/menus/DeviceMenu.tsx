@@ -11,9 +11,14 @@ const DeviceMenu: React.FC<DeviceMenuProps> = ({ children }) => {
     const devices = usePlayer((state) => state.devices)
     const deviceList = devices.list.filter((device) => device.id !== devices.active.id)
     const setDevice = usePlayer((state) => state.setActiveDevice)
+    const getDevices = usePlayer((state) => state.getDevices)
+
+    const onOpenChange = (open: boolean) => {
+        if (open) getDevices()
+    }
 
     return (
-        <DropdownMenu.Root>
+        <DropdownMenu.Root onOpenChange={onOpenChange}>
             <DropdownMenu.Trigger
                 className="outline-none"
                 asChild
