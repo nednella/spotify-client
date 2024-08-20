@@ -38,6 +38,7 @@ interface PlayerStore {
     pause: () => void
     play: () => void
     playContext: (contextUri: string, offset?: number) => void
+    playTrack: (trackUri: string) => void
     previous: () => void
     seek: (position: number) => void
     setActiveDevice: (deviceId: string | null) => void
@@ -112,7 +113,8 @@ const usePlayer = create<PlayerStore>()((set, get) => ({
             await play(get().devices.active.id)
         }
     },
-    playContext: async (contextUri: string, offset?: number) => await play(get().devices.active.id, contextUri, offset),
+    playContext: async (contextUri, offset) => await play(get().devices.active.id, contextUri, undefined, offset),
+    playTrack: async (trackUri) => await play(get().devices.active.id, undefined, trackUri, undefined),
     previous: async () => {
         const SDK = get().SDK
         if (SDK && get().isThisDeviceActive()) {
