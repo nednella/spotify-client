@@ -12,22 +12,26 @@ import repeat from '../api/player/repeat'
 import shuffle from '../api/player/shuffle'
 import _volume from '../api/player/volume'
 import seek from '../api/player/seek'
+import getQeueue from '../api/player/getQueue'
 
-import { CurrentlyPlaying, defaultCurrentlyPlaying } from '../types/CurrentlyPlaying'
 import { Device, defaultDevice } from '../types/Device'
 import { defaultPlaybackState } from '../types/Defaults'
+import { Track } from '../types/Track'
 
 interface PlayerStore {
-    currentTrack: CurrentlyPlaying
     devices: {
         active: Device
         list: Device[]
     }
     deviceId: string
     playerState: Spotify.PlaybackState
-    queue: Spotify.Track[]
+    queue: {
+        current: Track | null
+        list: Track[] | []
+    }
     SDK: Spotify.Player | null
     getDevices: () => void
+    getQueue: () => void
     initialisePlayer: (token: string) => void
     isThisDeviceActive: () => boolean
     next: () => void
@@ -47,14 +51,16 @@ interface PlayerStore {
 }
 
 const usePlayer = create<PlayerStore>()((set, get) => ({
-    currentTrack: defaultCurrentlyPlaying,
     devices: {
         active: defaultDevice,
         list: [],
     },
     deviceId: '',
     playerState: defaultPlaybackState,
-    queue: [],
+    queue: {
+        current: null,
+        list: [],
+    },
     SDK: null,
     getDevices: async () => {
         const devices = await getDevices()
@@ -66,6 +72,12 @@ const usePlayer = create<PlayerStore>()((set, get) => ({
             const thisDevice = devices.find((device: Device) => device.id === get().deviceId)
             set((state) => ({ devices: { ...state.devices, active: thisDevice } }))
         }
+    },
+    getQueue: async () => {
+        set(() => ({ queue: { current: null, list: [] } }))
+        const queue = await getQeueue()
+        if (queue.currently_playing) set((state) => ({ queue: { ...state.queue, current: queue.currently_playing } }))
+        set((state) => ({ queue: { ...state.queue, list: queue.queue } }))
     },
     initialisePlayer: (token: string) => {
         if (!get().SDK) {
@@ -157,3 +169,4 @@ export default usePlayer
 export const getAvailableDevices = () => usePlayer.getState().getDevices()
 export const setDeviceId = (id: string) => usePlayer.setState({ deviceId: id })
 export const syncSDKPlayerState = (state: Spotify.PlaybackState) => usePlayer.setState({ playerState: state })
+export const syncSDKTrackQueue = () => usePlayer.getState().getQueue()
