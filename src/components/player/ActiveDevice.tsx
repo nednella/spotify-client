@@ -5,7 +5,7 @@ import usePlayer from '../../hooks/usePlayer'
 const ActiveDevice = () => {
     const player = usePlayer()
 
-    if (player.devices.active.id && !player.isThisDeviceActive())
+    if (!player.isThisDeviceActive() && player.devices.active.id)
         return (
             <div
                 className="
@@ -21,9 +21,7 @@ const ActiveDevice = () => {
                 "
             >
                 <FiHeadphones size={18} />
-                <button className="mb-[-2px] text-sm font-extrabold hover:underline">
-                    Playing on {player.devices.active.name}
-                </button>
+                <span className="mb-[-2px] text-sm font-extrabold">Playing on {player.devices.active.name}</span>
             </div>
         )
 }
