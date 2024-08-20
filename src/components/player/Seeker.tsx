@@ -23,17 +23,21 @@ const Seeker = () => {
 
     return (
         <div className="flex items-center justify-center gap-x-2 text-sm text-neutral-300">
-            <span className="w-10 text-nowrap text-right">{convertTrackDuration(playerState?.position) || '-:--'}</span>
+            <span className="w-10 text-nowrap text-right">
+                {isThisDeviceActive ? convertTrackDuration(playerState?.position) : '-:--'}
+            </span>
             <Slider
                 defaultValue={0}
                 value={playerState?.position / playerState?.duration}
                 thumb
                 onChange={(v) => player.updatePlayerPos(v * playerState?.duration)}
                 onCommit={(v) => player.seek(Math.round(v * playerState?.duration))}
-                disabled={!isThisDeviceActive && playerState?.disallows.seeking}
+                disabled={!isThisDeviceActive || playerState?.disallows.seeking}
                 className="w-full max-w-[600px]"
             />
-            <span className="w-10 text-nowrap">{convertTrackDuration(playerState?.duration) || '-:--'}</span>
+            <span className="w-10 text-nowrap">
+                {isThisDeviceActive ? convertTrackDuration(playerState?.duration) : '-:--'}
+            </span>
         </div>
     )
 }

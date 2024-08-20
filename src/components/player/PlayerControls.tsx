@@ -12,6 +12,7 @@ import { twMerge } from 'tailwind-merge'
 
 const Controls = () => {
     const player = usePlayer()
+    const isThisDeviceActive = player.isThisDeviceActive()
 
     return (
         <div className="my-auto w-[40%]">
@@ -22,7 +23,7 @@ const Controls = () => {
                         tooltip={'Toggle shuffle'}
                         onClick={() => player.toggleShuffle()}
                         active={player.playerState?.shuffle}
-                        disabled={player.playerState?.disallows.toggling_shuffle}
+                        disabled={!isThisDeviceActive || player.playerState?.disallows.toggling_shuffle}
                     >
                         <FiShuffle size={20} />
                     </CButton>
@@ -30,7 +31,7 @@ const Controls = () => {
                     <CButton
                         tooltip={'Previous'}
                         onClick={() => player.previous()}
-                        disabled={player.playerState?.disallows.skipping_prev}
+                        disabled={!isThisDeviceActive || player.playerState?.disallows.skipping_prev}
                     >
                         <IoPlaySkipBackSharp size={20} />
                     </CButton>
@@ -40,7 +41,7 @@ const Controls = () => {
                     <Tooltip message={'Play'}>
                         <Button
                             onClick={() => player.play()}
-                            disabled={player.playerState?.disallows.resuming}
+                            disabled={!isThisDeviceActive || player.playerState?.disallows.resuming}
                             className="
                                 w-fit
                                 bg-white
@@ -57,7 +58,7 @@ const Controls = () => {
                     <Tooltip message={'Pause'}>
                         <Button
                             onClick={() => player.pause()}
-                            disabled={player.playerState?.disallows.pausing}
+                            disabled={!isThisDeviceActive || player.playerState?.disallows.pausing}
                             className="
                                 w-fit
                                 bg-white
@@ -76,7 +77,7 @@ const Controls = () => {
                     <CButton
                         tooltip={'Next'}
                         onClick={() => player.next()}
-                        disabled={player.playerState?.disallows.skipping_next}
+                        disabled={!isThisDeviceActive || player.playerState?.disallows.skipping_next}
                     >
                         <IoPlaySkipForwardSharp size={20} />
                     </CButton>
@@ -87,8 +88,9 @@ const Controls = () => {
                         onClick={() => player.toggleRepeat()}
                         active={player.playerState?.repeat_mode !== 0}
                         disabled={
-                            player.playerState?.disallows.toggling_repeat_context &&
-                            player.playerState?.disallows.toggling_repeat_track
+                            !isThisDeviceActive ||
+                            (player.playerState?.disallows.toggling_repeat_context &&
+                                player.playerState?.disallows.toggling_repeat_track)
                         }
                     >
                         <FiRepeat size={20} />
