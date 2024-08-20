@@ -62,14 +62,12 @@ const TrackListItem: React.FC<TrackListItem> = ({ index, track, album, added, is
 
     const onPlayClick = (e: React.MouseEvent) => {
         e.stopPropagation()
-
-        // TODO: Play
+        player.playTrack(track.uri)
     }
 
     const onPauseClick = (e: React.MouseEvent) => {
         e.stopPropagation()
-
-        // TODO: Pause
+        player.pause()
     }
 
     const onLibraryClick = (e: React.MouseEvent) => {
