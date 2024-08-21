@@ -1,23 +1,37 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { twMerge } from 'tailwind-merge'
 
 import { RiPlayLargeFill } from 'react-icons/ri'
 import { IoIosPause } from 'react-icons/io'
+import usePlayer from '../hooks/usePlayer'
 
 interface PlayButtonProps {
-    contentId: string
+    contextUri: string
     size: number
     className?: string
 }
 
-const PlayButton: React.FC<PlayButtonProps> = ({ size, className }) => {
-    const [isPlaying] = useState(false)
+const PlayButton: React.FC<PlayButtonProps> = ({ contextUri, size, className }) => {
+    const player = usePlayer()
+    const isPlaying = !player.playerState?.paused
+    const isThisContextActive = player.playerState?.context.uri === contextUri
 
-    // TODO: integrate usePlayer and current_track id vs loaded content ID
-    // to determine playing states
+    const handleClick = (e: React.MouseEvent) => {
+        e.preventDefault()
+        e.stopPropagation()
+
+        if (isThisContextActive) {
+            if (isPlaying) {
+                player.pause()
+            } else player.play()
+        } else {
+            player.playContext(contextUri)
+        }
+    }
 
     return (
         <button
+            onClick={(e) => handleClick(e)}
             className={twMerge(
                 `
                     flex
@@ -25,6 +39,7 @@ const PlayButton: React.FC<PlayButtonProps> = ({ size, className }) => {
                     rounded-full
                     bg-green-500
                     p-3
+                    text-black
                     shadow-lg
                     shadow-black/50
                     transition
@@ -33,17 +48,7 @@ const PlayButton: React.FC<PlayButtonProps> = ({ size, className }) => {
                 className
             )}
         >
-            {isPlaying ? (
-                <IoIosPause
-                    className="text-black"
-                    size={size}
-                />
-            ) : (
-                <RiPlayLargeFill
-                    className="text-black"
-                    size={size}
-                />
-            )}
+            {isPlaying && isThisContextActive ? <IoIosPause size={size} /> : <RiPlayLargeFill size={size} />}
         </button>
     )
 }

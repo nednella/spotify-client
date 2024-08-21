@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom'
 import { twMerge } from 'tailwind-merge'
 
 import { RiPlayLargeFill } from 'react-icons/ri'
+import { IoIosPause } from 'react-icons/io'
 import { BsFillExplicitFill } from 'react-icons/bs'
 import { VscEllipsis } from 'react-icons/vsc'
 
@@ -20,6 +21,7 @@ import { convertTrackDuration } from '../../common/convertTrackDuration'
 import Tooltip from '../Tooltip'
 import LibraryButton from '../LibraryButton'
 import OptionsMenu from '../menus/SongOptionsMenu'
+import usePlayer from '../../hooks/usePlayer'
 
 interface TrackListItem {
     index: number
@@ -35,6 +37,9 @@ const TrackListItem: React.FC<TrackListItem> = ({ index, track, album, added, is
     const [isInLibrary, setisInLibrary] = useState(false)
     const { data: library } = useLibrary()
     const queryClient = useQueryClient()
+    const player = usePlayer()
+    const isPlaying = !player.playerState?.paused
+    const isThisCurrentTrack = player.playerState?.track_window?.current_track?.name === track.name
 
     const updateUserLibrary = useMutation({
         mutationFn: async () => updateLibrary(isInLibrary, track.type, track.id),
@@ -57,9 +62,12 @@ const TrackListItem: React.FC<TrackListItem> = ({ index, track, album, added, is
 
     const onPlayClick = (e: React.MouseEvent) => {
         e.stopPropagation()
+        player.playTrack(track.uri)
+    }
 
-        // TODO: Tooltip onClick --> Play track
-        // TODO: SOCKET OnPlay --> Track # & Track title --> text-green-500
+    const onPauseClick = (e: React.MouseEvent) => {
+        e.stopPropagation()
+        player.pause()
     }
 
     const onLibraryClick = (e: React.MouseEvent) => {
@@ -99,7 +107,7 @@ const TrackListItem: React.FC<TrackListItem> = ({ index, track, album, added, is
                 data-[selected=true]:hover:bg-neutral-500/50
                 md:data-[display-album=true]:grid-cols-[16px_minmax(120px,6fr)_minmax(120px,5fr)_120px]
                 xl:data-[display-added=true]:grid-cols-[16px_minmax(120px,6fr)_minmax(120px,4fr)_minmax(120px,3fr)_120px]
-             "
+            "
         >
             {/* Track index */}
             <ItemContainer
@@ -111,28 +119,60 @@ const TrackListItem: React.FC<TrackListItem> = ({ index, track, album, added, is
                 "
                 style={{ direction: 'rtl' }}
             >
-                <Tooltip message={`Play ${track.name} by ${track.artists[0].name}`}>
-                    <button
-                        onClick={(e) => onPlayClick(e)}
+                {isPlaying && isThisCurrentTrack ? (
+                    <Tooltip message={`Pause`}>
+                        <button
+                            onClick={(e) => onPauseClick(e)}
+                            className="
+                                hidden 
+                                text-white
+                                group-hover:block
+                                group-data-[selected=true]:block
+                            "
+                        >
+                            <IoIosPause />
+                        </button>
+                    </Tooltip>
+                ) : (
+                    <Tooltip message={`Play ${track.name} by ${track.artists[0].name}`}>
+                        <button
+                            onClick={(e) => onPlayClick(e)}
+                            className="
+                                    hidden 
+                                    text-white
+                                    group-hover:block
+                                    group-data-[selected=true]:block
+                                "
+                        >
+                            <RiPlayLargeFill />
+                        </button>
+                    </Tooltip>
+                )}
+                {isPlaying && isThisCurrentTrack ? (
+                    <img
                         className="
-                            hidden 
-                            text-white
-                            group-hover:block
-                            group-data-[selected=true]:block
+                            size-4
+                            max-h-4
+                            max-w-4
+                            group-hover:hidden
+                            group-data-[selected=true]:hidden
+                        "
+                        src="../../src/assets/images/equaliser-animation.gif"
+                        alt=""
+                    />
+                ) : (
+                    <p
+                        data-active={isThisCurrentTrack}
+                        className="
+                            pr-1
+                            group-hover:hidden
+                            data-[active=true]:text-green-500
+                            group-data-[selected=true]:hidden
                         "
                     >
-                        <RiPlayLargeFill />
-                    </button>
-                </Tooltip>
-                <p
-                    className="
-                        pr-1
-                        group-hover:hidden
-                        group-data-[selected=true]:hidden
-                    "
-                >
-                    {index + 1}
-                </p>
+                        {index + 1}
+                    </p>
+                )}
             </ItemContainer>
 
             {/* Track details */}
@@ -163,13 +203,19 @@ const TrackListItem: React.FC<TrackListItem> = ({ index, track, album, added, is
                                     : '../src/assets/images/placeholder.png'
                             }
                             alt="Album artwork"
+                            draggable={false}
                         />
                     </div>
                 )}
                 {/* Details container */}
                 <div className="flex flex-col overflow-hidden">
                     {/* Track title */}
-                    <span className="truncate text-base text-white">{track.name}</span>
+                    <span
+                        data-active={isThisCurrentTrack}
+                        className="truncate text-base text-white data-[active=true]:text-green-500"
+                    >
+                        {track.name}
+                    </span>
                     {/* Track artists */}
                     <div className="overflow-hidden truncate">
                         {track.explicit && <BsFillExplicitFill className="mb-1 mr-1 inline-block" />}
@@ -183,6 +229,7 @@ const TrackListItem: React.FC<TrackListItem> = ({ index, track, album, added, is
                                         group-hover:text-white
                                         group-data-[selected=true]:text-white
                                     "
+                                    draggable={false}
                                 >
                                     {artist.name}
                                 </Link>
@@ -210,6 +257,7 @@ const TrackListItem: React.FC<TrackListItem> = ({ index, track, album, added, is
                             hover:text-white
                             hover:underline
                         "
+                        draggable={false}
                     >
                         {track.album.name}
                     </Link>

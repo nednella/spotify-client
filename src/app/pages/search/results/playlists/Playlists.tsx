@@ -19,7 +19,7 @@ const Playlists: React.FC<PlaylistsProps> = ({ query, playlists }) => {
                 <ContentSection className="my-8">
                     {playlists.map((playlist: SimplifiedPlaylist) => (
                         <ContentCard
-                            id={playlist.id}
+                            uri={playlist.uri}
                             key={playlist.id}
                             image={
                                 playlist.images && playlist.images[0]

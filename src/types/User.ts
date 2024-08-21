@@ -11,6 +11,7 @@ export interface User {
     id: string
     images: Image[]
     product: Product
+    token: string
     type: string
     uri: string
 }

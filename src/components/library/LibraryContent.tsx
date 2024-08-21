@@ -19,6 +19,7 @@ import NoPlaylists from './NoPlaylists'
 import NoFollowedPlaylists from './NoFollowedPlaylists'
 import NoAlbums from './NoAlbums'
 import NoArtists from './NoArtists'
+import usePlayer from '../../hooks/usePlayer'
 
 interface LibraryContentProps {
     user: User
@@ -27,6 +28,8 @@ interface LibraryContentProps {
 
 const LibraryContent: React.FC<LibraryContentProps> = ({ user, data }) => {
     const location = useLocation()
+    const isPlaying = usePlayer((state) => !state.playerState?.paused)
+    const currentPlayerContextUri = usePlayer((state) => state.playerState?.context.uri)
 
     const tracks: SavedTrack[] = data.tracks
     const yourPlaylists: SimplifiedPlaylist[] = data.playlists.filter(
@@ -49,6 +52,7 @@ const LibraryContent: React.FC<LibraryContentProps> = ({ user, data }) => {
                         href={'collection/tracks'}
                     />
                 )}
+
                 {yourPlaylists && (
                     <AccordionItem value="your-playlists">
                         <AccordionTrigger
@@ -68,8 +72,10 @@ const LibraryContent: React.FC<LibraryContentProps> = ({ user, data }) => {
                                         title={item.name}
                                         author={item.owner.display_name}
                                         type={item.type}
-                                        active={location.pathname === `/${item.type}/${item.id}`}
                                         href={`${item.type}/${item.id}`}
+                                        isActive={location.pathname === `/${item.type}/${item.id}`}
+                                        isPlaying={isPlaying}
+                                        isCurrentContext={item.uri === currentPlayerContextUri}
                                     />
                                 ))
                             ) : (
@@ -98,8 +104,10 @@ const LibraryContent: React.FC<LibraryContentProps> = ({ user, data }) => {
                                         title={item.name}
                                         author={item.owner.display_name}
                                         type={item.type}
-                                        active={location.pathname === `/${item.type}/${item.id}`}
                                         href={`${item.type}/${item.id}`}
+                                        isActive={location.pathname === `/${item.type}/${item.id}`}
+                                        isPlaying={isPlaying}
+                                        isCurrentContext={item.uri === currentPlayerContextUri}
                                     />
                                 ))
                             ) : (
@@ -128,8 +136,10 @@ const LibraryContent: React.FC<LibraryContentProps> = ({ user, data }) => {
                                         title={item.name}
                                         author={item.artists[0].name}
                                         type={item.type}
-                                        active={location.pathname === `/${item.type}/${item.id}`}
                                         href={`${item.type}/${item.id}`}
+                                        isActive={location.pathname === `/${item.type}/${item.id}`}
+                                        isPlaying={isPlaying}
+                                        isCurrentContext={item.uri === currentPlayerContextUri}
                                     />
                                 ))
                             ) : (
@@ -139,7 +149,7 @@ const LibraryContent: React.FC<LibraryContentProps> = ({ user, data }) => {
                     </AccordionItem>
                 )}
 
-                {artists && artists.length > 0 && (
+                {artists && (
                     <AccordionItem value="artists">
                         <AccordionTrigger
                             icon={BsFillPersonLinesFill}
@@ -158,8 +168,10 @@ const LibraryContent: React.FC<LibraryContentProps> = ({ user, data }) => {
                                         title={item.name}
                                         author={item.name}
                                         type={item.type}
-                                        active={location.pathname === `/${item.type}/${item.id}`}
                                         href={`${item.type}/${item.id}`}
+                                        isActive={location.pathname === `/${item.type}/${item.id}`}
+                                        isPlaying={isPlaying}
+                                        isCurrentContext={item.uri === currentPlayerContextUri}
                                     />
                                 ))
                             ) : (
