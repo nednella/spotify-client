@@ -785,13 +785,29 @@ export default class spotifyAPI {
      * Docs URL: https://developer.spotify.com/documentation/web-api/reference/start-a-users-playback
      * @param {string} access_token - Authenticated user's access token.
      * @param {string} device_id - (OPTIONAL) The id of the device the command is targeting. If not supplied, the currently active device is targeted.
-     * @param {string} context_uri - (OPTIONAL) Spotify URI context to paly. Valid contexts are albums, artists & playlists.
-     * @param {string[]} uris - (OPTIONAL) JSON array of the track URI's to play.
-     * @param {integer} offset - (OPTIONAL) Indicates from where in the context playback should start. Only available when context_uri is that of a playlist or album.
-     * @param {integer} position_ms - At what position the playback should resume, defaults to 0 if not included.
      * @returns - A promise that if successful, resolves into the string 'Playback started'.
      */
-    play = (access_token, device_id, context_uri, uris, offset, position_ms) => {
+    play = (access_token, device_id) => {
+        return new ApiRequest(access_token)
+            .setMethod('PUT')
+            .setPath('/me/player/play')
+            .setQueryParams({
+                device_id: device_id,
+            })
+            .build()
+            .execute()
+    }
+
+    /**
+     * Start a new context, or resume current playback, on the user's active device.
+     * Docs URL: https://developer.spotify.com/documentation/web-api/reference/start-a-users-playback
+     * @param {string} access_token - Authenticated user's access token.
+     * @param {string} device_id - (OPTIONAL) The id of the device the command is targeting. If not supplied, the currently active device is targeted.
+     * @param {string} context_uri - (OPTIONAL) Spotify URI context to play. Valid contexts are albums, artists & playlists.
+     * @param {integer} offset - (OPTIONAL) Indicates from where in the context playback should start. Only available when context_uri is that of a playlist or album.
+     * @returns - A promise that if successful, resolves into the string 'Playback started'.
+     */
+    playContext = (access_token, device_id, context_uri, offset) => {
         return new ApiRequest(access_token)
             .setMethod('PUT')
             .setPath('/me/player/play')
@@ -800,9 +816,28 @@ export default class spotifyAPI {
             })
             .setBodyParams({
                 context_uri: context_uri,
-                uris: uris,
-                offset: { position: offset },
-                position_ms: position_ms || 0,
+            })
+            .build()
+            .execute()
+    }
+
+    /**
+     * Start a new context, or resume current playback, on the user's active device.
+     * Docs URL: https://developer.spotify.com/documentation/web-api/reference/start-a-users-playback
+     * @param {string} access_token - Authenticated user's access token.
+     * @param {string} device_id - (OPTIONAL) The id of the device the command is targeting. If not supplied, the currently active device is targeted.
+     * @param {string} track_uris - (OPTIONAL) A JSON array of the Spotify track URIs to play.
+     * @returns - A promise that if successful, resolves into the string 'Playback started'.
+     */
+    playTrack = (access_token, device_id, track_uris) => {
+        return new ApiRequest(access_token)
+            .setMethod('PUT')
+            .setPath('/me/player/play')
+            .setQueryParams({
+                device_id: device_id,
+            })
+            .setBodyParams({
+                uris: [track_uris],
             })
             .build()
             .execute()
@@ -813,16 +848,142 @@ export default class spotifyAPI {
      * Docs URL: https://developer.spotify.com/documentation/web-api/reference/pause-a-users-playback
      * @param {string} access_token - Authenticated user's access token.
      * @param {string} device_id - (OPTIONAL) The id of the device the command is targeting. If not supplied, the currently active device is targeted.
-     * @returns - A promise that if successful, resolves into the string 'Playback paused'.
+
      */
     pause = (access_token, device_id) => {
         return new ApiRequest(access_token)
             .setMethod('PUT')
             .setPath('/me/player/pause')
             .setQueryParams({
+                device_id: device_id || '',
+            })
+            .build()
+            .execute()
+    }
+
+    /**
+     * Skips to the next track in the user's queue.
+     * Docs URL: https://developer.spotify.com/documentation/web-api/reference/skip-users-playback-to-next-track
+     * @param {string} access_token - Authenticated user's access token.
+     * @param {string} device_id - (OPTIONAL) The id of the device the command is targeting. If not supplied, the currently active device is targeted.
+     * @returns - A promise that if successful, resolves into the string 'Command sent'.
+     */
+    next = (access_token, device_id) => {
+        return new ApiRequest(access_token)
+            .setMethod('POST')
+            .setPath('/me/player/next')
+            .setQueryParams({
                 device_id: device_id,
             })
             .build()
             .execute()
+    }
+
+    /**
+     * Skips to the previous track inthe user's queue.
+     * Docs URL: https://developer.spotify.com/documentation/web-api/reference/skip-users-playback-to-previous-track
+     * @param {string} access_token - Authenticated user's access token.
+     * @param {string} device_id - (OPTIONAL) The id of the device the command is targeting. If not supplied, the currently active device is targeted.
+     * @returns - A promise that if successful, resolves into the string 'Command sent'.
+     */
+    previous = (access_token, device_id) => {
+        return new ApiRequest(access_token)
+            .setMethod('POST')
+            .setPath('/me/player/previous')
+            .setQueryParams({
+                device_id: device_id,
+            })
+            .build()
+            .execute()
+    }
+
+    /**
+     * Toggle shuffle on or off for user's playback.
+     * Docs URL: https://developer.spotify.com/documentation/web-api/reference/toggle-shuffle-for-users-playback
+     * @param {string} access_token - Authenticated user's access token.
+     * @param {string} device_id - (OPTIONAL) The id of the device the command is targeting. If not supplied, the currently active device is targeted.
+     * @param {boolean} state - The shuffle state to set. True = shuffle, false = do not shuffle.
+     * @returns - A promise that if successful, resolves into the string 'Command sent'.
+     */
+    shuffle = (access_token, device_id, state) => {
+        return new ApiRequest(access_token)
+            .setMethod('PUT')
+            .setPath('/me/player/shuffle')
+            .setQueryParams({
+                device_id: device_id,
+                state: state,
+            })
+            .build()
+            .execute()
+    }
+
+    /**
+     * Set the repeat mode for the user's playback.
+     * Docs URL: https://developer.spotify.com/documentation/web-api/reference/set-repeat-mode-on-users-playback
+     * @param {string} access_token - Authenticated user's access token.
+     * @param {string} device_id - (OPTIONAL) The id of the device the command is targeting. If not supplied, the currently active device is targeted.
+     * @param {boolean} state - Available options: 'off',  'context', 'track'.
+     * @returns - A promise that if successful, resolves into the string 'Command sent'.
+     */
+    repeat = (access_token, device_id, state) => {
+        return new ApiRequest(access_token)
+            .setMethod('PUT')
+            .setPath('/me/player/repeat')
+            .setQueryParams({
+                device_id: device_id,
+                state: state,
+            })
+            .build()
+            .execute()
+    }
+
+    /**
+     * Set the volume for the user's current playback device.
+     * Docs URL: https://developer.spotify.com/documentation/web-api/reference/set-volume-for-users-playback
+     * @param {string} access_token - Authenticated user's access token.
+     * @param {string} device_id - (OPTIONAL) The id of the device the command is targeting. If not supplied, the currently active device is targeted.
+     * @param {number} volume - The volume to set. Must be from 0 to 100 inclusive.
+     * @returns - A promise that if successful, resolves into the string 'Command sent'.
+     */
+    volume = (access_token, device_id, volume) => {
+        return new ApiRequest(access_token)
+            .setMethod('PUT')
+            .setPath('/me/player/volume')
+            .setQueryParams({
+                device_id: device_id,
+                volume_percent: volume,
+            })
+            .build()
+            .execute()
+    }
+
+    /**
+     * Seeks to the given position in the user's currently playing track.
+     * Docs URL: https://developer.spotify.com/documentation/web-api/reference/seek-to-position-in-currently-playing-track
+     * @param {string} access_token - Authenticated user's access token.
+     * @param {string} device_id - (OPTIONAL) The id of the device the command is targeting. If not supplied, the currently active device is targeted.
+     * @param {number} position - The position to seek in milliseconds. Must be a positive number. If number > length of current track, next track will be played.
+     * @returns - A promise that if successful, resolves into the string 'Command sent'.
+     */
+    seek = (access_token, device_id, position) => {
+        return new ApiRequest(access_token)
+            .setMethod('PUT')
+            .setPath('/me/player/seek')
+            .setQueryParams({
+                device_id: device_id,
+                position_ms: position,
+            })
+            .build()
+            .execute()
+    }
+
+    /**
+     * Get the list of objects that make up the user's queue.
+     * Docs URL: https://developer.spotify.com/documentation/web-api/reference/get-queue
+     * @param {string} access_token - Authenticated user's access token.
+     * @returns - A promise that if successful, resolves into an object containing the requested information.
+     */
+    getQueue = (access_token) => {
+        return new ApiRequest(access_token).setMethod('GET').setPath('/me/player/queue').build().execute()
     }
 }
