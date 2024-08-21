@@ -1,9 +1,12 @@
 import express from 'express'
+
 import { spotifyAPI } from '../index.js'
-import { sessionAuth } from '../middleware/sessionAuth.js'
-import { tokenExpiry } from '../middleware/tokenExpiry.js'
-import { asyncHandler } from '../middleware/asyncHandler.js'
-import { calculateExpiryUTC } from '../utils.js'
+
+import sessionAuth from '../middleware/sessionAuth.js'
+import tokenExpiry from '../middleware/tokenExpiry.js'
+import asyncHandler from '../middleware/asyncHandler.js'
+
+import calculateExpiryUTC from '../common/utils/calculateExpiryUTC.js'
 
 const router = express.Router()
 
@@ -54,8 +57,12 @@ router.get(
     asyncHandler(async (req, res) => {
         const { access_token } = req.session.user
 
+        // Return authenticated user's profile as a method of validating session.
         const response = await spotifyAPI.getMe(access_token)
-        res.status(200).json(response.data)
+        const user = response.data
+        user.token = access_token // Token required on the client to enable usage of Spotify Playback SDK.
+
+        res.status(200).json(user)
     })
 )
 

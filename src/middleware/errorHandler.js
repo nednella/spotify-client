@@ -5,9 +5,14 @@
  * @param {Express.Response} res - The Express response object.
  * @param {Express.NextFunction} next - The next middleware function.
  */
-export const errorHandler = (err, req, res, next) => {
+const errorHandler = (err, req, res, next) => {
     console.error(err)
-    res.status(err.body?.error.status || 500).end(
-        err.body?.error.message || 'Internal server error.'
-    )
+
+    if (err.body.error) {
+        res.status(err.body?.error.status || 500).end(err.body?.error.message || 'Internal server error.')
+    } else {
+        res.status(err.status).end(err.body)
+    }
 }
+
+export default errorHandler

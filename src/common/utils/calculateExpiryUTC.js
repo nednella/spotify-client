@@ -3,7 +3,9 @@
  * @param {integer} expires_in - Time remaining (in seconds) until access token expires.
  * @returns Date of token expiry in UTC.
  */
-export const calculateExpiryUTC = (expires_in) => {
+const calculateExpiryUTC = (expires_in) => {
     const current_utc = new Date(new Date().toUTCString())
     return new Date(current_utc.getTime() + expires_in * 0.9 * 1000)
 }
+
+export default calculateExpiryUTC

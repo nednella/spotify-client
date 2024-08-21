@@ -8,8 +8,9 @@ import SpotifyApi from './spotify-request-wrapper/spotify-request-wrapper.js'
 
 import auth from './routes/auth.js'
 import api from './routes/api.js'
+import player from './routes/player.js'
 
-import { errorHandler } from './middleware/errorHandler.js'
+import errorHandler from './middleware/errorHandler.js'
 
 const CLIENT_PORT = process.env.CLIENT_PORT
 
@@ -19,13 +20,32 @@ const credentials = {
     redirect_uri: process.env.REDIRECT_URI,
 }
 
-const scope = ['user-read-private', 'user-read-email']
+const scope = [
+    'user-read-playback-state',
+    'user-modify-playback-state',
+    'user-read-currently-playing',
+    'app-remote-control',
+    'streaming',
+    'playlist-read-private',
+    'playlist-read-collaborative',
+    'playlist-modify-private',
+    'playlist-modify-public',
+    'user-follow-modify',
+    'user-follow-read',
+    'user-read-playback-position',
+    'user-top-read',
+    'user-read-recently-played',
+    'user-library-modify',
+    'user-library-read',
+    'user-read-email',
+    'user-read-private',
+]
 
 export const spotifyAPI = new SpotifyApi(credentials, scope)
 
 const cors_config = {
     origin: `http://localhost:${CLIENT_PORT}`,
-    methods: ['POST', 'GET'],
+    methods: ['GET', 'PUT', 'DELETE', 'POST'],
     credentials: true,
 }
 
@@ -48,6 +68,7 @@ app.use(bodyParser.json())
 // App routes
 app.use('/auth', auth)
 app.use('/api', api)
+app.use('/player', player)
 
 // Error handling
 app.use(errorHandler)

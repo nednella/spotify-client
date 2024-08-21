@@ -55,6 +55,10 @@ export default class HttpClient {
         return { method, uri, options }
     }
 
+    /**
+     * Analyse error object and throw the matching error type.
+     * @param {Error} err - Axios error object.
+     */
     static #handleError(err) {
         if (err.isAxiosError) {
             if (err.response) {
