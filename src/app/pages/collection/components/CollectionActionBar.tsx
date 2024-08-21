@@ -5,7 +5,7 @@ const CollectionActionBar = () => {
         <div className={'flex h-20 items-center justify-between py-4'}>
             <div className="flex items-center">
                 <PlayButton
-                    contentId={'spotify:collection:tracks'}
+                    contextUri={'spotify:collection:tracks'}
                     size={24}
                     className="mr-6 shadow-md shadow-black/30"
                 />

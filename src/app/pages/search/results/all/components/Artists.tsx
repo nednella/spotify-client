@@ -22,7 +22,7 @@ const Artists: React.FC<ArtistsProps> = ({ artists }) => {
                     {artists.slice(0, 20).map((artist: Artist) => (
                         <CarouselSlide key={artist.id}>
                             <ContentCard
-                                id={artist.id}
+                                uri={artist.uri}
                                 image={
                                     artist.images && artist.images[0]
                                         ? artist.images[0].url

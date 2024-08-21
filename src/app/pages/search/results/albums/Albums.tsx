@@ -19,7 +19,7 @@ const Albums: React.FC<AlbumProps> = ({ query, albums }) => {
                 <ContentSection className="my-8">
                     {albums.map((album: SimplifiedAlbum) => (
                         <ContentCard
-                            id={album.id}
+                            uri={album.uri}
                             key={album.id}
                             image={
                                 album.images && album.images[0] ? album.images[0].url : '../src/assets/images/liked.png'

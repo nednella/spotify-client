@@ -20,7 +20,7 @@ const AlbumWrapper: React.FC<AlbumWrapperProps> = ({ album, children }) => {
         <>
             <Header>
                 <PlayButton
-                    contentId={album.id}
+                    contextUri={album.uri}
                     size={24}
                     className="absolute"
                 />

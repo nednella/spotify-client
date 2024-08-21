@@ -5,15 +5,14 @@ import PlayButton from '../PlayButton'
 import { twMerge } from 'tailwind-merge'
 
 interface ContentCardProps {
-    id: string
+    uri: string
     image: string
     title: string
     subtitle: string
     href: string
 }
 
-const ContentCard: React.FC<ContentCardProps> = ({ id, image, title, subtitle, href }) => {
-    // TODO: rounded-full on image for artist content
+const ContentCard: React.FC<ContentCardProps> = ({ uri, image, title, subtitle, href }) => {
     return (
         <Link
             to={href}
@@ -52,7 +51,7 @@ const ContentCard: React.FC<ContentCardProps> = ({ id, image, title, subtitle, h
                     alt="Content image"
                 />
                 <PlayButton
-                    contentId={id}
+                    contextUri={uri}
                     size={24}
                     className="
                         absolute
