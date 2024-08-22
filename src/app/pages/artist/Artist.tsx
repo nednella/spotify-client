@@ -171,9 +171,12 @@ const Artist = () => {
                                 <Footer />
                             </>
                         ) : (
-                            <div className="mt-10 flex items-center justify-center">
-                                <p className="font-medium">It appears this artist has not released any albums.</p>
-                            </div>
+                            <>
+                                <div className="my-10 flex items-center justify-center">
+                                    <p className="font-medium">It appears this artist has not released any albums.</p>
+                                </div>
+                                <Footer />
+                            </>
                         )}
                     </TabContent>
                     <TabContent
@@ -201,9 +204,12 @@ const Artist = () => {
                                 <Footer />
                             </>
                         ) : (
-                            <div className="mt-10 flex items-center justify-center">
-                                <p className="font-medium">It appears this artist has not released any singles.</p>
-                            </div>
+                            <>
+                                <div className="my-10 flex items-center justify-center">
+                                    <p className="font-medium">It appears this artist has not released any singles.</p>
+                                </div>
+                                <Footer />
+                            </>
                         )}
                     </TabContent>
                 </TabMenu>
