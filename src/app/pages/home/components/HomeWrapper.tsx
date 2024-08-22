@@ -1,12 +1,10 @@
 import React, { useRef } from 'react'
 
-import { useAuth } from '../../../../hooks/useAuth'
-
 import Header from '../../../../components/Header'
 import ScrollWrapper from '../../../../components/wrappers/ScrollWrapper'
 import HeaderSpacer from '../../../../components/HeaderSpacer'
 import BackgroundGradient from '../../../../components/BackgroundGradient'
-// import BackgroundColour from '../BackgroundColour'
+import { useAuth } from '../../../../hooks/useAuth'
 
 interface HomeWrapperProps {
     children: React.ReactNode
@@ -20,43 +18,24 @@ const HomeWrapper: React.FC<HomeWrapperProps> = ({ children }) => {
         <>
             <Header />
             <ScrollWrapper contentRef={contentRef}>
-                {user ? (
-                    <>
-                        {/* Background gradient */}
-                        <BackgroundGradient size="large" />
+                <>
+                    {/* Background gradient */}
+                    {user && <BackgroundGradient size="large" />}
 
-                        {/* Header spacer */}
-                        <HeaderSpacer />
+                    {/* Header spacer */}
+                    <HeaderSpacer />
 
-                        {/* Content container */}
-                        <div className="relative z-[1] h-fit w-full">
-                            {/* Content */}
-                            <section
-                                ref={contentRef}
-                                className="mx-auto h-fit w-full max-w-[1400px] p-4"
-                            >
-                                {children}
-                            </section>
-                        </div>
-                    </>
-                ) : (
-                    <>
-                        {/* Header spacer */}
-                        <HeaderSpacer />
-
-                        {/* Content container */}
-                        <div className="relative z-[1] h-fit w-full">
-                            {/* Content */}
-                            <section
-                                ref={contentRef}
-                                className="mx-auto h-fit w-full max-w-[1400px] p-4"
-                            >
-                                {/* TODO: add "logged out" content */}
-                                <p>You are logged out.</p>
-                            </section>
-                        </div>
-                    </>
-                )}
+                    {/* Content container */}
+                    <div className="relative z-[1] h-fit w-full">
+                        {/* Content */}
+                        <section
+                            ref={contentRef}
+                            className="mx-auto h-fit w-full max-w-[1400px] p-4"
+                        >
+                            {children}
+                        </section>
+                    </div>
+                </>
             </ScrollWrapper>
         </>
     )
