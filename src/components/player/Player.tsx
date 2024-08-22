@@ -33,7 +33,7 @@ const Player = () => {
                         flex-col
                     "
                 >
-                    <div className="flex h-fit">
+                    <div className="flex h-[72px]">
                         <NowPlaying />
                         <PlayerControls />
                         <Devices />
