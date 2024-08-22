@@ -8,6 +8,8 @@ import getSession from '../api/auth/Session'
 import Callback from '../api/auth/Callback'
 import _Logout from '../api/auth/Logout'
 
+import { pausePlayer } from './usePlayer'
+
 import AppLoading from '../app/AppLoading'
 
 type AuthContextType = {
@@ -44,6 +46,7 @@ export const AuthContextProvider = ({ ...props }) => {
     }
 
     const Logout = async () => {
+        pausePlayer()
         await _Logout()
         setUser(null)
         queryClient.removeQueries() // clear all cached data upon logout
