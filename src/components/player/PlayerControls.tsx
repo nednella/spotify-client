@@ -15,7 +15,7 @@ const Controls = () => {
     const isThisDeviceActive = player.isThisDeviceActive()
 
     return (
-        <div className="my-auto w-[40%]">
+        <div className="my-auto w-full md:w-[40%]">
             <div className="mb-2 flex items-center gap-x-6">
                 <div className="flex w-full justify-end gap-x-4">
                     {/* Shuffle */}

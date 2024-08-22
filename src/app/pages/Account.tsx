@@ -4,6 +4,7 @@ import { useAuth } from '../../hooks/useAuth'
 
 import Container from '../../components/Container'
 import Header from '../../components/Header'
+import HeaderSpacer from '../../components/HeaderSpacer'
 
 const Account = () => {
     const { user } = useAuth()
@@ -11,6 +12,7 @@ const Account = () => {
     return (
         <>
             <Header />
+            <HeaderSpacer />
             <div className="flex flex-grow justify-center">
                 <div className="mx-4 mt-8 flex max-w-[600px] flex-grow flex-col gap-y-4">
                     <div className="flex flex-col gap-4 xsm:flex-row">
