@@ -7,6 +7,8 @@ import useGetGenre from '../../../hooks/useGetGenre'
 
 import { SimplifiedPlaylist } from '../../../types/Playlist'
 
+import { generateRandomColour } from '../../../common/generateRandomColour'
+
 import Loading from '../Loading'
 import NotFound from '../NotFound'
 
@@ -21,7 +23,7 @@ const Genre = () => {
     const { data, isLoading, isError } = useGetGenre(user, id)
 
     useEffect(() => {
-        setColour(['255', '220', '220'])
+        setColour(generateRandomColour())
     }, [setColour])
 
     return isLoading ? (

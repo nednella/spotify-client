@@ -8,6 +8,8 @@ import useGetPlaylist from '../../../hooks/useGetPlaylist'
 
 import { PlaylistTrack } from '../../../types/Track'
 
+import { generateRandomColour } from '../../../common/generateRandomColour'
+
 import Loading from '../Loading'
 import NotFound from '../NotFound'
 
@@ -24,7 +26,7 @@ const Playlist = () => {
     const { data: playlistData, isLoading: playlistLoading, isError: playlistError } = useGetPlaylist(user, id)
 
     useEffect(() => {
-        setColour(['86', '58', '204'])
+        setColour(generateRandomColour())
     }, [setColour])
 
     const isLoading = libraryLoading || playlistLoading
