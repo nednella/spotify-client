@@ -7,8 +7,6 @@ interface ScrollProps {
     className?: string
 }
 
-// TODO: allow scrollbar sizing to adjust every time the library size changes (on click of a category)
-
 const Scroll = React.forwardRef<HTMLDivElement, ScrollProps>(({ children, className, ...props }, forwardedRef) => {
     return (
         <ScrollArea.Root
