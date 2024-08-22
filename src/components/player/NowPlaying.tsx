@@ -6,7 +6,7 @@ const NowPlaying = () => {
     const currentTrack = usePlayer((state) => state.playerState?.track_window.current_track)
 
     return (
-        <div className="w-[30%] pl-2">
+        <div className="hidden w-[30%] pl-2 md:block">
             {currentTrack && currentTrack.id && (
                 <MediaItem
                     title={currentTrack.name}
