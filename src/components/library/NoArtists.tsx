@@ -1,3 +1,5 @@
+import { useNavigate } from 'react-router-dom'
+
 import { useAuth } from '../../hooks/useAuth'
 import useLoginModal from '../../hooks/useLoginModal'
 
@@ -7,14 +9,13 @@ import Button from '../Button'
 const NoArtists = () => {
     const { user } = useAuth()
     const loginModal = useLoginModal()
+    const navigate = useNavigate()
 
     const searchArtists = () => {
         if (!user) {
             return loginModal.onOpen()
         }
-
-        // TODO: search artist functionality
-        console.log('Search for artists')
+        navigate('/search')
     }
 
     return (
