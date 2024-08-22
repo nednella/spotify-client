@@ -6,6 +6,8 @@ import { useLibrary } from '../../../hooks/useLibrary.tsx'
 
 import { SavedTrack } from '../../../types/Track.ts'
 
+import { generateRandomColour } from '../../../common/generateRandomColour.ts'
+
 import Loading from '../Loading.tsx'
 import NotFound from '../NotFound.tsx'
 
@@ -20,7 +22,7 @@ const Collection = () => {
     const { data: libraryData, isLoading, isError } = useLibrary()
 
     useEffect(() => {
-        setColour(['86, 58, 204'])
+        setColour(generateRandomColour())
     }, [setColour])
 
     return isLoading ? (

@@ -10,6 +10,8 @@ import useGetFeaturedPlaylists from '../../../hooks/useGetFeaturedPlaylists'
 import { SimplifiedPlaylist } from '../../../types/Playlist'
 import { SimplifiedAlbum } from '../../../types/Album'
 
+import { generateRandomColour } from '../../../common/generateRandomColour'
+
 import Loading from '../Loading'
 
 import HomeWrapper from './components/HomeWrapper'
@@ -26,7 +28,7 @@ const Home = () => {
     const { data: featured_playlists, isLoading: isLoading5 } = useGetFeaturedPlaylists(user)
 
     useEffect(() => {
-        setColour(['29', '185', '84'])
+        setColour(generateRandomColour())
     }, [setColour])
 
     if (!user)

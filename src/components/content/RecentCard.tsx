@@ -12,11 +12,9 @@ interface RecentCardProps {
     href: string
 }
 
-const RecentCard: React.FC<RecentCardProps> = ({ uri, image, title, href }) => {
+const RecentCard: React.FC<RecentCardProps> = ({ uri, image, title }) => {
     const { user } = useAuth()
     const loginModal = useLoginModal()
-
-    // TODO: integrate playing state/socket
 
     const onClick = () => {
         if (!user) {
@@ -25,8 +23,6 @@ const RecentCard: React.FC<RecentCardProps> = ({ uri, image, title, href }) => {
         }
 
         // TODO: navigate(href) -- href should be /type/uri (/album/123456, /playlist/789123)
-        const tmp = href
-        console.log('Header item href: ', tmp)
     }
 
     return (

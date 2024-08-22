@@ -169,6 +169,7 @@ export default usePlayer
 
 // Defined actions to allow usage outside of functional components where React hooks cannot be used
 export const getAvailableDevices = () => usePlayer.getState().getDevices()
+export const pausePlayer = () => usePlayer.getState().pause()
 export const setDeviceId = (id: string) => usePlayer.setState({ deviceId: id })
 export const syncSDKPlayerState = (state: Spotify.PlaybackState) => usePlayer.setState({ playerState: state })
 export const syncSDKTrackQueue = () => usePlayer.getState().getQueue()

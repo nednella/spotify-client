@@ -6,6 +6,8 @@ import { useAuth } from '../../../hooks/useAuth'
 import { useLibrary } from '../../../hooks/useLibrary'
 import useGetAlbum from '../../../hooks/useGetAlbum'
 
+import { generateRandomColour } from '../../../common/generateRandomColour'
+
 import Loading from '../Loading'
 import NotFound from '../NotFound'
 
@@ -22,7 +24,7 @@ const Album = () => {
     const { data: albumData, isLoading: albumLoading, isError: albumError } = useGetAlbum(user, id)
 
     useEffect(() => {
-        setColour(['86', '58', '204'])
+        setColour(generateRandomColour())
     }, [setColour])
 
     const isLoading = libraryLoading || albumLoading

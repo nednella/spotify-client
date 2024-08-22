@@ -7,6 +7,8 @@ import useGetMostListenedTo from '../../../hooks/useGetMostListenedTo'
 
 import { Artist } from '../../../types/Artist'
 
+import { generateRandomColour } from '../../../common/generateRandomColour'
+
 import Loading from '../Loading'
 import NotFound from '../NotFound'
 
@@ -25,7 +27,7 @@ const Profile = () => {
     const { data: profileData, isLoading: profileLoading, isError: profileError } = useGetMostListenedTo(user)
 
     useEffect(() => {
-        setColour(['16', '88', '184'])
+        setColour(generateRandomColour())
     }, [setColour])
 
     const isLoading = libraryLoading || profileLoading

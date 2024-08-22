@@ -8,7 +8,9 @@ import getSession from '../api/auth/Session'
 import Callback from '../api/auth/Callback'
 import _Logout from '../api/auth/Logout'
 
-import AppSkeleton from '../components/AppSkeleton'
+import { pausePlayer } from './usePlayer'
+
+import AppLoading from '../app/AppLoading'
 
 type AuthContextType = {
     user: User | null
@@ -44,13 +46,14 @@ export const AuthContextProvider = ({ ...props }) => {
     }
 
     const Logout = async () => {
+        pausePlayer()
         await _Logout()
         setUser(null)
         queryClient.removeQueries() // clear all cached data upon logout
         navigate('/')
     }
 
-    if (isLoading) return <AppSkeleton />
+    if (isLoading) return <AppLoading />
 
     return (
         <AuthContext.Provider
