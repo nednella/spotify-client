@@ -9,6 +9,7 @@ import useGetArtist from '../../../hooks/useGetArtist'
 import { Artist as ArtistType } from '../../../types/Artist'
 import { SimplifiedAlbum } from '../../../types/Album'
 
+import { generateRandomColour } from '../../../common/generateRandomColour'
 import { toTitleCase } from '../../../common/toTitleCase'
 
 import Loading from '../Loading'
@@ -32,7 +33,7 @@ const Artist = () => {
     const { data: artistData, isLoading: artistLoading, isError: artistError } = useGetArtist(user, id)
 
     useEffect(() => {
-        setColour(['56', '144', '176'])
+        setColour(generateRandomColour())
     }, [setColour])
 
     const isLoading = libraryLoading || artistLoading
