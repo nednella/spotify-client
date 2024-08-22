@@ -8,7 +8,7 @@ import getSession from '../api/auth/Session'
 import Callback from '../api/auth/Callback'
 import _Logout from '../api/auth/Logout'
 
-import AppSkeleton from '../components/AppSkeleton'
+import AppLoading from '../app/AppLoading'
 
 type AuthContextType = {
     user: User | null
@@ -50,7 +50,7 @@ export const AuthContextProvider = ({ ...props }) => {
         navigate('/')
     }
 
-    if (isLoading) return <AppSkeleton />
+    if (isLoading) return <AppLoading />
 
     return (
         <AuthContext.Provider
