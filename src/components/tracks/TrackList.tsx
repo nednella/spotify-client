@@ -11,6 +11,7 @@ import { normaliseTrackObj } from '../../common/normaliseTrackObject'
 
 import BackgroundColour from '../BackgroundColour'
 import TrackListItem from './TrackListItem'
+import usePlayer from '../../hooks/usePlayer'
 
 interface TrackListProps {
     tracks: PlaylistTrack[] | Track[] | SavedTrack[] | SimplifiedTrack[]
@@ -36,11 +37,11 @@ const TrackList: React.FC<TrackListProps> = ({
     const [selectedIndex, setSelectedIndex] = useState<number | null>(null)
     const containerRef = useRef(null)
     useClickOutside(containerRef, () => setSelectedIndex(null))
+    const player = usePlayer()
 
-    const handleSelect = (index: number) => {
+    const handleSelect = (index: number, uri: string) => {
         if (selectedIndex === index) {
-            // TODO: playSong
-            return setSelectedIndex(null)
+            player.playTrack(uri)
         }
         setSelectedIndex(index)
     }
@@ -69,7 +70,7 @@ const TrackList: React.FC<TrackListProps> = ({
                         added={displayAdded}
                         isUserCreated={isUserCreated}
                         selected={selectedIndex === index}
-                        onSelect={handleSelect}
+                        onSelect={() => handleSelect(index, track.uri)}
                     />
                 ))}
             </div>
