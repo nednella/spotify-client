@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 
 import getSearch from '../api/browse/getSearch'
 
-const useGetPlaylist = (query: string | undefined) => {
+const useGetSearch = (query: string | undefined) => {
     return useQuery({
         queryKey: ['search', query],
         queryFn: async () => getSearch(encodeURIComponent(query!)),
@@ -11,4 +11,4 @@ const useGetPlaylist = (query: string | undefined) => {
     })
 }
 
-export default useGetPlaylist
+export default useGetSearch
