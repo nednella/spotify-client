@@ -27,7 +27,7 @@ const DeletePlaylistModal = () => {
         onSuccess: () => {
             onClose()
             navigate('/')
-            toast.success('Removed to Your Library')
+            toast.success('Removed from Your Library')
             queryClient.refetchQueries({ queryKey: ['library'], type: 'active' })
         },
         onError: () => {
