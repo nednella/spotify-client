@@ -2,7 +2,7 @@ import React, { CSSProperties, useEffect, useState } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import toast from 'react-hot-toast'
 import { debounce } from 'lodash'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { twMerge } from 'tailwind-merge'
 
 import { RiPlayLargeFill } from 'react-icons/ri'
@@ -12,6 +12,7 @@ import { VscEllipsis } from 'react-icons/vsc'
 
 import updateLibrary from '../../api/user/UserLibraryUpdate'
 import { useLibrary } from '../../hooks/useLibrary'
+import usePlayer from '../../hooks/usePlayer'
 
 import { NormalisedTrack } from '../../types/Track'
 
@@ -19,27 +20,40 @@ import { convertTrackDateAdded } from '../../common/convertTrackDateAdded'
 import { convertTrackDuration } from '../../common/convertTrackDuration'
 
 import Tooltip from '../Tooltip'
+import Button from '../Button'
 import LibraryButton from '../LibraryButton'
 import OptionsMenu from '../menus/SongOptionsMenu'
-import usePlayer from '../../hooks/usePlayer'
+import addPlaylistItem from '../../api/playlist/addPlaylistItem'
 
 interface TrackListItem {
     index: number
     track: NormalisedTrack
     album?: boolean
     added?: boolean
+    addToPlaylist?: boolean
     selected: boolean
     isUserCreated?: boolean
     onSelect: (value: number) => void
 }
 
-const TrackListItem: React.FC<TrackListItem> = ({ index, track, album, added, isUserCreated, selected, onSelect }) => {
+const TrackListItem: React.FC<TrackListItem> = ({
+    index,
+    track,
+    album,
+    added,
+    addToPlaylist,
+    isUserCreated,
+    selected,
+    onSelect,
+}) => {
     const [isInLibrary, setisInLibrary] = useState(false)
     const { data: library } = useLibrary()
     const queryClient = useQueryClient()
+    const location = useLocation()
     const player = usePlayer()
     const isPlaying = !player.playerState?.paused
-    const isThisCurrentTrack = player.playerState?.track_window?.current_track?.name === track.name
+    const isThisCurrentTrack = player.playerState?.track_window?.current_track?.id === track.id
+    const contentId = location.pathname.split('/')[2] // Parse playlist id from page URL
 
     const updateUserLibrary = useMutation({
         mutationFn: async () => updateLibrary(isInLibrary, track.type, track.id),
@@ -58,7 +72,19 @@ const TrackListItem: React.FC<TrackListItem> = ({ index, track, album, added, is
         },
     })
 
+    const addToUserPlaylist = useMutation({
+        mutationFn: async () => addPlaylistItem(contentId, track.uri),
+        onSuccess: () => {
+            toast.success('Track added to playlist')
+            queryClient.refetchQueries({ queryKey: ['playlist', contentId], type: 'active' })
+        },
+        onError: () => {
+            toast.error('Something went wrong')
+        },
+    })
+
     const debounceUpdateUserLibrary = debounce(() => updateUserLibrary.mutate(), 300)
+    const debounceAddToUserPlaylist = debounce(() => addToUserPlaylist.mutate(), 300)
 
     const onPlayClick = (e: React.MouseEvent) => {
         e.stopPropagation()
@@ -68,6 +94,11 @@ const TrackListItem: React.FC<TrackListItem> = ({ index, track, album, added, is
     const onPauseClick = (e: React.MouseEvent) => {
         e.stopPropagation()
         player.pause()
+    }
+
+    const onAddClick = (e: React.MouseEvent) => {
+        e.stopPropagation()
+        debounceAddToUserPlaylist()
     }
 
     const onLibraryClick = (e: React.MouseEvent) => {
@@ -288,54 +319,65 @@ const TrackListItem: React.FC<TrackListItem> = ({ index, track, album, added, is
                     truncate
                 "
             >
-                <LibraryButton
-                    onClick={(e) => onLibraryClick(e)}
-                    isInLibrary={isInLibrary}
-                    size={14}
-                    className={twMerge(
-                        `
-                            hidden
-                            justify-self-start
-                            shadow-none
-                            group-hover:block
-                            group-data-[selected=true]:block
-                        `,
-                        isInLibrary && 'block'
-                    )}
-                />
-                <span
-                    className="
-                        ml-4
-                        hidden
-                        w-[5ch]
-                        text-right
-                        xsm:block
-                    "
-                >
-                    {convertTrackDuration(track.duration_ms)}
-                </span>
-                <OptionsMenu
-                    isUserCreated={isUserCreated || false}
-                    url={track.external_urls.spotify}
-                    uri={track.uri}
-                >
-                    <button className="ml-4">
-                        <Tooltip message={`More options for ${track.name} by ${track.artists[0].name}`}>
-                            <span>
-                                <VscEllipsis
-                                    size={20}
-                                    className="
-                                        cursor-pointer
-                                        text-neutral-400
-                                        transition
-                                        hover:scale-105
-                                        hover:text-white
-                                    "
-                                />
-                            </span>
-                        </Tooltip>
-                    </button>
-                </OptionsMenu>
+                {addToPlaylist ? (
+                    <Button
+                        onClick={(e) => onAddClick(e)}
+                        className="w-fit border-white bg-transparent px-4 py-1 text-white"
+                    >
+                        Add
+                    </Button>
+                ) : (
+                    <>
+                        <LibraryButton
+                            onClick={(e) => onLibraryClick(e)}
+                            isInLibrary={isInLibrary}
+                            size={14}
+                            className={twMerge(
+                                `
+                                    hidden
+                                    justify-self-start
+                                    shadow-none
+                                    group-hover:block
+                                    group-data-[selected=true]:block
+                                `,
+                                isInLibrary && 'block'
+                            )}
+                        />
+                        <span
+                            className="
+                                ml-4
+                                hidden
+                                w-[5ch]
+                                text-right
+                                xsm:block
+                            "
+                        >
+                            {convertTrackDuration(track.duration_ms)}
+                        </span>
+                        <OptionsMenu
+                            isUserCreated={isUserCreated || false}
+                            url={track.external_urls.spotify}
+                            uri={track.uri}
+                        >
+                            <button className="ml-4">
+                                <Tooltip message={`More options for ${track.name} by ${track.artists[0].name}`}>
+                                    <span>
+                                        <VscEllipsis
+                                            size={20}
+                                            className="
+                                                cursor-pointer
+                                                text-neutral-400
+                                                transition
+                                                hover:scale-105
+                                                hover:text-white
+                                            "
+                                        />
+                                    </span>
+                                </Tooltip>
+                            </button>
+                        </OptionsMenu>
+                    </>
+                )}
             </ItemContainer>
         </div>
     )

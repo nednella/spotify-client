@@ -20,6 +20,7 @@ interface TrackListProps {
     stickyHeight?: string
     displayAlbum?: boolean
     displayAdded?: boolean
+    displayAddToPlaylist?: boolean
     isUserCreated?: boolean
     className?: string
 }
@@ -31,6 +32,7 @@ const TrackList: React.FC<TrackListProps> = ({
     stickyHeight,
     displayAlbum,
     displayAdded,
+    displayAddToPlaylist,
     isUserCreated,
     className,
 }) => {
@@ -47,6 +49,8 @@ const TrackList: React.FC<TrackListProps> = ({
     }
 
     const normalisedTracks = tracks.map(normaliseTrackObj)
+
+    if (normalisedTracks.length === 0) return
 
     return (
         <>
@@ -68,6 +72,7 @@ const TrackList: React.FC<TrackListProps> = ({
                         track={track}
                         album={displayAlbum}
                         added={displayAdded}
+                        addToPlaylist={displayAddToPlaylist}
                         isUserCreated={isUserCreated}
                         selected={selectedIndex === index}
                         onSelect={() => handleSelect(index, track.uri)}
@@ -114,7 +119,7 @@ const TrackListHeader: React.FC<TrackListHeader> = ({ header, sticky, stickyHeig
                     md:data-[display-album=true]:grid-cols-[16px_minmax(120px,6fr)_minmax(120px,5fr)_120px]
                     xl:data-[display-added=true]:grid-cols-[16px_minmax(120px,6fr)_minmax(120px,4fr)_minmax(120px,3fr)_120px]
                 `,
-                sticky && 'sticky top-[64px]',
+                sticky && 'sticky top-[64px] z-[1]',
                 stickyHeight && `top-[${stickyHeight}px]`,
                 opacity === 1 && 'mx-[-16px] px-8'
             )}
