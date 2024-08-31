@@ -700,7 +700,7 @@ export default class spotifyAPI {
             .setPath('/search')
             .setQueryParams({
                 q: search_query,
-                type: 'album,playlist,artist,track',
+                type: type || 'album,playlist,artist,track',
                 limit: limit || 20,
                 offset: offset || 0,
             })
