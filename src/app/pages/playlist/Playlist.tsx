@@ -16,6 +16,7 @@ import NotFound from '../NotFound'
 import PlaylistWrapper from './components/PlaylistWrapper'
 import ActionBar from '../../../components/ActionBar'
 import TrackList from '../../../components/tracks/TrackList'
+import TrackSearch from './components/TrackSearch'
 import Footer from '../../../components/Footer'
 
 const Playlist = () => {
@@ -55,12 +56,13 @@ const Playlist = () => {
                 />
                 <TrackList
                     tracks={playlistData.tracks}
-                    header={true}
-                    sticky={true}
-                    displayAlbum={true}
-                    displayAdded={true}
+                    header
+                    sticky
+                    displayAlbum
+                    displayAdded
                     isUserCreated={playlistData.isUserCreated}
                 />
+                {playlistData.isUserCreated && <TrackSearch isPlaylistEmpty={playlistData.tracks.length === 0} />}
                 <Footer />
             </PlaylistWrapper>
         )
