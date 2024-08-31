@@ -271,7 +271,7 @@ router.post(
         const { access_token } = req.session.user
         const { id, uri } = req.query
 
-        await spotifyAPI.addPlaylistTracks(access_token, id, [{ uri: uri }])
+        await spotifyAPI.addPlaylistTracks(access_token, id, [uri])
 
         res.status(200).json('Playlist track(s) added.')
     })
@@ -344,24 +344,30 @@ router.get(
         const { access_token } = req.session.user
         const { query } = req.params
         const limit = SPOTIFY_API_PAGINATION_LIMIT
-        const cap = SPOTIFY_API_PAGINATION_ITEM_CAP
 
-        // Capped to 50 items for each category.
-        const getSearch = async (access_token, limit, offset, search_query) => {
-            const response = await spotifyAPI.getSearch(access_token, limit, offset, search_query)
-            return response.data
-        }
-
-        const response = await getSearch(access_token, limit, 0, query)
+        const { data } = await spotifyAPI.getSearch(access_token, limit, 0, query)
 
         const results = {
-            artists: response.artists.items,
-            albums: response.albums.items,
-            playlists: response.playlists.items,
-            tracks: response.tracks.items,
+            artists: data.artists.items,
+            albums: data.albums.items,
+            playlists: data.playlists.items,
+            tracks: data.tracks.items,
         }
 
         res.status(200).json(results)
+    })
+)
+
+router.get(
+    '/search/tracks/:query',
+    asyncHandler(async (req, res) => {
+        const { access_token } = req.session.user
+        const { query } = req.params
+
+        // Fetch a cap of 10 tracks that match the query
+        const { data } = await spotifyAPI.getSearch(access_token, 10, 0, query, 'track')
+
+        res.status(200).json({ tracks: data.tracks.items })
     })
 )
 
