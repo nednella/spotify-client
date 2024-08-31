@@ -1,12 +1,13 @@
 import React from 'react'
-import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
-import { useLocation } from 'react-router-dom'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useLocation } from 'react-router-dom'
 import toast from 'react-hot-toast'
+import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
+
+import removePlaylistItem from '../../api/playlist/removePlaylistItem'
 
 import { MdDeleteOutline } from 'react-icons/md'
 import { FaSpotify } from 'react-icons/fa'
-import removePlaylistItem from '../../api/playlist/removePlaylistItem'
 
 interface OptionsMenuProps {
     isUserCreated: boolean
