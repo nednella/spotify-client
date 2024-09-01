@@ -12,7 +12,7 @@ import Volume from './Volume'
 const Devices = () => {
     const player = usePlayer()
     return (
-        <div className="hidden w-[30%] items-center justify-center gap-4 pr-2 md:flex">
+        <div className="hidden w-[30%] items-center justify-end gap-4 pr-8 md:flex">
             {player.isThisDeviceActive() && (
                 <TrackQueueMenu>
                     <button
