@@ -4,7 +4,7 @@
     A custom Spotify client built with the Spotify Web API and Playback SDK
   </p>
   <p>
-    <a href='https://www.youtube.com/watch?v=70G7YDejWG0'>Video Demo</a>
+    <a href='https://www.youtube.com/watch?v=70G7YDejWG0' target='_blank' rel="noopener noreferrer">Video Demo</a>
   </p>
 </div>
 
