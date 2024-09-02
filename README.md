@@ -1,10 +1,39 @@
-# Spotify Web Player Clone
+<div>
+<h3 align="center"><b>Spotify Web Player Clone</b></h3>
+<p align='center'>
+  A custom Spotify client built with the Spotify Web API and Playback SDK
+</p>
+</div>
+
+<br>
+
+![project showcase](src/assets/readme/showcase.jpg)
+
+<div align='center'>
+  
+  ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+  ![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+  ![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
+  ![NodeJS](https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white)
+  ![ExpressJS](https://img.shields.io/badge/Express.js-404D59?style=for-the-badge)
+
+</div>
+
+## Table of Contents
+
+-   [Description](#description)
+-   [Installation](#installation)
+-   [Dependencies](#dependencies)
+-   [Motivation](#motivation)
+-   [Architecture](#architecture)
+-   [Improvements](#improvements)
+-   [Finishing Up](#finishing-up)
+
+## Description
 
 This is my first full-stack application, featuring a React front-end written in TypeScript and built with Vite, supported by a Node Express server written in JavaScript.
 
 This repository contains the front-end portion of the project, intended to work alongside an [auth/api server](https://github.com/nednella/spotify-server).
-
-![project showcase](src/assets/readme/showcase.jpg)
 
 ## Installation
 
@@ -28,6 +57,15 @@ npm run dev
 
 You will also need to follow the installation instructions for the server, [found here](https://github.com/nednella/spotify-server).
 
+## Dependencies
+
+-   [Zustand](https://github.com/pmndrs/zustand) for handling client-side state
+-   [React Query](https://github.com/TanStack/query) for handling server-side state
+-   [Axios](https://github.com/axios/axios) for handling client-server communication
+-   [Tailwind](https://github.com/tailwindlabs/tailwindcss) for component styling
+-   [Radix UI](https://github.com/radix-ui) for complex UI components
+-   [Embla Carousel](https://github.com/davidjerleke/embla-carousel) for carousel components, filling a gap in Radix's current offering
+
 ## Motivation
 
 I have worked on numerous common learning development projects, while valuable, often felt repetitive and boring. Prior to this project, I hadn't yet used a modern front-end framework or handled server-side web API hosting.
@@ -40,15 +78,6 @@ I'm a long-time Spotify user, and have known about Spotify's [Web API](https://d
 -   Develop general understanding of writing and running servers to support front-end clients.
 -   Gain experience with TypeScript, with a long-term goal of aiming to replace plain JavaScript entirely.
 
-### Dependencies
-
--   [Zustand](https://github.com/pmndrs/zustand) for handling client-side state
--   [React Query](https://github.com/TanStack/query) for handling server-side state
--   [Axios](https://github.com/axios/axios) for handling client-server communication
--   [Tailwind](https://github.com/tailwindlabs/tailwindcss) for component styling
--   [Radix UI](https://github.com/radix-ui) for complex UI components
--   [Embla Carousel](https://github.com/davidjerleke/embla-carousel) for carousel components, filling a gap in Radix's current offering
-
 ## Architecture
 
 The project began with extensive research into modern full-stack web application architectures, particularly concerning client authentication and sessions. Given that Spotify's API uses the OAuth2.0 framework for authorisation, I explored application architecture patterns designed for this purpose.
@@ -59,7 +88,10 @@ After reviewing various [OAuth architecture patterns](https://datatracker.ietf.o
 
 With this pattern in mind, I would require a backend to act as an intermediary for all OAuth and API interactions between the client and Spotify's resouces. For some reason, I opted to build the project as a polyrepo, so you can find the backend [here](https://github.com/nednella/spotify-server).
 
-![architecture pattern](src/assets/readme/flowcharts/backend-for-frontend-architecture-pattern.png)
+<div align='center'>
+
+  ![architecture pattern](src/assets/readme/flowcharts/backend-for-frontend-architecture-pattern.png)
+</div>
 
 ### Authorisation Flow
 
