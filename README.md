@@ -28,6 +28,7 @@
 -   [Architecture](#architecture)
 -   [Improvements](#improvements)
 -   [Finishing Up](#finishing-up)
+-   [References](#references)
 
 ## Description
 
