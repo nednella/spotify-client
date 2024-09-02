@@ -1,13 +1,16 @@
-<div>
-<h3 align="center"><b>Spotify Web Player Clone</b></h3>
-<p align='center'>
-  A custom Spotify client built with the Spotify Web API and Playback SDK
-</p>
+<div align='center'>
+<h3><b>Spotify Web Player Clone</b></h3>
+  <p>
+    A custom Spotify client built with the Spotify Web API and Playback SDK
+  </p>
+  <p>
+    <a href='https://www.youtube.com/watch?v=70G7YDejWG0'>Video Demo</a>
+  </p>
 </div>
 
 <br>
 
-![project showcase](src/assets/readme/showcase.jpg)
+![Project Showcase](src/assets/readme/showcase.jpg)
 
 <div align='center'>
   
