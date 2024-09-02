@@ -59,7 +59,10 @@ npm install
 npm run dev
 ```
 
-You will also need to follow the installation instructions for the server, [found here](https://github.com/nednella/spotify-server).
+### Additional Requirements
+
+-   Spotify Premium account
+-   Follow the installation instructions for the server, [found here](https://github.com/nednella/spotify-server).
 
 ## Dependencies
 
