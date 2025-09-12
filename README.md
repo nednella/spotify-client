@@ -41,7 +41,8 @@ This repository contains the front-end portion of the project, intended to work 
 
 ## Installation
 
-**(06/09/2025)** NOTE: outdated codebase - Spotify have removed a number of their public API endpoints used throughout this project (e.g. fetching "discover" playlists that you might expect to find on the home page), presumably due to unauthorised training of LLMs on their data See: https://developer.spotify.com/blog/2024-11-27-changes-to-the-web-api.
+> [!WARNING]
+> **(06/09/2025)**  - Spotify have removed a number of their public API endpoints used throughout this project (e.g. fetching "discover" playlists that you might expect to find on the home page), presumably due to unauthorised training of LLMs on their data. See: https://developer.spotify.com/blog/2024-11-27-changes-to-the-web-api.
 
 1. Clone the repository
 
