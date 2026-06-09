@@ -10,7 +10,7 @@
 
 <br>
 
-![Project Showcase](src/assets/readme/showcase.jpg)
+![Project Showcase](client/src/assets/readme/showcase.jpg)
 
 <div align='center'>
   
@@ -37,37 +37,70 @@
 
 This is my first full-stack application, featuring a React front-end written in TypeScript and built with Vite, supported by a Node Express server written in JavaScript.
 
-This repository contains the front-end portion of the project, intended to work alongside an [auth/api server](https://github.com/nednella/spotify-server).
+The project is organised as a monorepo:
+
+-   [`client/`](./client) — the React/TypeScript front-end
+-   [`server/`](./server) — the Node/Express auth and API server
 
 ## Installation
 
 > [!WARNING]
 > **(06/09/2025)**  - Spotify have removed a number of their public API endpoints used throughout this project (e.g. fetching "discover" playlists that you might expect to find on the home page), presumably due to unauthorised training of LLMs on their data. See: https://developer.spotify.com/blog/2024-11-27-changes-to-the-web-api.
 
-1. Clone the repository
+A **Spotify account** is required to complete the setup, and a **Premium subscription** is required for the application to run as intended.
+
+1. Navigate to the [Spotify Developer Dashboard](https://developer.spotify.com/dashboard) and create a new application
+2. Insert `http://localhost:5173/callback` into the required Redirect URI box
+3. Clone the repository
 
 ```sh
 git clone git@github.com:nednella/spotify-client.git
+cd spotify-client
 ```
 
-2. Navigate to the cloned repository and install the dependencies
+#### Server
+
+4. Install the server dependencies
 
 ```sh
+cd server
 npm install
 ```
 
-3. Run the application locally
+5. Obtain the `Client ID` and `Client Secret` from the app in your Spotify Developer Dashboard and add them to a `.env` file in `server/`
 
 ```sh
+# Development ports
+CLIENT_PORT = 5173
+SERVER_PORT = 5000
+
+# Spotify credentials
+CLIENT_ID = [INSERT_CLIENT_ID_HERE]
+CLIENT_SECRET = [INSERT_CLIENT_SECRET_HERE]
+REDIRECT_URI = 'http://localhost:5173/callback'
+```
+
+6. Run the server
+
+```sh
+npm run dev
+```
+
+#### Client
+
+7. In a separate terminal, install the client dependencies and run it
+
+```sh
+cd client
+npm install
 npm run dev
 ```
 
 ### Additional Requirements
 
 -   Spotify Premium account
--   Follow the installation instructions for the server, [found here](https://github.com/nednella/spotify-server).
 
-## Dependencies
+### Client
 
 -   [Zustand](https://github.com/pmndrs/zustand) for handling client-side state
 -   [React Query](https://github.com/TanStack/query) for handling server-side state
@@ -75,6 +108,12 @@ npm run dev
 -   [Tailwind](https://github.com/tailwindlabs/tailwindcss) for component styling
 -   [Radix UI](https://github.com/radix-ui) for complex UI components
 -   [Embla Carousel](https://github.com/davidjerleke/embla-carousel) for carousel components, filling a gap in Radix's current offering
+
+### Server
+
+-   [Express](https://github.com/expressjs/express) running on [Node](https://github.com/nodejs/node)
+-   [Axios](https://github.com/axios/axios) for communicating with Spotify's resource servers
+-   A refactored version of the [Spotify Web API Node](https://github.com/thelinmichael/spotify-web-api-node/) package (see `server/src/spotify-request-wrapper`)
 
 ## Motivation
 
@@ -96,18 +135,18 @@ The project began with extensive research into modern full-stack web application
 
 After reviewing various [OAuth architecture patterns](https://datatracker.ietf.org/doc/html/draft-ietf-oauth-browser-based-apps#name-application-architecture-pa), I elected to follow the [Backend For Frontend (BFF)](https://datatracker.ietf.org/doc/html/draft-ietf-oauth-browser-based-apps#name-backend-for-frontend-bff) pattern, as it best aligned with the goals of my project. In hindsight, this was not the optimal choice. More on that later.
 
-With this pattern in mind, I would require a backend to act as an intermediary for all OAuth and API interactions between the client and Spotify's resouces. For some reason, I opted to build the project as a polyrepo, so you can find the backend [here](https://github.com/nednella/spotify-server).
+With this pattern in mind, I would require a backend to act as an intermediary for all OAuth and API interactions between the client and Spotify's resouces. For some reason, I originally opted to build the project as a polyrepo; the backend has since been folded into this repository under [`server/`](./server).
 
 <div align='center'>
 
-  ![architecture pattern](src/assets/readme/flowcharts/backend-for-frontend-architecture-pattern.png)
+  ![architecture pattern](client/src/assets/readme/flowcharts/backend-for-frontend-architecture-pattern.png)
 </div>
 
 ### Authorisation Flow
 
 The Spotify Web API offers [numerous authorisation flows](https://developer.spotify.com/documentation/web-api/concepts/authorization) udner the the **OAuth2.0** framework. These cover various application types, from long-standing server applications to SPAs running in the browser. As this project is a full-stack application, the [authorisation code flow](https://developer.spotify.com/documentation/web-api/tutorials/code-flow) was used to handle user authentication across the app.
 
-![authentication flow](src/assets/readme/flowcharts/auth-code-flow.png)
+![authentication flow](client/src/assets/readme/flowcharts/auth-code-flow.png)
 
 ### Session Management
 
