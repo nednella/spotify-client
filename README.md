@@ -22,16 +22,23 @@
 
 </div>
 
+> [!IMPORTANT]
+> This was a learning project, built back in 2024 and no longer maintained.
+>
+> **(06/09/2025)** - Spotify have since removed a number of the public API endpoints this project relies on (e.g. the "discover" playlists you'd expect to find on the home page), presumably to curb unauthorised LLM training on their data — see their [API changelog](https://developer.spotify.com/blog/2024-11-27-changes-to-the-web-api).
+>
+> As a result, much of it no longer works as intended, so I wouldn't recommend trying to build it.
+
 ## Table of Contents
 
--   [Description](#description)
--   [Installation](#installation)
--   [Dependencies](#dependencies)
--   [Motivation](#motivation)
--   [Architecture](#architecture)
--   [Improvements](#improvements)
--   [Finishing Up](#finishing-up)
--   [References](#references)
+- [Description](#description)
+- [Installation](#installation)
+- [Dependencies](#dependencies)
+- [Motivation](#motivation)
+- [Architecture](#architecture)
+- [Improvements](#improvements)
+- [Finishing Up](#finishing-up)
+- [References](#references)
 
 ## Description
 
@@ -39,13 +46,10 @@ This is my first full-stack application, featuring a React front-end written in 
 
 The project is organised as a monorepo:
 
--   [`client/`](./client) — the React/TypeScript front-end
--   [`server/`](./server) — the Node/Express auth and API server
+- [`client/`](./client) — the React/TypeScript front-end
+- [`server/`](./server) — the Node/Express auth and API server
 
 ## Installation
-
-> [!WARNING]
-> **(06/09/2025)**  - Spotify have removed a number of their public API endpoints used throughout this project (e.g. fetching "discover" playlists that you might expect to find on the home page), presumably due to unauthorised training of LLMs on their data. See: https://developer.spotify.com/blog/2024-11-27-changes-to-the-web-api.
 
 A **Spotify account** is required to complete the setup, and a **Premium subscription** is required for the application to run as intended.
 
@@ -98,22 +102,22 @@ npm run dev
 
 ### Additional Requirements
 
--   Spotify Premium account
+- Spotify Premium account
 
 ### Client
 
--   [Zustand](https://github.com/pmndrs/zustand) for handling client-side state
--   [React Query](https://github.com/TanStack/query) for handling server-side state
--   [Axios](https://github.com/axios/axios) for handling client-server communication
--   [Tailwind](https://github.com/tailwindlabs/tailwindcss) for component styling
--   [Radix UI](https://github.com/radix-ui) for complex UI components
--   [Embla Carousel](https://github.com/davidjerleke/embla-carousel) for carousel components, filling a gap in Radix's current offering
+- [Zustand](https://github.com/pmndrs/zustand) for handling client-side state
+- [React Query](https://github.com/TanStack/query) for handling server-side state
+- [Axios](https://github.com/axios/axios) for handling client-server communication
+- [Tailwind](https://github.com/tailwindlabs/tailwindcss) for component styling
+- [Radix UI](https://github.com/radix-ui) for complex UI components
+- [Embla Carousel](https://github.com/davidjerleke/embla-carousel) for carousel components, filling a gap in Radix's current offering
 
 ### Server
 
--   [Express](https://github.com/expressjs/express) running on [Node](https://github.com/nodejs/node)
--   [Axios](https://github.com/axios/axios) for communicating with Spotify's resource servers
--   A refactored version of the [Spotify Web API Node](https://github.com/thelinmichael/spotify-web-api-node/) package (see `server/src/spotify-request-wrapper`)
+- [Express](https://github.com/expressjs/express) running on [Node](https://github.com/nodejs/node)
+- [Axios](https://github.com/axios/axios) for communicating with Spotify's resource servers
+- A refactored version of the [Spotify Web API Node](https://github.com/thelinmichael/spotify-web-api-node/) package (see `server/src/spotify-request-wrapper`)
 
 ## Motivation
 
@@ -123,9 +127,9 @@ I'm a long-time Spotify user, and have known about Spotify's [Web API](https://d
 
 ### Learning Objectives
 
--   Build a solid understanding of the React framework.
--   Develop general understanding of writing and running servers to support front-end clients.
--   Gain experience with TypeScript, with a long-term goal of aiming to replace plain JavaScript entirely.
+- Build a solid understanding of the React framework.
+- Develop general understanding of writing and running servers to support front-end clients.
+- Gain experience with TypeScript, with a long-term goal of aiming to replace plain JavaScript entirely.
 
 ## Architecture
 
@@ -139,7 +143,8 @@ With this pattern in mind, I would require a backend to act as an intermediary f
 
 <div align='center'>
 
-  ![architecture pattern](client/src/assets/readme/flowcharts/backend-for-frontend-architecture-pattern.png)
+![architecture pattern](client/src/assets/readme/flowcharts/backend-for-frontend-architecture-pattern.png)
+
 </div>
 
 ### Authorisation Flow
@@ -252,9 +257,9 @@ This project was a blast to work on. I learned an awful lot and enjoyed the expe
 
 In summary, I'm ecstatic with how the "finished" product turned out. An awful lot of time was spent nit picking at the Spotify UI, and I gave it a good shot at replicating some of their best features. A couple favourite elements of mine:
 
--   The simple library design with accordion sub-menus. Far better than what Spotify has come up with these days in my opinion.
--   The header opacity on scroll effect with custom colours. Since Spotify does not provide access to the `primary_colour` key for a given context through their API, I used a random colour picker. It still looks great!
--   The `/search` page and nested routing. This was one of the last features I worked on. I think it works really elegantly, although my React component writing could still do with some work.
+- The simple library design with accordion sub-menus. Far better than what Spotify has come up with these days in my opinion.
+- The header opacity on scroll effect with custom colours. Since Spotify does not provide access to the `primary_colour` key for a given context through their API, I used a random colour picker. It still looks great!
+- The `/search` page and nested routing. This was one of the last features I worked on. I think it works really elegantly, although my React component writing could still do with some work.
 
 Interesting, at the time of writing this README, Spotify has released a redesign for some of their UI, replacing the navigation container and replacing it with a top navigation bar. Maybe I'll update this in the future.
 
