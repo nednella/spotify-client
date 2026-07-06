@@ -251,18 +251,6 @@ After completing a majority of the project, I came to the realisation that one o
 
 Knowing this now, it would be interesting to integrate 2 methods of authentication so that the client can still function as a browsing tool when there is no authenticated user.
 
-## Finishing Up
-
-This project was a blast to work on. I learned an awful lot and enjoyed the experience. It felt like doing another final year university project but without the stress!
-
-In summary, I'm ecstatic with how the "finished" product turned out. An awful lot of time was spent nit picking at the Spotify UI, and I gave it a good shot at replicating some of their best features. A couple favourite elements of mine:
-
-- The simple library design with accordion sub-menus. Far better than what Spotify has come up with these days in my opinion.
-- The header opacity on scroll effect with custom colours. Since Spotify does not provide access to the `primary_colour` key for a given context through their API, I used a random colour picker. It still looks great!
-- The `/search` page and nested routing. This was one of the last features I worked on. I think it works really elegantly, although my React component writing could still do with some work.
-
-Interesting, at the time of writing this README, Spotify has released a redesign for some of their UI, replacing the navigation container and replacing it with a top navigation bar. Maybe I'll update this in the future.
-
 ## References
 
 1. [The Copenhagen Book](https://thecopenhagenbook.com/) by pilcrow
